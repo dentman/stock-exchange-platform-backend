@@ -1,8 +1,9 @@
 package com.codecool.stockexchange.controller;
 
 import com.codecool.stockexchange.Symbol;
-import com.codecool.stockexchange.quote.ChartDataPoint;
-import com.codecool.stockexchange.quote.Quote;
+import com.codecool.stockexchange.apimodel.ChartDataPoint;
+import com.codecool.stockexchange.apimodel.NewsItem;
+import com.codecool.stockexchange.apimodel.Quote;
 import com.codecool.stockexchange.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-public class QuoteController {
+public class ApiController {
 
     @Autowired
     private Symbol stocklist;
@@ -30,6 +31,12 @@ public class QuoteController {
     public ChartDataPoint[] getChartData(@PathVariable String symbol, HttpServletResponse response) {
         response.addHeader("Access-Control-Allow-Origin", "*");
         return apiService.getChartDataBySymbol(symbol);
+    }
+
+    @GetMapping("/news/{symbol}")
+    public NewsItem[] getNewsData(@PathVariable String symbol, HttpServletResponse response) {
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        return apiService.getNewsBySymbol(symbol);
     }
 
 }

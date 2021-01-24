@@ -1,4 +1,4 @@
-package com.codecool.stockexchange.quote;
+package com.codecool.stockexchange.apimodel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
