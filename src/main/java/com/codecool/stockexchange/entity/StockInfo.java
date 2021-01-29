@@ -1,5 +1,6 @@
 package com.codecool.stockexchange.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -34,11 +35,15 @@ public class StockInfo {
     private Long stockAmount;
 
     @OneToMany(mappedBy = "stockInfo", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
-    private List<StockPrice> stockPrices;
+    private List<StockPrice> stockPrices = new ArrayList<>();
 
     public StockInfo(Quote quote) {
         this.symbol = quote.getSymbol();
         this.companyName = quote.getCompanyName();
+    }
+
+    public void addStockPrice(StockPrice stockPrice) {
+        stockPrices.add(stockPrice);
     }
 
 }

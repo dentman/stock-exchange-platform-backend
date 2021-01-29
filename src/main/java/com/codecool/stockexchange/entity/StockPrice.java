@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -37,6 +38,10 @@ public class StockPrice {
     @EqualsAndHashCode.Exclude
     private StockInfo stockInfo;
 
-    // private LocalDate prevTradingDay;
+    public StockPrice(ChartDataPoint dataPoint) {
+        this.symbol = dataPoint.getSymbol();
+        this.date = LocalDate.parse(dataPoint.getDate());
+        this.price = BigDecimal.valueOf(dataPoint.getClose());
+    }
 
 }
