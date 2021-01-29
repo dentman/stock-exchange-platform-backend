@@ -8,6 +8,7 @@ import com.codecool.stockexchange.entity.Account;
 import com.codecool.stockexchange.entity.StockInfo;
 import com.codecool.stockexchange.entity.User;
 import com.codecool.stockexchange.repository.AccountRepository;
+import com.codecool.stockexchange.repository.StockInfoRepository;
 import com.codecool.stockexchange.repository.UserRepository;
 import com.codecool.stockexchange.service.ApiService;
 
@@ -26,6 +27,9 @@ public class StockexchangeApplication {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    StockInfoRepository stockInfoRepository;
 
     @Autowired
     ApiService apiService;
@@ -48,6 +52,13 @@ public class StockexchangeApplication {
             Set<String> stocks = symbol.getStocklist().keySet();
 
             List<StockInfo> stockInfos = new ArrayList<>();
+
+            for (String stock : stocks) {
+                StockInfo stockInfo = new StockInfo(apiService.getQuoteBySymbol(stock));
+                stockInfos.add(stockInfo);
+            }
+
+            stockInfoRepository.saveAll(stockInfos);
 
         };
     }
