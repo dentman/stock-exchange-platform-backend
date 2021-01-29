@@ -15,7 +15,7 @@ public class StockInfoService {
 
     public Quote findFirstBySymbol(String symbol) {
         StockInfo stockInfo = stockInfoRepository.findFirstBySymbol(symbol);
-        return new Quote(stockInfo);
+        return Quote.createQuoute(stockInfo);
     }
 
 }
