@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class ApiController {
+public class ExternalApiController {
 
     @Autowired
     private Symbol stocklist;
@@ -23,13 +23,13 @@ public class ApiController {
     @Autowired
     private ExternalApiService apiService;
 
-    @GetMapping("/quote/{symbol}")
+    @GetMapping("/external/quote/{symbol}")
     public Quote getStockData(@PathVariable String symbol, HttpServletResponse response) {
         response.addHeader("Access-Control-Allow-Origin", "*");
         return apiService.getQuoteBySymbol(symbol);
     }
 
-    @GetMapping("/chart/{symbol}")
+    @GetMapping("/external/chart/{symbol}")
     public ChartDataPoint[] getChartData(@PathVariable String symbol, HttpServletResponse response) {
         response.addHeader("Access-Control-Allow-Origin", "*");
         return apiService.getChartDataBySymbol(symbol);

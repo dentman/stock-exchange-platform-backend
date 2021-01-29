@@ -1,5 +1,7 @@
 package com.codecool.stockexchange.entity;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +34,14 @@ public class StockInfo {
 
     private String symbol;
     private String companyName;
-    private Long stockAmount;
+    private Long marketCap;
+    private BigDecimal previousClose;
+    private BigDecimal week52Low;
+    private BigDecimal week52High;
+    private Integer avgTotalVolume;
+    private double peRatio;
+    private double ytdChange;
+    private LocalDateTime lastTradeTime;
 
     @OneToMany(mappedBy = "stockInfo", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private List<StockPrice> stockPrices = new ArrayList<>();
@@ -40,6 +49,13 @@ public class StockInfo {
     public StockInfo(Quote quote) {
         this.symbol = quote.getSymbol();
         this.companyName = quote.getCompanyName();
+        this.marketCap = quote.getMarketCap();
+        this.previousClose = BigDecimal.valueOf(quote.getPreviousClose());
+        this.week52Low = BigDecimal.valueOf(quote.getWeek52Low());
+        this.week52High = BigDecimal.valueOf(quote.getWeek52High());
+        this.avgTotalVolume = quote.getAvgTotalVolume();
+        this.peRatio = quote.getPeRatio();
+        this.ytdChange = quote.getYtdChange();
     }
 
     public void addStockPrice(StockPrice stockPrice) {

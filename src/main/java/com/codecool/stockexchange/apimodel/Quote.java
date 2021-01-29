@@ -1,5 +1,6 @@
 package com.codecool.stockexchange.apimodel;
 
+import com.codecool.stockexchange.entity.StockInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Quote {
@@ -169,505 +170,496 @@ public class Quote {
 	@JsonProperty("iexBidSize")
 	private Object iexBidSize;
 
-	public void setSymbol(String symbol){
+	public static Quote createQuoute(StockInfo stockInfo) {
+		Quote quote = new Quote();
+
+		quote.setSymbol(stockInfo.getSymbol());
+		quote.setCompanyName(stockInfo.getCompanyName());
+		quote.setMarketCap(stockInfo.getMarketCap());
+		quote.setPreviousClose(stockInfo.getPreviousClose().doubleValue());
+		quote.setWeek52Low(stockInfo.getWeek52Low().doubleValue());
+		quote.setWeek52High(stockInfo.getWeek52High().doubleValue());
+		quote.setAvgTotalVolume(stockInfo.getAvgTotalVolume());
+		quote.setPeRatio(stockInfo.getPeRatio());
+		quote.setYtdChange(stockInfo.getYtdChange());
+
+		// this.companyName = stockInfo.getCompanyName();
+		// this.marketCap = stockInfo.getMarketCap();
+		// this.previousClose = stockInfo.getPreviousClose().doubleValue();
+		// this.week52Low = stockInfo.getWeek52Low().doubleValue();
+		// this.week52High = stockInfo.getWeek52High().doubleValue();
+		// this.avgTotalVolume = stockInfo.getAvgTotalVolume();
+		// this.peRatio = stockInfo.getPeRatio();
+		// this.ytdChange = stockInfo.getYtdChange();
+
+		return quote;
+	}
+
+	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
 
-	public String getSymbol(){
+	public String getSymbol() {
 		return symbol;
 	}
 
-	public void setHighTime(long highTime){
+	public void setHighTime(long highTime) {
 		this.highTime = highTime;
 	}
 
-	public long getHighTime(){
+	public long getHighTime() {
 		return highTime;
 	}
 
-	public void setAvgTotalVolume(int avgTotalVolume){
+	public void setAvgTotalVolume(int avgTotalVolume) {
 		this.avgTotalVolume = avgTotalVolume;
 	}
 
-	public int getAvgTotalVolume(){
+	public int getAvgTotalVolume() {
 		return avgTotalVolume;
 	}
 
-	public void setCompanyName(String companyName){
+	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
 
-	public String getCompanyName(){
+	public String getCompanyName() {
 		return companyName;
 	}
 
-	public void setOpenSource(String openSource){
+	public void setOpenSource(String openSource) {
 		this.openSource = openSource;
 	}
 
-	public String getOpenSource(){
+	public String getOpenSource() {
 		return openSource;
 	}
 
-	public void setDelayedPrice(double delayedPrice){
+	public void setDelayedPrice(double delayedPrice) {
 		this.delayedPrice = delayedPrice;
 	}
 
-	public double getDelayedPrice(){
+	public double getDelayedPrice() {
 		return delayedPrice;
 	}
 
-	public void setIexMarketPercent(Object iexMarketPercent){
+	public void setIexMarketPercent(Object iexMarketPercent) {
 		this.iexMarketPercent = iexMarketPercent;
 	}
 
-	public Object getIexMarketPercent(){
+	public Object getIexMarketPercent() {
 		return iexMarketPercent;
 	}
 
-	public void setPrimaryExchange(String primaryExchange){
+	public void setPrimaryExchange(String primaryExchange) {
 		this.primaryExchange = primaryExchange;
 	}
 
-	public String getPrimaryExchange(){
+	public String getPrimaryExchange() {
 		return primaryExchange;
 	}
 
-	public void setLatestUpdate(long latestUpdate){
+	public void setLatestUpdate(long latestUpdate) {
 		this.latestUpdate = latestUpdate;
 	}
 
-	public long getLatestUpdate(){
+	public long getLatestUpdate() {
 		return latestUpdate;
 	}
 
-	public void setHigh(int high){
+	public void setHigh(int high) {
 		this.high = high;
 	}
 
-	public int getHigh(){
+	public int getHigh() {
 		return high;
 	}
 
-	public void setIexOpenTime(long iexOpenTime){
+	public void setIexOpenTime(long iexOpenTime) {
 		this.iexOpenTime = iexOpenTime;
 	}
 
-	public long getIexOpenTime(){
+	public long getIexOpenTime() {
 		return iexOpenTime;
 	}
 
-	public void setDelayedPriceTime(long delayedPriceTime){
+	public void setDelayedPriceTime(long delayedPriceTime) {
 		this.delayedPriceTime = delayedPriceTime;
 	}
 
-	public long getDelayedPriceTime(){
+	public long getDelayedPriceTime() {
 		return delayedPriceTime;
 	}
 
-	public void setExtendedPrice(double extendedPrice){
+	public void setExtendedPrice(double extendedPrice) {
 		this.extendedPrice = extendedPrice;
 	}
 
-	public double getExtendedPrice(){
+	public double getExtendedPrice() {
 		return extendedPrice;
 	}
 
-	public void setWeek52Low(double week52Low){
+	public void setWeek52Low(double week52Low) {
 		this.week52Low = week52Low;
 	}
 
-	public double getWeek52Low(){
+	public double getWeek52Low() {
 		return week52Low;
 	}
 
-	public void setHighSource(String highSource){
+	public void setHighSource(String highSource) {
 		this.highSource = highSource;
 	}
 
-	public String getHighSource(){
+	public String getHighSource() {
 		return highSource;
 	}
 
-	public void setLatestPrice(double latestPrice){
+	public void setLatestPrice(double latestPrice) {
 		this.latestPrice = latestPrice;
 	}
 
-	public double getLatestPrice(){
+	public double getLatestPrice() {
 		return latestPrice;
 	}
 
-	public void setMarketCap(long marketCap){
+	public void setMarketCap(long marketCap) {
 		this.marketCap = marketCap;
 	}
 
-	public long getMarketCap(){
+	public long getMarketCap() {
 		return marketCap;
 	}
 
-	public void setIexClose(double iexClose){
+	public void setIexClose(double iexClose) {
 		this.iexClose = iexClose;
 	}
 
-	public double getIexClose(){
+	public double getIexClose() {
 		return iexClose;
 	}
 
-	public void setVolume(int volume){
+	public void setVolume(int volume) {
 		this.volume = volume;
 	}
 
-	public int getVolume(){
+	public int getVolume() {
 		return volume;
 	}
 
-	public void setYtdChange(double ytdChange){
+	public void setYtdChange(double ytdChange) {
 		this.ytdChange = ytdChange;
 	}
 
-	public double getYtdChange(){
+	public double getYtdChange() {
 		return ytdChange;
 	}
 
-	public void setLastTradeTime(long lastTradeTime){
+	public void setLastTradeTime(long lastTradeTime) {
 		this.lastTradeTime = lastTradeTime;
 	}
 
-	public long getLastTradeTime(){
+	public long getLastTradeTime() {
 		return lastTradeTime;
 	}
 
-	public void setCloseSource(String closeSource){
+	public void setCloseSource(String closeSource) {
 		this.closeSource = closeSource;
 	}
 
-	public String getCloseSource(){
+	public String getCloseSource() {
 		return closeSource;
 	}
 
-	public void setExtendedChange(double extendedChange){
+	public void setExtendedChange(double extendedChange) {
 		this.extendedChange = extendedChange;
 	}
 
-	public double getExtendedChange(){
+	public double getExtendedChange() {
 		return extendedChange;
 	}
 
-	public void setIexRealtimePrice(Object iexRealtimePrice){
+	public void setIexRealtimePrice(Object iexRealtimePrice) {
 		this.iexRealtimePrice = iexRealtimePrice;
 	}
 
-	public Object getIexRealtimePrice(){
+	public Object getIexRealtimePrice() {
 		return iexRealtimePrice;
 	}
 
-	public void setCalculationPrice(String calculationPrice){
+	public void setCalculationPrice(String calculationPrice) {
 		this.calculationPrice = calculationPrice;
 	}
 
-	public String getCalculationPrice(){
+	public String getCalculationPrice() {
 		return calculationPrice;
 	}
 
-	public void setExtendedChangePercent(double extendedChangePercent){
+	public void setExtendedChangePercent(double extendedChangePercent) {
 		this.extendedChangePercent = extendedChangePercent;
 	}
 
-	public double getExtendedChangePercent(){
+	public double getExtendedChangePercent() {
 		return extendedChangePercent;
 	}
 
-	public void setLatestSource(String latestSource){
+	public void setLatestSource(String latestSource) {
 		this.latestSource = latestSource;
 	}
 
-	public String getLatestSource(){
+	public String getLatestSource() {
 		return latestSource;
 	}
 
-	public void setIexOpen(double iexOpen){
+	public void setIexOpen(double iexOpen) {
 		this.iexOpen = iexOpen;
 	}
 
-	public double getIexOpen(){
+	public double getIexOpen() {
 		return iexOpen;
 	}
 
-	public void setIexBidPrice(Object iexBidPrice){
+	public void setIexBidPrice(Object iexBidPrice) {
 		this.iexBidPrice = iexBidPrice;
 	}
 
-	public Object getIexBidPrice(){
+	public Object getIexBidPrice() {
 		return iexBidPrice;
 	}
 
-	public void setPreviousClose(double previousClose){
+	public void setPreviousClose(double previousClose) {
 		this.previousClose = previousClose;
 	}
 
-	public double getPreviousClose(){
+	public double getPreviousClose() {
 		return previousClose;
 	}
 
-	public void setPeRatio(double peRatio){
+	public void setPeRatio(double peRatio) {
 		this.peRatio = peRatio;
 	}
 
-	public double getPeRatio(){
+	public double getPeRatio() {
 		return peRatio;
 	}
 
-	public void setIsUSMarketOpen(boolean isUSMarketOpen){
+	public void setIsUSMarketOpen(boolean isUSMarketOpen) {
 		this.isUSMarketOpen = isUSMarketOpen;
 	}
 
-	public boolean isIsUSMarketOpen(){
+	public boolean isIsUSMarketOpen() {
 		return isUSMarketOpen;
 	}
 
-	public void setLow(double low){
+	public void setLow(double low) {
 		this.low = low;
 	}
 
-	public double getLow(){
+	public double getLow() {
 		return low;
 	}
 
-	public void setOddLotDelayedPrice(double oddLotDelayedPrice){
+	public void setOddLotDelayedPrice(double oddLotDelayedPrice) {
 		this.oddLotDelayedPrice = oddLotDelayedPrice;
 	}
 
-	public double getOddLotDelayedPrice(){
+	public double getOddLotDelayedPrice() {
 		return oddLotDelayedPrice;
 	}
 
-	public void setExtendedPriceTime(long extendedPriceTime){
+	public void setExtendedPriceTime(long extendedPriceTime) {
 		this.extendedPriceTime = extendedPriceTime;
 	}
 
-	public long getExtendedPriceTime(){
+	public long getExtendedPriceTime() {
 		return extendedPriceTime;
 	}
 
-	public void setCloseTime(long closeTime){
+	public void setCloseTime(long closeTime) {
 		this.closeTime = closeTime;
 	}
 
-	public long getCloseTime(){
+	public long getCloseTime() {
 		return closeTime;
 	}
 
-	public void setChangePercent(double changePercent){
+	public void setChangePercent(double changePercent) {
 		this.changePercent = changePercent;
 	}
 
-	public double getChangePercent(){
+	public double getChangePercent() {
 		return changePercent;
 	}
 
-	public void setWeek52High(double week52High){
+	public void setWeek52High(double week52High) {
 		this.week52High = week52High;
 	}
 
-	public double getWeek52High(){
+	public double getWeek52High() {
 		return week52High;
 	}
 
-	public void setOpenTime(long openTime){
+	public void setOpenTime(long openTime) {
 		this.openTime = openTime;
 	}
 
-	public long getOpenTime(){
+	public long getOpenTime() {
 		return openTime;
 	}
 
-	public void setClose(double close){
+	public void setClose(double close) {
 		this.close = close;
 	}
 
-	public double getClose(){
+	public double getClose() {
 		return close;
 	}
 
-	public void setIexCloseTime(long iexCloseTime){
+	public void setIexCloseTime(long iexCloseTime) {
 		this.iexCloseTime = iexCloseTime;
 	}
 
-	public long getIexCloseTime(){
+	public long getIexCloseTime() {
 		return iexCloseTime;
 	}
 
-	public void setOddLotDelayedPriceTime(long oddLotDelayedPriceTime){
+	public void setOddLotDelayedPriceTime(long oddLotDelayedPriceTime) {
 		this.oddLotDelayedPriceTime = oddLotDelayedPriceTime;
 	}
 
-	public long getOddLotDelayedPriceTime(){
+	public long getOddLotDelayedPriceTime() {
 		return oddLotDelayedPriceTime;
 	}
 
-	public void setPreviousVolume(int previousVolume){
+	public void setPreviousVolume(int previousVolume) {
 		this.previousVolume = previousVolume;
 	}
 
-	public int getPreviousVolume(){
+	public int getPreviousVolume() {
 		return previousVolume;
 	}
 
-	public void setIexRealtimeSize(Object iexRealtimeSize){
+	public void setIexRealtimeSize(Object iexRealtimeSize) {
 		this.iexRealtimeSize = iexRealtimeSize;
 	}
 
-	public Object getIexRealtimeSize(){
+	public Object getIexRealtimeSize() {
 		return iexRealtimeSize;
 	}
 
-	public void setIexLastUpdated(Object iexLastUpdated){
+	public void setIexLastUpdated(Object iexLastUpdated) {
 		this.iexLastUpdated = iexLastUpdated;
 	}
 
-	public Object getIexLastUpdated(){
+	public Object getIexLastUpdated() {
 		return iexLastUpdated;
 	}
 
-	public void setChange(double change){
+	public void setChange(double change) {
 		this.change = change;
 	}
 
-	public double getChange(){
+	public double getChange() {
 		return change;
 	}
 
-	public void setLatestVolume(int latestVolume){
+	public void setLatestVolume(int latestVolume) {
 		this.latestVolume = latestVolume;
 	}
 
-	public int getLatestVolume(){
+	public int getLatestVolume() {
 		return latestVolume;
 	}
 
-	public void setIexAskPrice(Object iexAskPrice){
+	public void setIexAskPrice(Object iexAskPrice) {
 		this.iexAskPrice = iexAskPrice;
 	}
 
-	public Object getIexAskPrice(){
+	public Object getIexAskPrice() {
 		return iexAskPrice;
 	}
 
-	public void setLowSource(String lowSource){
+	public void setLowSource(String lowSource) {
 		this.lowSource = lowSource;
 	}
 
-	public String getLowSource(){
+	public String getLowSource() {
 		return lowSource;
 	}
 
-	public void setIexVolume(Object iexVolume){
+	public void setIexVolume(Object iexVolume) {
 		this.iexVolume = iexVolume;
 	}
 
-	public Object getIexVolume(){
+	public Object getIexVolume() {
 		return iexVolume;
 	}
 
-	public void setIexAskSize(Object iexAskSize){
+	public void setIexAskSize(Object iexAskSize) {
 		this.iexAskSize = iexAskSize;
 	}
 
-	public Object getIexAskSize(){
+	public Object getIexAskSize() {
 		return iexAskSize;
 	}
 
-	public void setLatestTime(String latestTime){
+	public void setLatestTime(String latestTime) {
 		this.latestTime = latestTime;
 	}
 
-	public String getLatestTime(){
+	public String getLatestTime() {
 		return latestTime;
 	}
 
-	public void setOpen(double open){
+	public void setOpen(double open) {
 		this.open = open;
 	}
 
-	public double getOpen(){
+	public double getOpen() {
 		return open;
 	}
 
-	public void setLowTime(long lowTime){
+	public void setLowTime(long lowTime) {
 		this.lowTime = lowTime;
 	}
 
-	public long getLowTime(){
+	public long getLowTime() {
 		return lowTime;
 	}
 
-	public void setIexBidSize(Object iexBidSize){
+	public void setIexBidSize(Object iexBidSize) {
 		this.iexBidSize = iexBidSize;
 	}
 
-	public Object getIexBidSize(){
+	public Object getIexBidSize() {
 		return iexBidSize;
 	}
 
 	@Override
- 	public String toString(){
-		return 
-			"Response{" + 
-			"symbol = '" + symbol + '\'' + 
-			",highTime = '" + highTime + '\'' + 
-			",avgTotalVolume = '" + avgTotalVolume + '\'' + 
-			",companyName = '" + companyName + '\'' + 
-			",openSource = '" + openSource + '\'' + 
-			",delayedPrice = '" + delayedPrice + '\'' + 
-			",iexMarketPercent = '" + iexMarketPercent + '\'' + 
-			",primaryExchange = '" + primaryExchange + '\'' + 
-			",latestUpdate = '" + latestUpdate + '\'' + 
-			",high = '" + high + '\'' + 
-			",iexOpenTime = '" + iexOpenTime + '\'' + 
-			",delayedPriceTime = '" + delayedPriceTime + '\'' + 
-			",extendedPrice = '" + extendedPrice + '\'' + 
-			",week52Low = '" + week52Low + '\'' + 
-			",highSource = '" + highSource + '\'' + 
-			",latestPrice = '" + latestPrice + '\'' + 
-			",marketCap = '" + marketCap + '\'' + 
-			",iexClose = '" + iexClose + '\'' + 
-			",volume = '" + volume + '\'' + 
-			",ytdChange = '" + ytdChange + '\'' + 
-			",lastTradeTime = '" + lastTradeTime + '\'' + 
-			",closeSource = '" + closeSource + '\'' + 
-			",extendedChange = '" + extendedChange + '\'' + 
-			",iexRealtimePrice = '" + iexRealtimePrice + '\'' + 
-			",calculationPrice = '" + calculationPrice + '\'' + 
-			",extendedChangePercent = '" + extendedChangePercent + '\'' + 
-			",latestSource = '" + latestSource + '\'' + 
-			",iexOpen = '" + iexOpen + '\'' + 
-			",iexBidPrice = '" + iexBidPrice + '\'' + 
-			",previousClose = '" + previousClose + '\'' + 
-			",peRatio = '" + peRatio + '\'' + 
-			",isUSMarketOpen = '" + isUSMarketOpen + '\'' + 
-			",low = '" + low + '\'' + 
-			",oddLotDelayedPrice = '" + oddLotDelayedPrice + '\'' + 
-			",extendedPriceTime = '" + extendedPriceTime + '\'' + 
-			",closeTime = '" + closeTime + '\'' + 
-			",changePercent = '" + changePercent + '\'' + 
-			",week52High = '" + week52High + '\'' + 
-			",openTime = '" + openTime + '\'' + 
-			",close = '" + close + '\'' + 
-			",iexCloseTime = '" + iexCloseTime + '\'' + 
-			",oddLotDelayedPriceTime = '" + oddLotDelayedPriceTime + '\'' + 
-			",previousVolume = '" + previousVolume + '\'' + 
-			",iexRealtimeSize = '" + iexRealtimeSize + '\'' + 
-			",iexLastUpdated = '" + iexLastUpdated + '\'' + 
-			",change = '" + change + '\'' + 
-			",latestVolume = '" + latestVolume + '\'' + 
-			",iexAskPrice = '" + iexAskPrice + '\'' + 
-			",lowSource = '" + lowSource + '\'' + 
-			",iexVolume = '" + iexVolume + '\'' + 
-			",iexAskSize = '" + iexAskSize + '\'' + 
-			",latestTime = '" + latestTime + '\'' + 
-			",open = '" + open + '\'' + 
-			",lowTime = '" + lowTime + '\'' + 
-			",iexBidSize = '" + iexBidSize + '\'' + 
-			"}";
-		}
+	public String toString() {
+		return "Response{" + "symbol = '" + symbol + '\'' + ",highTime = '" + highTime + '\'' + ",avgTotalVolume = '"
+				+ avgTotalVolume + '\'' + ",companyName = '" + companyName + '\'' + ",openSource = '" + openSource
+				+ '\'' + ",delayedPrice = '" + delayedPrice + '\'' + ",iexMarketPercent = '" + iexMarketPercent + '\''
+				+ ",primaryExchange = '" + primaryExchange + '\'' + ",latestUpdate = '" + latestUpdate + '\''
+				+ ",high = '" + high + '\'' + ",iexOpenTime = '" + iexOpenTime + '\'' + ",delayedPriceTime = '"
+				+ delayedPriceTime + '\'' + ",extendedPrice = '" + extendedPrice + '\'' + ",week52Low = '" + week52Low
+				+ '\'' + ",highSource = '" + highSource + '\'' + ",latestPrice = '" + latestPrice + '\''
+				+ ",marketCap = '" + marketCap + '\'' + ",iexClose = '" + iexClose + '\'' + ",volume = '" + volume
+				+ '\'' + ",ytdChange = '" + ytdChange + '\'' + ",lastTradeTime = '" + lastTradeTime + '\''
+				+ ",closeSource = '" + closeSource + '\'' + ",extendedChange = '" + extendedChange + '\''
+				+ ",iexRealtimePrice = '" + iexRealtimePrice + '\'' + ",calculationPrice = '" + calculationPrice + '\''
+				+ ",extendedChangePercent = '" + extendedChangePercent + '\'' + ",latestSource = '" + latestSource
+				+ '\'' + ",iexOpen = '" + iexOpen + '\'' + ",iexBidPrice = '" + iexBidPrice + '\''
+				+ ",previousClose = '" + previousClose + '\'' + ",peRatio = '" + peRatio + '\'' + ",isUSMarketOpen = '"
+				+ isUSMarketOpen + '\'' + ",low = '" + low + '\'' + ",oddLotDelayedPrice = '" + oddLotDelayedPrice
+				+ '\'' + ",extendedPriceTime = '" + extendedPriceTime + '\'' + ",closeTime = '" + closeTime + '\''
+				+ ",changePercent = '" + changePercent + '\'' + ",week52High = '" + week52High + '\'' + ",openTime = '"
+				+ openTime + '\'' + ",close = '" + close + '\'' + ",iexCloseTime = '" + iexCloseTime + '\''
+				+ ",oddLotDelayedPriceTime = '" + oddLotDelayedPriceTime + '\'' + ",previousVolume = '" + previousVolume
+				+ '\'' + ",iexRealtimeSize = '" + iexRealtimeSize + '\'' + ",iexLastUpdated = '" + iexLastUpdated + '\''
+				+ ",change = '" + change + '\'' + ",latestVolume = '" + latestVolume + '\'' + ",iexAskPrice = '"
+				+ iexAskPrice + '\'' + ",lowSource = '" + lowSource + '\'' + ",iexVolume = '" + iexVolume + '\''
+				+ ",iexAskSize = '" + iexAskSize + '\'' + ",latestTime = '" + latestTime + '\'' + ",open = '" + open
+				+ '\'' + ",lowTime = '" + lowTime + '\'' + ",iexBidSize = '" + iexBidSize + '\'' + "}";
+	}
 }

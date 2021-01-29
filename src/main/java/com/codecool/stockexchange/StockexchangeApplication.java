@@ -47,7 +47,6 @@ public class StockexchangeApplication {
     @Profile("production")
     public CommandLineRunner init() {
         return args -> {
-
         };
     }
 
