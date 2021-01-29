@@ -2,6 +2,7 @@ package com.codecool.stockexchange.controller;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.codecool.stockexchange.apimodel.Quote;
 import com.codecool.stockexchange.service.StockInfoService;
 
@@ -22,10 +23,9 @@ public class StockInfoController {
         return stockInfoService.findFirstBySymbol(symbol);
     }
 
-    // @GetMapping("/chart/{symbol}")
-    // public ChartDataPoint[] getChartData(@PathVariable String symbol,
-    // HttpServletResponse response) {
-    // response.addHeader("Access-Control-Allow-Origin", "*");
-    // return stockInfoService.findFirstBySymbol(symbol);
-    // }
+    @GetMapping("/chart/{symbol}")
+    public ChartDataPoint[] getChartData(@PathVariable String symbol, HttpServletResponse response) {
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        return stockInfoService.getChartDataPoints(symbol);
+    }
 }

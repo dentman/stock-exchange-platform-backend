@@ -1,8 +1,9 @@
 package com.codecool.stockexchange.apimodel;
 
+import com.codecool.stockexchange.entity.StockPrice;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ChartDataPoint{
+public class ChartDataPoint {
 
 	@JsonProperty("date")
 	private String date;
@@ -82,244 +83,231 @@ public class ChartDataPoint{
 	@JsonProperty("open")
 	private double open;
 
-	public void setDate(String date){
+	public static ChartDataPoint createChartDataPoint(StockPrice stockPrice) {
+		ChartDataPoint chartDataPoint = new ChartDataPoint();
+		chartDataPoint.setDate(stockPrice.getDate().toString());
+		chartDataPoint.setClose(stockPrice.getPrice().doubleValue());
+		return chartDataPoint;
+	}
+
+	public void setDate(String date) {
 		this.date = date;
 	}
 
-	public String getDate(){
+	public String getDate() {
 		return date;
 	}
 
-	public void setSymbol(String symbol){
+	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
 
-	public String getSymbol(){
+	public String getSymbol() {
 		return symbol;
 	}
 
-	public void setSubkey(String subkey){
+	public void setSubkey(String subkey) {
 		this.subkey = subkey;
 	}
 
-	public String getSubkey(){
+	public String getSubkey() {
 		return subkey;
 	}
 
-	public void setFClose(double fClose){
+	public void setFClose(double fClose) {
 		this.fClose = fClose;
 	}
 
-	public double getFClose(){
+	public double getFClose() {
 		return fClose;
 	}
 
-	public void setUOpen(double uOpen){
+	public void setUOpen(double uOpen) {
 		this.uOpen = uOpen;
 	}
 
-	public double getUOpen(){
+	public double getUOpen() {
 		return uOpen;
 	}
 
-	public void setUClose(double uClose){
+	public void setUClose(double uClose) {
 		this.uClose = uClose;
 	}
 
-	public double getUClose(){
+	public double getUClose() {
 		return uClose;
 	}
 
-	public void setHigh(double high){
+	public void setHigh(double high) {
 		this.high = high;
 	}
 
-	public double getHigh(){
+	public double getHigh() {
 		return high;
 	}
 
-	public void setFOpen(double fOpen){
+	public void setFOpen(double fOpen) {
 		this.fOpen = fOpen;
 	}
 
-	public double getFOpen(){
+	public double getFOpen() {
 		return fOpen;
 	}
 
-	public void setLow(double low){
+	public void setLow(double low) {
 		this.low = low;
 	}
 
-	public double getLow(){
+	public double getLow() {
 		return low;
 	}
 
-	public void setChangeOverTime(int changeOverTime){
+	public void setChangeOverTime(int changeOverTime) {
 		this.changeOverTime = changeOverTime;
 	}
 
-	public int getChangeOverTime(){
+	public int getChangeOverTime() {
 		return changeOverTime;
 	}
 
-	public void setFHigh(double fHigh){
+	public void setFHigh(double fHigh) {
 		this.fHigh = fHigh;
 	}
 
-	public double getFHigh(){
+	public double getFHigh() {
 		return fHigh;
 	}
 
-	public void setChangePercent(int changePercent){
+	public void setChangePercent(int changePercent) {
 		this.changePercent = changePercent;
 	}
 
-	public int getChangePercent(){
+	public int getChangePercent() {
 		return changePercent;
 	}
 
-	public void setId(String id){
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public String getId(){
+	public String getId() {
 		return id;
 	}
 
-	public void setMarketChangeOverTime(int marketChangeOverTime){
+	public void setMarketChangeOverTime(int marketChangeOverTime) {
 		this.marketChangeOverTime = marketChangeOverTime;
 	}
 
-	public int getMarketChangeOverTime(){
+	public int getMarketChangeOverTime() {
 		return marketChangeOverTime;
 	}
 
-	public void setClose(double close){
+	public void setClose(double close) {
 		this.close = close;
 	}
 
-	public double getClose(){
+	public double getClose() {
 		return close;
 	}
 
-	public void setKey(String key){
+	public void setKey(String key) {
 		this.key = key;
 	}
 
-	public String getKey(){
+	public String getKey() {
 		return key;
 	}
 
-	public void setFLow(double fLow){
+	public void setFLow(double fLow) {
 		this.fLow = fLow;
 	}
 
-	public double getFLow(){
+	public double getFLow() {
 		return fLow;
 	}
 
-	public void setUHigh(double uHigh){
+	public void setUHigh(double uHigh) {
 		this.uHigh = uHigh;
 	}
 
-	public double getUHigh(){
+	public double getUHigh() {
 		return uHigh;
 	}
 
-	public void setUVolume(int uVolume){
+	public void setUVolume(int uVolume) {
 		this.uVolume = uVolume;
 	}
 
-	public int getUVolume(){
+	public int getUVolume() {
 		return uVolume;
 	}
 
-	public void setChange(int change){
+	public void setChange(int change) {
 		this.change = change;
 	}
 
-	public int getChange(){
+	public int getChange() {
 		return change;
 	}
 
-	public void setULow(double uLow){
+	public void setULow(double uLow) {
 		this.uLow = uLow;
 	}
 
-	public double getULow(){
+	public double getULow() {
 		return uLow;
 	}
 
-	public void setFVolume(int fVolume){
+	public void setFVolume(int fVolume) {
 		this.fVolume = fVolume;
 	}
 
-	public int getFVolume(){
+	public int getFVolume() {
 		return fVolume;
 	}
 
-	public void setLabel(String label){
+	public void setLabel(String label) {
 		this.label = label;
 	}
 
-	public String getLabel(){
+	public String getLabel() {
 		return label;
 	}
 
-	public void setVolume(int volume){
+	public void setVolume(int volume) {
 		this.volume = volume;
 	}
 
-	public int getVolume(){
+	public int getVolume() {
 		return volume;
 	}
 
-	public void setUpdated(long updated){
+	public void setUpdated(long updated) {
 		this.updated = updated;
 	}
 
-	public long getUpdated(){
+	public long getUpdated() {
 		return updated;
 	}
 
-	public void setOpen(double open){
+	public void setOpen(double open) {
 		this.open = open;
 	}
 
-	public double getOpen(){
+	public double getOpen() {
 		return open;
 	}
 
 	@Override
- 	public String toString(){
-		return 
-			"ChartDataPoint{" + 
-			"date = '" + date + '\'' + 
-			",symbol = '" + symbol + '\'' + 
-			",subkey = '" + subkey + '\'' + 
-			",fClose = '" + fClose + '\'' + 
-			",uOpen = '" + uOpen + '\'' + 
-			",uClose = '" + uClose + '\'' + 
-			",high = '" + high + '\'' + 
-			",fOpen = '" + fOpen + '\'' + 
-			",low = '" + low + '\'' + 
-			",changeOverTime = '" + changeOverTime + '\'' + 
-			",fHigh = '" + fHigh + '\'' + 
-			",changePercent = '" + changePercent + '\'' + 
-			",id = '" + id + '\'' + 
-			",marketChangeOverTime = '" + marketChangeOverTime + '\'' + 
-			",close = '" + close + '\'' + 
-			",key = '" + key + '\'' + 
-			",fLow = '" + fLow + '\'' + 
-			",uHigh = '" + uHigh + '\'' + 
-			",uVolume = '" + uVolume + '\'' + 
-			",change = '" + change + '\'' + 
-			",uLow = '" + uLow + '\'' + 
-			",fVolume = '" + fVolume + '\'' + 
-			",label = '" + label + '\'' + 
-			",volume = '" + volume + '\'' + 
-			",updated = '" + updated + '\'' + 
-			",open = '" + open + '\'' + 
-			"}";
-		}
+	public String toString() {
+		return "ChartDataPoint{" + "date = '" + date + '\'' + ",symbol = '" + symbol + '\'' + ",subkey = '" + subkey
+				+ '\'' + ",fClose = '" + fClose + '\'' + ",uOpen = '" + uOpen + '\'' + ",uClose = '" + uClose + '\''
+				+ ",high = '" + high + '\'' + ",fOpen = '" + fOpen + '\'' + ",low = '" + low + '\''
+				+ ",changeOverTime = '" + changeOverTime + '\'' + ",fHigh = '" + fHigh + '\'' + ",changePercent = '"
+				+ changePercent + '\'' + ",id = '" + id + '\'' + ",marketChangeOverTime = '" + marketChangeOverTime
+				+ '\'' + ",close = '" + close + '\'' + ",key = '" + key + '\'' + ",fLow = '" + fLow + '\''
+				+ ",uHigh = '" + uHigh + '\'' + ",uVolume = '" + uVolume + '\'' + ",change = '" + change + '\''
+				+ ",uLow = '" + uLow + '\'' + ",fVolume = '" + fVolume + '\'' + ",label = '" + label + '\''
+				+ ",volume = '" + volume + '\'' + ",updated = '" + updated + '\'' + ",open = '" + open + '\'' + "}";
+	}
 }

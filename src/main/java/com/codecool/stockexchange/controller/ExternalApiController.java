@@ -2,7 +2,6 @@ package com.codecool.stockexchange.controller;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.codecool.stockexchange.Symbol;
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.codecool.stockexchange.apimodel.NewsItem;
 import com.codecool.stockexchange.apimodel.Quote;
@@ -16,9 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ExternalApiController {
-
-    @Autowired
-    private Symbol stocklist;
 
     @Autowired
     private ExternalApiService apiService;

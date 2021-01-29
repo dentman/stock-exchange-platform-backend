@@ -3,7 +3,10 @@ package com.codecool.stockexchange.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -60,6 +63,20 @@ public class StockInfo {
 
     public void addStockPrice(StockPrice stockPrice) {
         stockPrices.add(stockPrice);
+    }
+
+    // TODO: extended handling of random generation
+    public BigDecimal getCurrentPrice() {
+        Optional<StockPrice> currentPriceOptional = stockPrices.stream().max(Comparator.comparing(StockPrice::getDate));
+
+        if (currentPriceOptional.isPresent()) {
+            Random random = new Random();
+            double change = (double) random.nextInt(20) / 100 * (random.nextInt(20) >= 10 ? -1 : +1);
+            return currentPriceOptional.get().getPrice().multiply(BigDecimal.valueOf(1 + change));
+        } else {
+            return BigDecimal.valueOf(0);
+        }
+
     }
 
 }

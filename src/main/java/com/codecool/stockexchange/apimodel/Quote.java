@@ -172,26 +172,23 @@ public class Quote {
 
 	public static Quote createQuoute(StockInfo stockInfo) {
 		Quote quote = new Quote();
-
 		quote.setSymbol(stockInfo.getSymbol());
 		quote.setCompanyName(stockInfo.getCompanyName());
 		quote.setMarketCap(stockInfo.getMarketCap());
-		quote.setPreviousClose(stockInfo.getPreviousClose().doubleValue());
 		quote.setWeek52Low(stockInfo.getWeek52Low().doubleValue());
 		quote.setWeek52High(stockInfo.getWeek52High().doubleValue());
 		quote.setAvgTotalVolume(stockInfo.getAvgTotalVolume());
 		quote.setPeRatio(stockInfo.getPeRatio());
 		quote.setYtdChange(stockInfo.getYtdChange());
 
-		// this.companyName = stockInfo.getCompanyName();
-		// this.marketCap = stockInfo.getMarketCap();
-		// this.previousClose = stockInfo.getPreviousClose().doubleValue();
-		// this.week52Low = stockInfo.getWeek52Low().doubleValue();
-		// this.week52High = stockInfo.getWeek52High().doubleValue();
-		// this.avgTotalVolume = stockInfo.getAvgTotalVolume();
-		// this.peRatio = stockInfo.getPeRatio();
-		// this.ytdChange = stockInfo.getYtdChange();
-
+		double previousPrice = stockInfo.getPreviousClose().doubleValue();
+		double currentPrice = stockInfo.getCurrentPrice().doubleValue();
+		quote.setPreviousClose(previousPrice);
+		quote.setLatestPrice(currentPrice);
+		quote.setChange(currentPrice - previousPrice);
+		quote.setChangePercent(currentPrice / previousPrice - 1);
+		System.out.println(previousPrice);
+		System.out.println(currentPrice);
 		return quote;
 	}
 

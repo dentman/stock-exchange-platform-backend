@@ -28,7 +28,7 @@ public class ExternalApiService {
 
         RestTemplate template = new RestTemplate();
         ResponseEntity<ChartDataPoint[]> chartResponseEntity = template.exchange(
-                String.format("https://cloud.iexapis.com/stable/stock/%s/chart/5d?token=%s", symbol, apiFruzsi),
+                String.format("https://cloud.iexapis.com/stable/stock/%s/chart/1m?token=%s", symbol, apiFruzsi),
                 HttpMethod.GET, null, ChartDataPoint[].class);
         return chartResponseEntity.getBody();
     }

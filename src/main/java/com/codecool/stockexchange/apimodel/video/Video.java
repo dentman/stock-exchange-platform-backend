@@ -22,66 +22,60 @@ public class Video {
 	private String etag;
 
 	@JsonProperty("items")
-	private List<VideItems> items;
+	private List<VideoItems> items;
 
-	public void setRegionCode(String regionCode){
+	public void setRegionCode(String regionCode) {
 		this.regionCode = regionCode;
 	}
 
-	public String getRegionCode(){
+	public String getRegionCode() {
 		return regionCode;
 	}
 
-	public void setKind(String kind){
+	public void setKind(String kind) {
 		this.kind = kind;
 	}
 
-	public String getKind(){
+	public String getKind() {
 		return kind;
 	}
 
-	public void setNextPageToken(String nextPageToken){
+	public void setNextPageToken(String nextPageToken) {
 		this.nextPageToken = nextPageToken;
 	}
 
-	public String getNextPageToken(){
+	public String getNextPageToken() {
 		return nextPageToken;
 	}
 
-	public void setPageInfo(PageInfo pageInfo){
+	public void setPageInfo(PageInfo pageInfo) {
 		this.pageInfo = pageInfo;
 	}
 
-	public PageInfo getPageInfo(){
+	public PageInfo getPageInfo() {
 		return pageInfo;
 	}
 
-	public void setEtag(String etag){
+	public void setEtag(String etag) {
 		this.etag = etag;
 	}
 
-	public String getEtag(){
+	public String getEtag() {
 		return etag;
 	}
 
-	public void setItems(List<VideItems> items){
+	public void setItems(List<VideoItems> items) {
 		this.items = items;
 	}
 
-	public List<VideItems> getItems(){
+	public List<VideoItems> getItems() {
 		return items;
 	}
 
 	@Override
- 	public String toString(){
-		return 
-			"Videos{" + 
-			"regionCode = '" + regionCode + '\'' + 
-			",kind = '" + kind + '\'' + 
-			",nextPageToken = '" + nextPageToken + '\'' + 
-			",pageInfo = '" + pageInfo + '\'' + 
-			",etag = '" + etag + '\'' + 
-			",items = '" + items + '\'' + 
-			"}";
-		}
+	public String toString() {
+		return "Videos{" + "regionCode = '" + regionCode + '\'' + ",kind = '" + kind + '\'' + ",nextPageToken = '"
+				+ nextPageToken + '\'' + ",pageInfo = '" + pageInfo + '\'' + ",etag = '" + etag + '\'' + ",items = '"
+				+ items + '\'' + "}";
+	}
 }
