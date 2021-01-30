@@ -49,6 +49,9 @@ public class StockInfo {
     @OneToMany(mappedBy = "stockInfo", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private List<StockPrice> stockPrices = new ArrayList<>();
 
+    @OneToMany(mappedBy = "stockInfo", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    private List<NewsItem> newsList = new ArrayList<>();
+
     public StockInfo(Quote quote) {
         this.symbol = quote.getSymbol();
         this.companyName = quote.getCompanyName();
@@ -79,4 +82,5 @@ public class StockInfo {
 
     }
 
+    public void addNewsItem(NewsItem item) { newsList.add(item); }
 }
