@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
+import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.codecool.stockexchange.entity.Account;
 import com.codecool.stockexchange.entity.StockInfo;
 import com.codecool.stockexchange.entity.StockPrice;
@@ -47,6 +48,9 @@ public class StockexchangeApplication {
     @Profile("production")
     public CommandLineRunner init() {
         return args -> {
+//            System.out.println("start to fetch data");
+//            getApiStockInfos();
+//            System.out.println("finished fetching data");
         };
     }
 
@@ -64,6 +68,12 @@ public class StockexchangeApplication {
                 stockPrice.setStockInfo(stockInfo);
                 stockInfo.addStockPrice(stockPrice);
             }
+            List<NewsItemAPI> newsItemAPIList = apiService.getNewsBySymbol(stock);
+            newsItemAPIList.forEach(n -> {
+                com.codecool.stockexchange.entity.NewsItem item = new com.codecool.stockexchange.entity.NewsItem(n);
+                item.setStockInfo(stockInfo);
+                stockInfo.addNewsItem(item);
+            });
         }
 
         stockInfoRepository.saveAll(stockInfos);
