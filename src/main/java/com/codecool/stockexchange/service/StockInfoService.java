@@ -1,7 +1,12 @@
 package com.codecool.stockexchange.service;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
@@ -38,7 +43,7 @@ public class StockInfoService {
         StockInfo stockInfo = stockInfoRepository.findFirstBySymbol(symbol);
         return stockInfo.getNewsList()
                 .stream()
-                .filter(n -> LocalDate.ofEpochDay(n.getDatetime()).isAfter(LocalDate.now().minusDays(3)))
+                .filter(n -> Instant.now().toEpochMilli() - n.getDatetime() < 3 * 86400000)
                 .map(NewsItemAPI::createNewsItem).toArray(NewsItemAPI[]::new);
 
     }
