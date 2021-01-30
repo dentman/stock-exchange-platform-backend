@@ -53,6 +53,14 @@ public class StockInfo {
     private List<NewsItem> newsList = new ArrayList<>();
 
     public StockInfo(Quote quote) {
+        setAllQuoteInfo(quote);
+    }
+
+    public void updateByQuote(Quote quote){
+        setAllQuoteInfo(quote);
+    }
+
+    private void setAllQuoteInfo(Quote quote) {
         this.symbol = quote.getSymbol();
         this.companyName = quote.getCompanyName();
         this.marketCap = quote.getMarketCap();
