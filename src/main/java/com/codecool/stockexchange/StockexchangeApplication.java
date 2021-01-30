@@ -15,6 +15,7 @@ import com.codecool.stockexchange.repository.StockInfoRepository;
 import com.codecool.stockexchange.repository.UserRepository;
 import com.codecool.stockexchange.service.ExternalApiService;
 
+import com.codecool.stockexchange.service.StockInfoDbUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -26,16 +27,10 @@ import org.springframework.context.annotation.Profile;
 public class StockexchangeApplication {
 
     @Autowired
-    AccountRepository accountRepository;
-
-    @Autowired
     UserRepository userRepository;
 
     @Autowired
-    StockInfoRepository stockInfoRepository;
-
-    @Autowired
-    ExternalApiService apiService;
+    StockInfoDbUpdateService updateService;
 
     @Autowired
     Symbol symbol;
@@ -48,36 +43,20 @@ public class StockexchangeApplication {
     @Profile("production")
     public CommandLineRunner init() {
         return args -> {
-//            System.out.println("start to fetch data");
-//            getApiStockInfos();
-//            System.out.println("finished fetching data");
+            updateApiStockInfos();
         };
     }
 
-    public void getApiStockInfos() {
+    /***
+     * This method will only fetch data if db is not up to date for given symbol
+     */
+    public void updateApiStockInfos(){
         Set<String> stocks = symbol.getStocklist().keySet();
-
-        List<StockInfo> stockInfos = new ArrayList<>();
-
-        for (String stock : stocks) {
-            StockInfo stockInfo = new StockInfo(apiService.getQuoteBySymbol(stock));
-            stockInfos.add(stockInfo);
-            ChartDataPoint[] stockPrices = apiService.getChartDataBySymbol(stock);
-            for (ChartDataPoint chartDataPoint : stockPrices) {
-                StockPrice stockPrice = new StockPrice(chartDataPoint);
-                stockPrice.setStockInfo(stockInfo);
-                stockInfo.addStockPrice(stockPrice);
-            }
-            List<NewsItemAPI> newsItemAPIList = apiService.getNewsBySymbol(stock);
-            newsItemAPIList.forEach(n -> {
-                com.codecool.stockexchange.entity.NewsItem item = new com.codecool.stockexchange.entity.NewsItem(n);
-                item.setStockInfo(stockInfo);
-                stockInfo.addNewsItem(item);
-            });
+        for (String stock : stocks){
+            updateService.saveOrUpdate(stock);
         }
-
-        stockInfoRepository.saveAll(stockInfos);
     }
+
 
     public void createSampleUser() {
         Account account1 = Account.builder().balance(10000.0).currency("USD").build();
