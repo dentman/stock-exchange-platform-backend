@@ -187,8 +187,6 @@ public class Quote {
 		quote.setLatestPrice(currentPrice);
 		quote.setChange(currentPrice - previousPrice);
 		quote.setChangePercent(currentPrice / previousPrice - 1);
-		System.out.println(previousPrice);
-		System.out.println(currentPrice);
 		return quote;
 	}
 
