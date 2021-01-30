@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,16 +34,19 @@ public class ExternalApiService {
 
         RestTemplate template = new RestTemplate();
         ResponseEntity<ChartDataPoint[]> chartResponseEntity = template.exchange(
-                String.format("https://cloud.iexapis.com/stable/stock/%s/chart/1m?token=%s", symbol, apiFruzsi),
+                String.format("%s/%s/chart/1m?token=%s", baseUrl, symbol, apiFruzsi),
                 HttpMethod.GET, null, ChartDataPoint[].class);
         return chartResponseEntity.getBody();
     }
 
     public ChartDataPoint[] getChartDataBySymbolForDays(String symbol, long days) {
-        String limit = days == 1? "chartLast=1" : "";
+        String range = days > 1
+                ? String.format("%sd?", days)
+                : String.format("date/%s?chartByDay=true&", LocalDate.now().toString().replaceAll("-", ""));
+
         RestTemplate template = new RestTemplate();
         ResponseEntity<ChartDataPoint[]> chartResponseEntity = template.exchange(
-                String.format("%s/%s/chart/%sd?%s&token=%s", baseUrl, symbol, days, limit, apiFruzsi),
+                String.format("%s/%s/chart/%stoken=%s", baseUrl, symbol, range, apiFruzsi),
                 HttpMethod.GET, null, ChartDataPoint[].class);
         return chartResponseEntity.getBody();
     }
@@ -51,7 +55,7 @@ public class ExternalApiService {
 
         RestTemplate template = new RestTemplate();
         ResponseEntity<NewsItemAPI[]> newsResponseEntity = template.exchange(
-                String.format("https://cloud.iexapis.com/stable/stock/%s/news/last/5?token=%s", symbol, apiFruzsi),
+                String.format("%s/%s/news/last/5?token=%s", baseUrl, symbol, apiFruzsi),
                 HttpMethod.GET, null, NewsItemAPI[].class);
         NewsItemAPI[] newsItemAPIS = newsResponseEntity.getBody();
         return Arrays.stream(newsItemAPIS).filter(n -> n.getLang().equals("en")).collect(Collectors.toList()); // only englished saved to db
