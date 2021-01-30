@@ -18,12 +18,13 @@ import java.util.stream.Collectors;
 public class ExternalApiService {
 
     private String apiFruzsi = "pk_376df3da39174f00af08424cb3bcd321";
+    private String baseUrl = "https://cloud.iexapis.com/stable/stock";
 
     public Quote getQuoteBySymbol(String symbol) {
 
         RestTemplate template = new RestTemplate();
         ResponseEntity<Quote> quoteResponseEntity = template.exchange(
-                String.format("https://cloud.iexapis.com/stable/stock/%s/quote?token=%s", symbol, apiFruzsi),
+                String.format("%s/%s/quote?token=%s", baseUrl, symbol, apiFruzsi),
                 HttpMethod.GET, null, Quote.class);
         return quoteResponseEntity.getBody();
     }
@@ -33,6 +34,15 @@ public class ExternalApiService {
         RestTemplate template = new RestTemplate();
         ResponseEntity<ChartDataPoint[]> chartResponseEntity = template.exchange(
                 String.format("https://cloud.iexapis.com/stable/stock/%s/chart/1m?token=%s", symbol, apiFruzsi),
+                HttpMethod.GET, null, ChartDataPoint[].class);
+        return chartResponseEntity.getBody();
+    }
+
+    public ChartDataPoint[] getChartDataBySymbolForDays(String symbol, long days) {
+        String limit = days == 1? "chartLast=1" : "";
+        RestTemplate template = new RestTemplate();
+        ResponseEntity<ChartDataPoint[]> chartResponseEntity = template.exchange(
+                String.format("%s/%s/chart/%sd?%s&token=%s", baseUrl, symbol, days, limit, apiFruzsi),
                 HttpMethod.GET, null, ChartDataPoint[].class);
         return chartResponseEntity.getBody();
     }
