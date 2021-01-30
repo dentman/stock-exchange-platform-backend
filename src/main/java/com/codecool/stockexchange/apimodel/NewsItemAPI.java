@@ -1,8 +1,9 @@
 package com.codecool.stockexchange.apimodel;
 
+import com.codecool.stockexchange.entity.NewsItem;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class NewsItem{
+public class NewsItemAPI {
 
 	@JsonProperty("summary")
 	private String summary;
@@ -118,4 +119,15 @@ public class NewsItem{
 			",url = '" + url + '\'' + 
 			"}";
 		}
+
+    public static NewsItemAPI createNewsItem(NewsItem newsItem) {
+        NewsItemAPI apiItem = new NewsItemAPI();
+        apiItem.setDatetime(newsItem.getDatetime());
+        apiItem.setHeadline(newsItem.getHeadline());
+        apiItem.setImage(newsItem.getImage());
+        apiItem.setSource(newsItem.getSource());
+        apiItem.setLang(newsItem.getLang());
+        apiItem.setUrl(newsItem.getUrl());
+        return apiItem;
+    }
 }
