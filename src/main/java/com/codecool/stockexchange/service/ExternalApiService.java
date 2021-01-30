@@ -1,7 +1,7 @@
 package com.codecool.stockexchange.service;
 
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
-import com.codecool.stockexchange.apimodel.NewsItem;
+import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.codecool.stockexchange.apimodel.Quote;
 import com.codecool.stockexchange.apimodel.video.Video;
 
@@ -10,10 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ExternalApiService {
 
-    private String apiFruzsi = "pk_aa5a4316080144f4a68c7c8d27f5a360";
+    private String apiFruzsi = "pk_376df3da39174f00af08424cb3bcd321";
 
     public Quote getQuoteBySymbol(String symbol) {
 
@@ -33,13 +37,14 @@ public class ExternalApiService {
         return chartResponseEntity.getBody();
     }
 
-    public NewsItem[] getNewsBySymbol(String symbol) {
+    public List<NewsItemAPI> getNewsBySymbol(String symbol) {
 
         RestTemplate template = new RestTemplate();
-        ResponseEntity<NewsItem[]> newsResponseEntity = template.exchange(
+        ResponseEntity<NewsItemAPI[]> newsResponseEntity = template.exchange(
                 String.format("https://cloud.iexapis.com/stable/stock/%s/news/last/5?token=%s", symbol, apiFruzsi),
-                HttpMethod.GET, null, NewsItem[].class);
-        return newsResponseEntity.getBody();
+                HttpMethod.GET, null, NewsItemAPI[].class);
+        NewsItemAPI[] newsItemAPIS = newsResponseEntity.getBody();
+        return Arrays.stream(newsItemAPIS).filter(n -> n.getLang().equals("en")).collect(Collectors.toList()); // only englished saved to db
     }
 
     public Video getVideoBySymbol(String symbol) {
