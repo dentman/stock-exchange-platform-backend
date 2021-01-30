@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
+import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.codecool.stockexchange.apimodel.Quote;
+import com.codecool.stockexchange.entity.NewsItem;
 import com.codecool.stockexchange.entity.StockInfo;
 import com.codecool.stockexchange.entity.StockPrice;
 import com.codecool.stockexchange.repository.StockInfoRepository;
@@ -31,4 +33,13 @@ public class StockInfoService {
         return stockPrices.stream().map(ChartDataPoint::createChartDataPoint).toArray(ChartDataPoint[]::new);
     }
 
+
+    public NewsItemAPI[] findNewsBySymbol(String symbol) {
+        StockInfo stockInfo = stockInfoRepository.findFirstBySymbol(symbol);
+        return stockInfo.getNewsList()
+                .stream()
+                .filter(n -> LocalDate.ofEpochDay(n.getDatetime()).isAfter(LocalDate.now().minusDays(3)))
+                .map(NewsItemAPI::createNewsItem).toArray(NewsItemAPI[]::new);
+
+    }
 }
