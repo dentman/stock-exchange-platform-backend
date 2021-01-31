@@ -25,6 +25,6 @@ public class StockTransaction {
     private Long id;
 
     @OneToOne
-    private Order order;
+    private OrderItem order;
 
 }

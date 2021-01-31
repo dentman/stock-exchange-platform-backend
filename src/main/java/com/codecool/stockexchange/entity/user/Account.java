@@ -20,7 +20,8 @@ public class Account {
     @Column(name="id")
     private Long id;
 
-    @OneToOne(mappedBy = "account")
+    //(mappedBy = "account", cascade = CascadeType.PERSIST)
+    @OneToOne
     private User user;
 
     private double balance;

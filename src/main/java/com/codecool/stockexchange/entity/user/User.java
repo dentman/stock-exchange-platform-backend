@@ -2,7 +2,7 @@ package com.codecool.stockexchange.entity.user;
 
 import javax.persistence.*;
 
-import com.codecool.stockexchange.entity.trade.Order;
+import com.codecool.stockexchange.entity.trade.OrderItem;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
@@ -26,7 +26,7 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
@@ -34,7 +34,7 @@ public class User {
     List<PortfolioItem> portfolio = new ArrayList<>();
 
     @OneToMany( mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
-    List<Order> orders = new ArrayList<>();
+    List<OrderItem> orders = new ArrayList<>();
 
     String firstName;
     String lastName;

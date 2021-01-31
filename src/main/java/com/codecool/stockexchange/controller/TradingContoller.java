@@ -1,6 +1,6 @@
 package com.codecool.stockexchange.controller;
 
-import com.codecool.stockexchange.entity.trade.Order;
+import com.codecool.stockexchange.entity.trade.OrderItem;
 import com.codecool.stockexchange.entity.trade.Status;
 import com.codecool.stockexchange.service.TradingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class TradingContoller {
     TradingService tradingService;
 
     @PostMapping("/trade")
-    public Status postOrder(@RequestBody @Validated Order order){
+    public Status postOrder(@RequestBody @Validated OrderItem order){
         return tradingService.handleOrder(order);
     }
 }
