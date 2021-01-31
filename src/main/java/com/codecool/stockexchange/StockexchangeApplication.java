@@ -1,19 +1,10 @@
 package com.codecool.stockexchange;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
-import com.codecool.stockexchange.apimodel.ChartDataPoint;
-import com.codecool.stockexchange.apimodel.NewsItemAPI;
-import com.codecool.stockexchange.entity.Account;
-import com.codecool.stockexchange.entity.StockInfo;
-import com.codecool.stockexchange.entity.StockPrice;
-import com.codecool.stockexchange.entity.User;
-import com.codecool.stockexchange.repository.AccountRepository;
-import com.codecool.stockexchange.repository.StockInfoRepository;
+import com.codecool.stockexchange.entity.user.Account;
+import com.codecool.stockexchange.entity.user.User;
 import com.codecool.stockexchange.repository.UserRepository;
-import com.codecool.stockexchange.service.ExternalApiService;
 
 import com.codecool.stockexchange.service.StockInfoDbUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +34,7 @@ public class StockexchangeApplication {
     @Profile("production")
     public CommandLineRunner init() {
         return args -> {
-            updateApiStockInfos();
+            //updateApiStockInfos();
         };
     }
 

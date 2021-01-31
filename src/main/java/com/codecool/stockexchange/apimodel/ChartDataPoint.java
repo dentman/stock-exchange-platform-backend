@@ -1,6 +1,6 @@
 package com.codecool.stockexchange.apimodel;
 
-import com.codecool.stockexchange.entity.StockPrice;
+import com.codecool.stockexchange.entity.stockinfo.StockPrice;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ChartDataPoint {

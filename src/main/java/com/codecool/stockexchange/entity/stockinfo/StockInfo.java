@@ -1,10 +1,9 @@
-package com.codecool.stockexchange.entity;
+package com.codecool.stockexchange.entity.stockinfo;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

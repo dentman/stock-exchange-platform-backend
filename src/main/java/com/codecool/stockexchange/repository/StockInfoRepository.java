@@ -1,6 +1,6 @@
 package com.codecool.stockexchange.repository;
 
-import com.codecool.stockexchange.entity.StockInfo;
+import com.codecool.stockexchange.entity.stockinfo.StockInfo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

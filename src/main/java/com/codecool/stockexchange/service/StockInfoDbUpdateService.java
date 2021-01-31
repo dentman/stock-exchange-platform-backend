@@ -2,9 +2,9 @@ package com.codecool.stockexchange.service;
 
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.codecool.stockexchange.apimodel.NewsItemAPI;
-import com.codecool.stockexchange.entity.NewsItem;
-import com.codecool.stockexchange.entity.StockInfo;
-import com.codecool.stockexchange.entity.StockPrice;
+import com.codecool.stockexchange.entity.stockinfo.NewsItem;
+import com.codecool.stockexchange.entity.stockinfo.StockInfo;
+import com.codecool.stockexchange.entity.stockinfo.StockPrice;
 import com.codecool.stockexchange.repository.StockInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

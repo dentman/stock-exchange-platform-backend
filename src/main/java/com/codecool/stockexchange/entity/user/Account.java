@@ -1,4 +1,4 @@
-package com.codecool.stockexchange.entity;
+package com.codecool.stockexchange.entity.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

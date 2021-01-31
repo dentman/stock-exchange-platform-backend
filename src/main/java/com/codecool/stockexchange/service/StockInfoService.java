@@ -2,19 +2,14 @@ package com.codecool.stockexchange.service;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.codecool.stockexchange.apimodel.Quote;
-import com.codecool.stockexchange.entity.NewsItem;
-import com.codecool.stockexchange.entity.StockInfo;
-import com.codecool.stockexchange.entity.StockPrice;
+import com.codecool.stockexchange.entity.stockinfo.StockInfo;
+import com.codecool.stockexchange.entity.stockinfo.StockPrice;
 import com.codecool.stockexchange.repository.StockInfoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.codecool.stockexchange.apimodel;
 
-import com.codecool.stockexchange.entity.NewsItem;
+import com.codecool.stockexchange.entity.stockinfo.NewsItem;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class NewsItemAPI {

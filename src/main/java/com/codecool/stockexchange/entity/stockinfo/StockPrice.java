@@ -1,4 +1,4 @@
-package com.codecool.stockexchange.entity;
+package com.codecool.stockexchange.entity.stockinfo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

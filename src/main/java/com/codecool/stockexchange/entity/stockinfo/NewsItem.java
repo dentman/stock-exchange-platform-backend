@@ -1,4 +1,4 @@
-package com.codecool.stockexchange.entity;
+package com.codecool.stockexchange.entity.stockinfo;
 
 import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;

@@ -1,6 +1,6 @@
 package com.codecool.stockexchange.apimodel;
 
-import com.codecool.stockexchange.entity.StockInfo;
+import com.codecool.stockexchange.entity.stockinfo.StockInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Quote {
