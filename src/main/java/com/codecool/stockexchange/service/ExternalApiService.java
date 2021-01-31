@@ -5,6 +5,7 @@ import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.codecool.stockexchange.apimodel.Quote;
 import com.codecool.stockexchange.apimodel.video.Video;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,14 +19,15 @@ import java.util.stream.Collectors;
 @Service
 public class ExternalApiService {
 
-    private String apiFruzsi = "pk_376df3da39174f00af08424cb3bcd321";
+    @Value("${iexcloud.token}")
+    private String apiKey;
     private String baseUrl = "https://cloud.iexapis.com/stable/stock";
 
     public Quote getQuoteBySymbol(String symbol) {
 
         RestTemplate template = new RestTemplate();
         ResponseEntity<Quote> quoteResponseEntity = template.exchange(
-                String.format("%s/%s/quote?token=%s", baseUrl, symbol, apiFruzsi),
+                String.format("%s/%s/quote?token=%s", baseUrl, symbol, apiKey),
                 HttpMethod.GET, null, Quote.class);
         return quoteResponseEntity.getBody();
     }
@@ -34,7 +36,7 @@ public class ExternalApiService {
 
         RestTemplate template = new RestTemplate();
         ResponseEntity<ChartDataPoint[]> chartResponseEntity = template.exchange(
-                String.format("%s/%s/chart/1m?token=%s", baseUrl, symbol, apiFruzsi),
+                String.format("%s/%s/chart/1m?token=%s", baseUrl, symbol, apiKey),
                 HttpMethod.GET, null, ChartDataPoint[].class);
         return chartResponseEntity.getBody();
     }
@@ -46,7 +48,7 @@ public class ExternalApiService {
 
         RestTemplate template = new RestTemplate();
         ResponseEntity<ChartDataPoint[]> chartResponseEntity = template.exchange(
-                String.format("%s/%s/chart/%stoken=%s", baseUrl, symbol, range, apiFruzsi),
+                String.format("%s/%s/chart/%stoken=%s", baseUrl, symbol, range, apiKey),
                 HttpMethod.GET, null, ChartDataPoint[].class);
         return chartResponseEntity.getBody();
     }
@@ -55,7 +57,7 @@ public class ExternalApiService {
 
         RestTemplate template = new RestTemplate();
         ResponseEntity<NewsItemAPI[]> newsResponseEntity = template.exchange(
-                String.format("%s/%s/news/last/5?token=%s", baseUrl, symbol, apiFruzsi),
+                String.format("%s/%s/news/last/5?token=%s", baseUrl, symbol, apiKey),
                 HttpMethod.GET, null, NewsItemAPI[].class);
         NewsItemAPI[] newsItemAPIS = newsResponseEntity.getBody();
         return Arrays.stream(newsItemAPIS).filter(n -> n.getLang().equals("en")).collect(Collectors.toList()); // only englished saved to db

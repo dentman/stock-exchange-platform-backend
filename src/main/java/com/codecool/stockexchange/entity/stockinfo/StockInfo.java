@@ -25,11 +25,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class StockInfo {
 
@@ -84,11 +84,9 @@ public class StockInfo {
         Optional<StockPrice> currentPriceOptional = stockPrices.stream().max(Comparator.comparing(StockPrice::getDate));
 
         if (currentPriceOptional.isPresent()) {
-            Random random = new Random();
-            double change = (double) random.nextInt(20) / 100 * (random.nextInt(20) >= 10 ? -1 : +1);
-            return currentPriceOptional.get().getPrice().multiply(BigDecimal.valueOf(1 + change));
+            return BigDecimal.valueOf(333);
         } else {
-            return BigDecimal.valueOf(0);
+            return BigDecimal.valueOf(222);
         }
 
     }

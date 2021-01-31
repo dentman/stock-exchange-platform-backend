@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name = "users")
@@ -27,7 +27,6 @@ public class User {
     private Long id;
 
     @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
     @OneToMany( mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )

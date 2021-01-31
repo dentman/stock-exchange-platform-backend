@@ -11,11 +11,11 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-@Entity
 @Builder
+@Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class NewsItem {
 

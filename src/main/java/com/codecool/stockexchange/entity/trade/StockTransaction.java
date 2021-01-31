@@ -7,15 +7,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class StockTransaction {
@@ -27,4 +26,11 @@ public class StockTransaction {
     @OneToOne
     private OrderItem order;
 
+    private LocalDateTime transactionTime;
+
+    private String symbol;
+
+    private BigDecimal accountBalanceChange;
+
+    private int portfolioItemChange;
 }

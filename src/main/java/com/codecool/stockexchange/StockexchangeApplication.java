@@ -1,6 +1,8 @@
 package com.codecool.stockexchange;
 
+import java.math.BigDecimal;
 import java.util.Set;
+
 
 import com.codecool.stockexchange.entity.user.Account;
 import com.codecool.stockexchange.entity.user.User;
@@ -34,7 +36,8 @@ public class StockexchangeApplication {
     @Profile("production")
     public CommandLineRunner init() {
         return args -> {
-            //updateApiStockInfos();
+           // updateApiStockInfos();
+           // createSampleUser();
         };
     }
 
@@ -50,8 +53,9 @@ public class StockexchangeApplication {
 
 
     public void createSampleUser() {
-        Account account1 = Account.builder().balance(10000.0).currency("USD").build();
+        Account account1 = Account.builder().balance(BigDecimal.valueOf(10000)).currency("USD").build();
         User user1 = User.builder().firstName("vm").lastName("ember").account(account1).build();
+        account1.setUser(user1);
         userRepository.save(user1);
     }
 

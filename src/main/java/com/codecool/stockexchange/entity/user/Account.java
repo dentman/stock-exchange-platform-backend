@@ -6,10 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Entity
 @Builder
 @Table(name="account")
@@ -24,7 +26,7 @@ public class Account {
     @OneToOne
     private User user;
 
-    private double balance;
+    private BigDecimal balance;
     private String currency;
 
 
