@@ -1,7 +1,10 @@
 package com.codecool.stockexchange.entity;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -70,6 +73,7 @@ public class StockInfo {
         this.avgTotalVolume = quote.getAvgTotalVolume();
         this.peRatio = quote.getPeRatio();
         this.ytdChange = quote.getYtdChange();
+        this.lastTradeTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(quote.getLastTradeTime()), ZoneId.systemDefault());
     }
 
     public void addStockPrice(StockPrice stockPrice) {
