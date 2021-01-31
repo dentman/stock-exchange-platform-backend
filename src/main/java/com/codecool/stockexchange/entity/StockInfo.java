@@ -73,7 +73,7 @@ public class StockInfo {
         this.avgTotalVolume = quote.getAvgTotalVolume();
         this.peRatio = quote.getPeRatio();
         this.ytdChange = quote.getYtdChange();
-        this.lastTradeTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(quote.getLastTradeTime()), ZoneId.systemDefault());
+        this.lastTradeTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(quote.getLastTradeTime()/1000), ZoneId.systemDefault());
     }
 
     public void addStockPrice(StockPrice stockPrice) {
