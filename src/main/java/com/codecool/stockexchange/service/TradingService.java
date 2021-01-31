@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,58 +33,92 @@ public class TradingService {
 
     @Transactional
     public Status handleOrder(OrderItem order) {
-        // validate: whatever it means
-        // check if status is pending
-        // check price of symbol vs limitPrice-> succ/fail
-        // BUY: check user account balance vs amount*price -> succ/fail
-        // SELL: check user stock balance vs amount -> succ/fail
+        // TODO: validate: whatever it means
+        // TODO: check if status is pending
+        // TODO: handle more exceptions
 
-        BigDecimal stockPrice = stockInfoRepository.findFirstBySymbol("GM").getCurrentPrice();
+        BigDecimal stockPrice = stockInfoRepository.findFirstBySymbol(order.getSymbol()).getCurrentPrice();
         User user = userRepository.findAll().get(0);
         user.getOrders().add(order);
         order.setUser(user);
 
         switch (order.getDirection()) {
             case BUY:
-                if (checkAvailableFunds()) {
-                    handleTransaction(order, user);
+                if (order.getLimitPrice().compareTo(stockPrice) >= 0) {
+                    if (checkAvailableFunds()) {
+                        handleTransaction(order, user, stockPrice);
+                    } else {
+                        order.setStatus(Status.INSUFFICIENT_FUND);
+                    }
+                }
+                else {
+                    order.setStatus(Status.LIMIT_PRICE_MISMATCH);
                 }
                 break;
             case SELL:
-                if (checkAvailableStocks()) {
-                    handleTransaction(order, user);
+                if (order.getLimitPrice().compareTo(stockPrice) <= 0) {
+                    if (checkAvailableStocks()) {
+                        handleTransaction(order, user, stockPrice);
+                    } else {
+                        order.setStatus(Status.INSUFFICIENT_STOCK);
+                    }
+                }
+                else {
+                    order.setStatus(Status.LIMIT_PRICE_MISMATCH);
                 }
                 break;
             default:
                 throw new IllegalArgumentException();
         }
-        return Status.CHECK_COMPLETE;
+        return order.getStatus();
     }
 
-    private Status handleTransaction(OrderItem order, User user) {
-        StockTransaction stockTransaction = new StockTransaction();
-        stockTransaction.setOrder(order);
-        order.setStockTransaction(stockTransaction);
-
-        Account account = user.getAccount();
-        account.setBalance(account.getBalance().subtract(BigDecimal.valueOf(100)));
-        PortfolioItem portfolioItemToChange;
-
-        List<PortfolioItem> portfolioItems = user.getPortfolio();
-        Optional<PortfolioItem> portfolioItemOptional = portfolioItems.stream().filter(item -> item.getSymbol().equals(order.getSymbol())).findFirst();
-        if (portfolioItemOptional.isPresent()) {
-            portfolioItemToChange = portfolioItemOptional.get();
-            portfolioItemToChange.setAmount(portfolioItemToChange.getAmount() + 8);
+    private Status handleTransaction(OrderItem order, User user, BigDecimal stockPrice) {
+        StockTransaction transaction = new StockTransaction();
+        transaction.setOrder(order);
+        order.setStockTransaction(transaction);
+        transaction.setSymbol(order.getSymbol());
+        transaction.setTransactionTime(LocalDateTime.now());
+        transaction.setTradeStockPrice(stockPrice);
+        switch (order.getDirection()) {
+            case BUY:
+                transaction.setAccountBalanceChange(stockPrice.multiply(BigDecimal.valueOf(-1 * order.getCount())));
+                transaction.setPortfolioItemChange(order.getCount());
+                break;
+            case SELL:
+                transaction.setAccountBalanceChange(stockPrice.multiply(BigDecimal.valueOf(order.getCount())));
+                transaction.setPortfolioItemChange(-1 * order.getCount());
+                break;
         }
-        else {
-            portfolioItemToChange = new PortfolioItem();
-            portfolioItemToChange.setSymbol(order.getSymbol());
-            portfolioItemToChange.setAmount(order.getCount());
-            portfolioItemToChange.setUser(user);
-            user.getPortfolio().add(portfolioItemToChange);
-        }
+        changePortfolio(user, transaction);
+        transferOrderFunding(user, transaction);
         order.setStatus(Status.COMPLETED);
         return order.getStatus();
+    }
+
+    private void changePortfolio(User user, StockTransaction transaction) {
+        PortfolioItem tradedPotfolioItem;
+        Optional<PortfolioItem> portfolioItemOptional = user.getPortfolio()
+                .stream()
+                .filter(item -> item.getSymbol().equals(transaction.getSymbol()))
+                .findFirst();
+
+        if (portfolioItemOptional.isPresent()) {
+            tradedPotfolioItem = portfolioItemOptional.get();
+            tradedPotfolioItem.setAmount(tradedPotfolioItem.getAmount() + transaction.getPortfolioItemChange());
+        }
+        else {
+            tradedPotfolioItem = new PortfolioItem();
+            tradedPotfolioItem.setSymbol(transaction.getSymbol());
+            tradedPotfolioItem.setAmount(transaction.getPortfolioItemChange());
+            tradedPotfolioItem.setUser(user);
+            user.getPortfolio().add(tradedPotfolioItem);
+        }
+    }
+
+    private void transferOrderFunding(User user, StockTransaction transaction) {
+        Account account = user.getAccount();
+        account.setBalance(account.getBalance().add(transaction.getAccountBalanceChange()));
     }
 
     private boolean checkAvailableFunds() {

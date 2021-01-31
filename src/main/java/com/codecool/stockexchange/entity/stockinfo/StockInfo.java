@@ -84,9 +84,9 @@ public class StockInfo {
         Optional<StockPrice> currentPriceOptional = stockPrices.stream().max(Comparator.comparing(StockPrice::getDate));
 
         if (currentPriceOptional.isPresent()) {
-            return BigDecimal.valueOf(333);
+            return currentPriceOptional.get().getPrice();
         } else {
-            return BigDecimal.valueOf(222);
+            return BigDecimal.valueOf(0);
         }
 
     }

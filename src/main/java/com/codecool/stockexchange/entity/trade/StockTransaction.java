@@ -30,6 +30,8 @@ public class StockTransaction {
 
     private String symbol;
 
+    private BigDecimal tradeStockPrice;
+
     private BigDecimal accountBalanceChange;
 
     private int portfolioItemChange;
