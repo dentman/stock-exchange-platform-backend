@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -25,7 +26,8 @@ public class NewsItem {
     private String image;
     private String url;
     private String headline;
-    @Column(length = 1000)
+    //@Column( columnDefinition = "TEXT")
+    @Type( type = "text")
     private String summary;
     private String source;
     private long datetime;
@@ -38,7 +40,7 @@ public class NewsItem {
         this.image = news.getImage();
         this.url = news.getUrl();
         this.headline = news.getHeadline();
-//        this.summary = news.getSummary();
+        this.summary = news.getSummary();
         this.source = news.getSource();
         this.datetime = news.getDatetime();
         this.lang = news.getLang();
