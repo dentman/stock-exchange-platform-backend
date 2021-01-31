@@ -26,7 +26,7 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 

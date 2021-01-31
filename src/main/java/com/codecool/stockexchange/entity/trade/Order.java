@@ -29,12 +29,14 @@ public class Order {
 
     private String symbol;
     private BigDecimal limitPrice;
+    @Enumerated( EnumType.STRING )
     private Direction direction;
-    private int count;
+    @Enumerated( EnumType.STRING )
     private Status status;
+    private int count;
     private LocalDateTime date;
 
-    @OneToOne( mappedBy = "order")
-    private StockTransaction transaction;
+    @OneToOne( mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private StockTransaction stockTransaction;
 
 }
