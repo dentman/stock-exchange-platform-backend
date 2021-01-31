@@ -24,15 +24,15 @@ public class StockTransaction {
     private Long id;
 
     @OneToOne
-    private OrderItem order;
+    private Order order;
 
     private LocalDateTime transactionTime;
 
     private String symbol;
 
-    private BigDecimal tradeStockPrice;
+    private BigDecimal stockPrice;
+
+    private int stockChange;
 
     private BigDecimal accountBalanceChange;
-
-    private int portfolioItemChange;
 }

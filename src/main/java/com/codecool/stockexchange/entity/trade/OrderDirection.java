@@ -1,5 +1,5 @@
 package com.codecool.stockexchange.entity.trade;
 
-public enum Direction {
+public enum OrderDirection {
     BUY, SELL
 }

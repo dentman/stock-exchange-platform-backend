@@ -1,7 +1,7 @@
 package com.codecool.stockexchange.service;
 
-import com.codecool.stockexchange.entity.trade.OrderItem;
-import com.codecool.stockexchange.entity.trade.Status;
+import com.codecool.stockexchange.entity.trade.Order;
+import com.codecool.stockexchange.entity.trade.OrderStatus;
 import com.codecool.stockexchange.entity.trade.StockTransaction;
 import com.codecool.stockexchange.entity.user.Account;
 import com.codecool.stockexchange.entity.user.PortfolioItem;
@@ -15,9 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TradingService {
@@ -32,7 +30,7 @@ public class TradingService {
     StockInfoRepository stockInfoRepository;
 
     @Transactional
-    public Status handleOrder(OrderItem order) {
+    public OrderStatus handleOrder(Order order) {
         // TODO: validate: whatever it means
         // TODO: check if status is pending
         // TODO: handle more exceptions
@@ -46,25 +44,25 @@ public class TradingService {
             case BUY:
                 if (order.getLimitPrice().compareTo(stockPrice) >= 0) {
                     if (checkAvailableFunds()) {
-                        handleTransaction(order, user, stockPrice);
+                        createTransaction(order, user, stockPrice);
                     } else {
-                        order.setStatus(Status.INSUFFICIENT_FUND);
+                        order.setStatus(OrderStatus.INSUFFICIENT_FUND);
                     }
                 }
                 else {
-                    order.setStatus(Status.LIMIT_PRICE_MISMATCH);
+                    order.setStatus(OrderStatus.LIMIT_PRICE_MISMATCH);
                 }
                 break;
             case SELL:
                 if (order.getLimitPrice().compareTo(stockPrice) <= 0) {
                     if (checkAvailableStocks()) {
-                        handleTransaction(order, user, stockPrice);
+                        createTransaction(order, user, stockPrice);
                     } else {
-                        order.setStatus(Status.INSUFFICIENT_STOCK);
+                        order.setStatus(OrderStatus.INSUFFICIENT_STOCK);
                     }
                 }
                 else {
-                    order.setStatus(Status.LIMIT_PRICE_MISMATCH);
+                    order.setStatus(OrderStatus.LIMIT_PRICE_MISMATCH);
                 }
                 break;
             default:
@@ -73,46 +71,45 @@ public class TradingService {
         return order.getStatus();
     }
 
-    private Status handleTransaction(OrderItem order, User user, BigDecimal stockPrice) {
+    private void createTransaction(Order order, User user, BigDecimal stockPrice) {
         StockTransaction transaction = new StockTransaction();
         transaction.setOrder(order);
         order.setStockTransaction(transaction);
         transaction.setSymbol(order.getSymbol());
         transaction.setTransactionTime(LocalDateTime.now());
-        transaction.setTradeStockPrice(stockPrice);
+        transaction.setStockPrice(stockPrice);
         switch (order.getDirection()) {
             case BUY:
                 transaction.setAccountBalanceChange(stockPrice.multiply(BigDecimal.valueOf(-1 * order.getCount())));
-                transaction.setPortfolioItemChange(order.getCount());
+                transaction.setStockChange(order.getCount());
                 break;
             case SELL:
                 transaction.setAccountBalanceChange(stockPrice.multiply(BigDecimal.valueOf(order.getCount())));
-                transaction.setPortfolioItemChange(-1 * order.getCount());
+                transaction.setStockChange(-1 * order.getCount());
                 break;
         }
         changePortfolio(user, transaction);
         transferOrderFunding(user, transaction);
-        order.setStatus(Status.COMPLETED);
-        return order.getStatus();
+        order.setStatus(OrderStatus.COMPLETED);
     }
 
     private void changePortfolio(User user, StockTransaction transaction) {
-        PortfolioItem tradedPotfolioItem;
+        PortfolioItem tradedPortfolioItem;
         Optional<PortfolioItem> portfolioItemOptional = user.getPortfolio()
                 .stream()
                 .filter(item -> item.getSymbol().equals(transaction.getSymbol()))
                 .findFirst();
 
         if (portfolioItemOptional.isPresent()) {
-            tradedPotfolioItem = portfolioItemOptional.get();
-            tradedPotfolioItem.setAmount(tradedPotfolioItem.getAmount() + transaction.getPortfolioItemChange());
+            tradedPortfolioItem = portfolioItemOptional.get();
+            tradedPortfolioItem.setAmount(tradedPortfolioItem.getAmount() + transaction.getStockChange());
         }
         else {
-            tradedPotfolioItem = new PortfolioItem();
-            tradedPotfolioItem.setSymbol(transaction.getSymbol());
-            tradedPotfolioItem.setAmount(transaction.getPortfolioItemChange());
-            tradedPotfolioItem.setUser(user);
-            user.getPortfolio().add(tradedPotfolioItem);
+            tradedPortfolioItem = new PortfolioItem();
+            tradedPortfolioItem.setSymbol(transaction.getSymbol());
+            tradedPortfolioItem.setAmount(transaction.getStockChange());
+            tradedPortfolioItem.setUser(user);
+            user.getPortfolio().add(tradedPortfolioItem);
         }
     }
 

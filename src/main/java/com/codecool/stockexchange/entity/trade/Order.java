@@ -18,7 +18,8 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class OrderItem {
+@Table(name = "order_item")
+public class Order {
 
     @Id
     @GeneratedValue
@@ -30,9 +31,9 @@ public class OrderItem {
     private String symbol;
     private BigDecimal limitPrice;
     @Enumerated( EnumType.STRING )
-    private Direction direction;
+    private OrderDirection direction;
     @Enumerated( EnumType.STRING )
-    private Status status;
+    private OrderStatus status;
     private int count;
     private LocalDateTime date;
 
