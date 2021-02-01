@@ -43,7 +43,7 @@ public class TradingService {
         switch (order.getDirection()) {
             case BUY:
                 if (order.getLimitPrice().compareTo(stockPrice) >= 0) {
-                    if (checkAvailableFunds()) {
+                    if (checkAvailableFunds(order, user, stockPrice)) {
                         createTransaction(order, user, stockPrice);
                     } else {
                         order.setStatus(OrderStatus.INSUFFICIENT_FUND);
@@ -55,7 +55,7 @@ public class TradingService {
                 break;
             case SELL:
                 if (order.getLimitPrice().compareTo(stockPrice) <= 0) {
-                    if (checkAvailableStocks()) {
+                    if (checkAvailableStocks(order, user)) {
                         createTransaction(order, user, stockPrice);
                     } else {
                         order.setStatus(OrderStatus.INSUFFICIENT_STOCK);
@@ -94,22 +94,19 @@ public class TradingService {
     }
 
     private void changePortfolio(User user, StockTransaction transaction) {
-        PortfolioItem tradedPortfolioItem;
-        Optional<PortfolioItem> portfolioItemOptional = user.getPortfolio()
-                .stream()
-                .filter(item -> item.getSymbol().equals(transaction.getSymbol()))
-                .findFirst();
+        PortfolioItem tradedStock;
+        Optional<PortfolioItem> portfolioItemOptional = getPortfolioItem(user, transaction.getSymbol());
 
         if (portfolioItemOptional.isPresent()) {
-            tradedPortfolioItem = portfolioItemOptional.get();
-            tradedPortfolioItem.setAmount(tradedPortfolioItem.getAmount() + transaction.getStockChange());
+            tradedStock = portfolioItemOptional.get();
+            tradedStock.setAmount(tradedStock.getAmount() + transaction.getStockChange());
         }
         else {
-            tradedPortfolioItem = new PortfolioItem();
-            tradedPortfolioItem.setSymbol(transaction.getSymbol());
-            tradedPortfolioItem.setAmount(transaction.getStockChange());
-            tradedPortfolioItem.setUser(user);
-            user.getPortfolio().add(tradedPortfolioItem);
+            tradedStock = new PortfolioItem();
+            tradedStock.setSymbol(transaction.getSymbol());
+            tradedStock.setAmount(transaction.getStockChange());
+            tradedStock.setUser(user);
+            user.getPortfolio().add(tradedStock);
         }
     }
 
@@ -118,11 +115,25 @@ public class TradingService {
         account.setBalance(account.getBalance().add(transaction.getAccountBalanceChange()));
     }
 
-    private boolean checkAvailableFunds() {
-        return true;
+    private boolean checkAvailableFunds(Order order, User user, BigDecimal stockPrice) {
+        BigDecimal requiredBalance = stockPrice.multiply(BigDecimal.valueOf(order.getCount()));
+        return user.getAccount().getBalance().compareTo(requiredBalance) >= 0;
     }
 
-    private boolean checkAvailableStocks() {
-        return true;
+    private boolean checkAvailableStocks(Order order, User user) {
+        Optional<PortfolioItem> portfolioItemOptional = getPortfolioItem(user, order.getSymbol());
+        if (portfolioItemOptional.isPresent()) {
+            return order.getCount() <= portfolioItemOptional.get().getAmount();
+        }
+        else {
+            return false;
+        }
+    }
+
+    private Optional<PortfolioItem> getPortfolioItem(User user, String symbol) {
+        return user.getPortfolio()
+                .stream()
+                .filter(item -> item.getSymbol().equals(symbol))
+                .findFirst();
     }
 }
