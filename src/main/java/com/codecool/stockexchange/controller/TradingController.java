@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @CrossOrigin
 public class TradingController {
@@ -19,6 +21,7 @@ public class TradingController {
 
     @PostMapping("/trade")
     public OrderStatus postOrder(@RequestBody @Validated Order order){
+        order.setDate(LocalDateTime.now());
         return tradingService.handleOrder(order);
     }
 }
