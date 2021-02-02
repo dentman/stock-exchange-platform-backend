@@ -1,6 +1,5 @@
 package com.codecool.stockexchange.controller;
 
-import com.codecool.stockexchange.Stock;
 import com.codecool.stockexchange.Symbol;
 import com.codecool.stockexchange.entity.orderexception.InvalidSymbolFormatException;
 import com.codecool.stockexchange.entity.orderexception.InvalidUserException;

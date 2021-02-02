@@ -2,13 +2,13 @@ package com.codecool.stockexchange.entity.stockinfo;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -81,7 +81,7 @@ public class StockInfo {
 
     // TODO: extended handling of random generation
     public BigDecimal getCurrentPrice() {
-        Optional<StockPrice> currentPriceOptional = stockPrices.stream().max(Comparator.comparing(StockPrice::getDate));
+        Optional<StockPrice> currentPriceOptional = getLastPrice();
 
         if (currentPriceOptional.isPresent()) {
             return currentPriceOptional.get().getPrice();
@@ -89,6 +89,29 @@ public class StockInfo {
             return BigDecimal.valueOf(0);
         }
 
+    }
+
+    public Optional<StockPrice> getLastPrice() {
+        return stockPrices.stream().max(Comparator.comparing(StockPrice::getDate));
+    }
+
+    public void setSimulatedStockPrice() {
+        Optional<StockPrice> lastPriceOptional = getLastPrice();
+        LocalDate currentDate = LocalDate.now();
+        if (lastPriceOptional.isPresent()) {
+            StockPrice lastPrice = lastPriceOptional.get();
+            if (lastPrice.getDate().isEqual(LocalDate.of(currentDate.getYear(), currentDate.getMonth(), currentDate.getDayOfMonth()))) {
+                lastPrice.setPrice(lastPrice.getPrice().add(BigDecimal.valueOf(1)));
+            }
+            else {
+                StockPrice newPrice = new StockPrice();
+                newPrice.setSymbol(lastPrice.getSymbol());
+                newPrice.setStockInfo(this);
+                newPrice.setDate(LocalDate.of(currentDate.getYear(), currentDate.getMonth(), currentDate.getDayOfMonth()));
+                newPrice.setPrice(lastPrice.getPrice().add(BigDecimal.valueOf(2)));
+                addStockPrice(newPrice);
+            }
+        }
     }
 
     public void addNewsItem(NewsItem item) { newsList.add(item); }
