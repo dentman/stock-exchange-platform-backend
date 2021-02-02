@@ -1,7 +1,9 @@
 package com.codecool.stockexchange.service;
 
 import com.codecool.stockexchange.entity.trade.StockTransaction;
+import com.codecool.stockexchange.entity.user.PortfolioItem;
 import com.codecool.stockexchange.entity.user.User;
+import com.codecool.stockexchange.repository.PortfolioItemRepository;
 import com.codecool.stockexchange.repository.TransactionRepository;
 import com.codecool.stockexchange.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,14 @@ public class PortfolioService {
     TransactionRepository transactionRepository;
 
     @Autowired
+    PortfolioItemRepository portfolioItemRepository;
+
+    @Autowired
     UserRepository userRepository;
+
+    public List<PortfolioItem> getPortfolioItemsForUser(Long id){
+        return portfolioItemRepository.findPortfolioItemsByUser_Id(id);
+    }
 
     public List<StockTransaction> getTransactionsForUser(Long id){
         Optional<User> userOptional = userRepository.findById(id);
