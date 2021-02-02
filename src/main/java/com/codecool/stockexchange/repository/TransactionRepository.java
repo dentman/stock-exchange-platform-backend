@@ -13,4 +13,7 @@ public interface TransactionRepository extends JpaRepository<StockTransaction, L
 
     @Query("SELECT t FROM StockTransaction t WHERE t.order IN (SELECT oi.id FROM Order oi WHERE oi.user = :user AND oi.status = 'COMPLETED')")
     List<StockTransaction> getTransactionsForUser(@Param("user") User user);
+
+    @Query("SELECT t FROM StockTransaction t WHERE t.symbol = :symbol AND t.order IN (SELECT oi.id FROM Order oi WHERE oi.user = :user AND oi.status = 'COMPLETED')")
+    List<StockTransaction> getTransactionsForUserForSymbol(@Param("user") User user, @Param("symbol") String symbol);
 }
