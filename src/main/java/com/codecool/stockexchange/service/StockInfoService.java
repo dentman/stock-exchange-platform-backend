@@ -23,7 +23,7 @@ public class StockInfoService {
 
     public Quote findFirstBySymbol(String symbol) {
         StockInfo stockInfo = stockInfoRepository.findFirstBySymbol(symbol);
-        return Quote.createQuoute(stockInfo);
+        return Quote.createQuote(stockInfo);
     }
 
     public ChartDataPoint[] getChartDataPoints(String symbol) {
