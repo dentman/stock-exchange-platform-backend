@@ -31,9 +31,8 @@ public class TradingService {
         // TODO: handle more exceptions
 
         BigDecimal stockPrice = stockInfoRepository.findFirstBySymbol(order.getSymbol()).getCurrentPrice();
-        User user = userRepository.findAll().get(0);
+        User user = order.getUser();
         user.getOrders().add(order);
-        order.setUser(user);
 
         switch (order.getDirection()) {
             case BUY:
