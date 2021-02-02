@@ -1,5 +1,7 @@
 package com.codecool.stockexchange.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +17,7 @@ import java.math.BigDecimal;
 @Entity
 @Builder
 @Table(name="account")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Account {
 
     @Id
@@ -22,7 +25,6 @@ public class Account {
     @Column(name="id")
     private Long id;
 
-    //(mappedBy = "account", cascade = CascadeType.PERSIST)
     @OneToOne
     private User user;
 

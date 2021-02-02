@@ -1,6 +1,7 @@
 package com.codecool.stockexchange.entity.trade;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +25,7 @@ public class StockTransaction {
     private Long id;
 
     @OneToOne
+    @JsonIgnore
     private Order order;
 
     private LocalDateTime transactionTime;

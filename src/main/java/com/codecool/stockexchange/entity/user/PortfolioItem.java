@@ -2,6 +2,7 @@ package com.codecool.stockexchange.entity.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,7 @@ public class PortfolioItem {
     private Long id;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
 
     private String symbol;
