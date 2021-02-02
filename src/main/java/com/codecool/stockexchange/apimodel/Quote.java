@@ -170,7 +170,7 @@ public class Quote {
 	@JsonProperty("iexBidSize")
 	private Object iexBidSize;
 
-	public static Quote createQuoute(StockInfo stockInfo) {
+	public static Quote createQuote(StockInfo stockInfo) {
 		Quote quote = new Quote();
 		quote.setSymbol(stockInfo.getSymbol());
 		quote.setCompanyName(stockInfo.getCompanyName());
