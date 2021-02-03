@@ -46,6 +46,7 @@ public class StockInfo {
     private double peRatio;
     private double ytdChange;
     private LocalDateTime lastTradeTime;
+    private BigDecimal latestPrice;
 
     @OneToMany(mappedBy = "stockInfo", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private List<StockPrice> stockPrices = new ArrayList<>();
@@ -75,6 +76,7 @@ public class StockInfo {
         this.peRatio = quote.getPeRatio();
         this.ytdChange = quote.getYtdChange();
         this.lastTradeTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(quote.getLastTradeTime()/1000), ZoneId.systemDefault());
+        this.latestPrice = BigDecimal.valueOf(quote.getLatestPrice());
     }
 
     public void addStockPrice(StockPrice stockPrice) {
