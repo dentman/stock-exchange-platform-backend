@@ -1,14 +1,14 @@
-package com.codecool.stockexchange.service;
+package com.codecool.stockexchange.service.update;
 
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.codecool.stockexchange.apimodel.NewsItemAPI;
-import com.codecool.stockexchange.apimodel.video.Video;
 import com.codecool.stockexchange.apimodel.video.VideoItems;
 import com.codecool.stockexchange.entity.stockinfo.NewsItem;
 import com.codecool.stockexchange.entity.stockinfo.StockInfo;
 import com.codecool.stockexchange.entity.stockinfo.StockPrice;
 import com.codecool.stockexchange.entity.stockinfo.VideoLink;
 import com.codecool.stockexchange.repository.StockInfoRepository;
+import com.codecool.stockexchange.service.external.ExternalApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +21,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class StockInfoDbUpdateService {
+public class StockInfoUpdateService {
 
     @Autowired
     StockInfoRepository stockInfoRepository;

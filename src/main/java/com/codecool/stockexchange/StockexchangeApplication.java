@@ -8,7 +8,7 @@ import com.codecool.stockexchange.entity.user.Account;
 import com.codecool.stockexchange.entity.user.User;
 import com.codecool.stockexchange.repository.UserRepository;
 
-import com.codecool.stockexchange.service.StockInfoDbUpdateService;
+import com.codecool.stockexchange.service.update.StockInfoUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,7 +25,7 @@ public class StockexchangeApplication {
     UserRepository userRepository;
 
     @Autowired
-    StockInfoDbUpdateService updateService;
+    StockInfoUpdateService updateService;
 
     @Autowired
     Symbol symbol;

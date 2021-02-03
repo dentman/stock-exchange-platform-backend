@@ -1,4 +1,4 @@
-package com.codecool.stockexchange.service;
+package com.codecool.stockexchange.service.update;
 
 import com.codecool.stockexchange.entity.stockinfo.StockInfo;
 import com.codecool.stockexchange.repository.StockInfoRepository;

@@ -1,4 +1,4 @@
-package com.codecool.stockexchange.service;
+package com.codecool.stockexchange.service.external;
 
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.codecool.stockexchange.apimodel.NewsItemAPI;
