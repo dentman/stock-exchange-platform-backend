@@ -2,9 +2,12 @@ package com.codecool.stockexchange.service;
 
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.codecool.stockexchange.apimodel.NewsItemAPI;
+import com.codecool.stockexchange.apimodel.video.Video;
+import com.codecool.stockexchange.apimodel.video.VideoItems;
 import com.codecool.stockexchange.entity.stockinfo.NewsItem;
 import com.codecool.stockexchange.entity.stockinfo.StockInfo;
 import com.codecool.stockexchange.entity.stockinfo.StockPrice;
+import com.codecool.stockexchange.entity.stockinfo.VideoLink;
 import com.codecool.stockexchange.repository.StockInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,9 +38,10 @@ public class StockInfoDbUpdateService {
     //TODO: this does not take into account trading days!
     public void saveOrUpdate(String symbol) {
         StockInfo stockInfo = stockInfoRepository.findFirstBySymbol(symbol);
-        long daysToFetch = 30;
+        long daysToFetch = 30; // !!!! 30
         if (stockInfo == null) {
             stockInfo = new StockInfo(apiService.getQuoteBySymbol(symbol));
+            setVideoLinkList(stockInfo, symbol);
         } else {
             StockPrice latest = stockInfo.getStockPrices().stream().max(Comparator.comparing(StockPrice::getDate)).orElse(null);
             daysToFetch = ChronoUnit.DAYS.between(latest.getDate(), LocalDate.now()); // 1 means latest price is yesterday (chart up-to-date)
@@ -46,9 +50,13 @@ public class StockInfoDbUpdateService {
         if (daysToFetch == 1){
             // chart data is up to date, check if quote is
             long daysPassed = ChronoUnit.DAYS.between(stockInfo.getLastTradeTime(), LocalDate.now());
-            if (daysPassed > 0) stockInfo.updateByQuote(apiService.getQuoteBySymbol(symbol));
+            if (daysPassed > 0) {
+                stockInfo.updateByQuote(apiService.getQuoteBySymbol(symbol));
+                setVideoLinkList(stockInfo, symbol);
+            }
         } else if (daysToFetch > 1){
             stockInfo.updateByQuote(apiService.getQuoteBySymbol(symbol));
+            setVideoLinkList(stockInfo, symbol);
             // fetch missing historical data points (add to previously stored data)
             ChartDataPoint[] stockPrices = apiService.getChartDataBySymbolForDays(symbol, daysToFetch - 1);
             for (ChartDataPoint chartDataPoint : stockPrices) {
@@ -69,5 +77,18 @@ public class StockInfoDbUpdateService {
         stockInfoRepository.save(stockInfo);
 
 
+    }
+
+    private void setVideoLinkList(StockInfo stockInfo, String symbol){
+        List<VideoLink> videoLinks = new ArrayList<>();
+        List<VideoItems> videoFromApi = apiService.getVideoBySymbol(symbol).getItems();
+        for (VideoItems item : videoFromApi){
+            VideoLink link = new VideoLink();
+            link.setDate(LocalDate.now());
+            link.setStockInfo(stockInfo);
+            link.setVideoId(item.getId().getVideoId());
+            videoLinks.add(link);
+        }
+        stockInfo.setVideoLinkList(videoLinks);
     }
 }
