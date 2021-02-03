@@ -5,10 +5,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -119,5 +116,13 @@ public class StockInfo {
         }
     }
 
+    public void setNextPrice() {
+        Random random = new Random();
+        int trend = getYtdChange() > 0 ? 1 : -1;
+        int direction = random.nextInt(100) < 80 ? trend : -trend;
+        double change = (double) random.nextInt(3) / 100 * direction;
+        BigDecimal nextPrice = getCurrentPrice().multiply(BigDecimal.valueOf(1 + change));
+        setSimulatedStockPrice(nextPrice);
+    }
     public void addNewsItem(NewsItem item) { newsList.add(item); }
 }
