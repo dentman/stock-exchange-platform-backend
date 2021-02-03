@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -53,6 +52,9 @@ public class StockInfo {
 
     @OneToMany(mappedBy = "stockInfo", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private List<NewsItem> newsList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "stockInfo", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<VideoLink> videoLinkList = new ArrayList<>();
 
     public StockInfo(Quote quote) {
         setAllQuoteInfo(quote);
