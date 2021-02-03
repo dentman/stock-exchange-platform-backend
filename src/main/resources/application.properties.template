@@ -7,3 +7,4 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.properties.hibernate.format_sql=true
 spring.profiles.active=production
 iexcloud.token=
+google.token=

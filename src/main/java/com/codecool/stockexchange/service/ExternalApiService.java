@@ -23,6 +23,9 @@ public class ExternalApiService {
     private String apiKey;
     private String baseUrl = "https://cloud.iexapis.com/stable/stock";
 
+    @Value("${google.token}")
+    private String googleKey;
+
     public Quote getQuoteBySymbol(String symbol) {
 
         RestTemplate template = new RestTemplate();
@@ -67,8 +70,8 @@ public class ExternalApiService {
 
         RestTemplate template = new RestTemplate();
         ResponseEntity<Video> videoResponseEntity = template.exchange(String.format(
-                "https://youtube.googleapis.com/youtube/v3/search?maxResults=25&q=%s,stock&key=AIzaSyAe01pCr4EnVpSvnImAUSqRrSZAlQxAN5I",
-                symbol), HttpMethod.GET, null, Video.class);
+                "https://youtube.googleapis.com/youtube/v3/search?maxResults=25&q=%s,stock&key=%s",
+                symbol, googleKey), HttpMethod.GET, null, Video.class);
         return videoResponseEntity.getBody();
     }
 }
