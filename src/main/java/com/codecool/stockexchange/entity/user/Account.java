@@ -1,6 +1,7 @@
 package com.codecool.stockexchange.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.codecool.stockexchange.entity.trade.Order;
 import com.codecool.stockexchange.entity.trade.StockTransaction;
@@ -28,6 +29,7 @@ public class Account {
     private Long id;
 
     @OneToOne
+    @JsonIgnore
     private User user;
 
     private BigDecimal balance;
