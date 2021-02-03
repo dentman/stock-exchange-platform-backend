@@ -1,9 +1,9 @@
 package com.codecool.stockexchange.controller;
 
 import com.codecool.stockexchange.Symbol;
-import com.codecool.stockexchange.entity.orderexception.InvalidSymbolFormatException;
-import com.codecool.stockexchange.entity.orderexception.InvalidUserException;
-import com.codecool.stockexchange.entity.orderexception.SymbolNotFoundException;
+import com.codecool.stockexchange.exception.trade.InvalidSymbolFormatException;
+import com.codecool.stockexchange.exception.user.InvalidUserException;
+import com.codecool.stockexchange.exception.trade.SymbolNotFoundException;
 import com.codecool.stockexchange.entity.trade.Order;
 import com.codecool.stockexchange.entity.trade.OrderStatus;
 import com.codecool.stockexchange.entity.user.User;

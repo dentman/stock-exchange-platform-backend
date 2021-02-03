@@ -1,4 +1,4 @@
-package com.codecool.stockexchange.entity.orderexception;
+package com.codecool.stockexchange.exception.user;
 
 public class InvalidUserException extends RuntimeException {
 

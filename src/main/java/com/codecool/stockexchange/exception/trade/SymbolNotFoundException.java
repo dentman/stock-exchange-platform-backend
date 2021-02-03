@@ -1,4 +1,4 @@
-package com.codecool.stockexchange.entity.orderexception;
+package com.codecool.stockexchange.exception.trade;
 
 public class SymbolNotFoundException extends RuntimeException {
 
