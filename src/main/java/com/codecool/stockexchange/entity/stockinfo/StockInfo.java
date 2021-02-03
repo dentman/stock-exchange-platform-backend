@@ -95,20 +95,20 @@ public class StockInfo {
         return stockPrices.stream().max(Comparator.comparing(StockPrice::getDate));
     }
 
-    public void setSimulatedStockPrice() {
+    public void setSimulatedStockPrice(BigDecimal nextPrice) {
         Optional<StockPrice> lastPriceOptional = getLastPrice();
         LocalDate currentDate = LocalDate.now();
         if (lastPriceOptional.isPresent()) {
             StockPrice lastPrice = lastPriceOptional.get();
             if (lastPrice.getDate().isEqual(LocalDate.of(currentDate.getYear(), currentDate.getMonth(), currentDate.getDayOfMonth()))) {
-                lastPrice.setPrice(lastPrice.getPrice().add(BigDecimal.valueOf(1)));
+                lastPrice.setPrice(nextPrice);
             }
             else {
                 StockPrice newPrice = new StockPrice();
                 newPrice.setSymbol(lastPrice.getSymbol());
                 newPrice.setStockInfo(this);
                 newPrice.setDate(LocalDate.of(currentDate.getYear(), currentDate.getMonth(), currentDate.getDayOfMonth()));
-                newPrice.setPrice(lastPrice.getPrice().add(BigDecimal.valueOf(2)));
+                newPrice.setPrice(nextPrice);
                 addStockPrice(newPrice);
             }
         }
