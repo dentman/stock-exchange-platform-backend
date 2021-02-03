@@ -47,12 +47,16 @@ public class StockInfo {
     private double peRatio;
     private double ytdChange;
     private LocalDateTime lastTradeTime;
+    private BigDecimal latestPrice;
 
     @OneToMany(mappedBy = "stockInfo", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private List<StockPrice> stockPrices = new ArrayList<>();
 
     @OneToMany(mappedBy = "stockInfo", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private List<NewsItem> newsList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "stockInfo", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<VideoLink> videoLinkList = new ArrayList<>();
 
     public StockInfo(Quote quote) {
         setAllQuoteInfo(quote);
@@ -73,6 +77,7 @@ public class StockInfo {
         this.peRatio = quote.getPeRatio();
         this.ytdChange = quote.getYtdChange();
         this.lastTradeTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(quote.getLastTradeTime()/1000), ZoneId.systemDefault());
+        this.latestPrice = BigDecimal.valueOf(quote.getLatestPrice());
     }
 
     public void addStockPrice(StockPrice stockPrice) {
