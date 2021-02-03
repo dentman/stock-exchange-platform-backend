@@ -56,4 +56,8 @@ public class StockInfoService {
         List<VideoLink> allVids = stockInfoRepository.findFirstBySymbol(symbol).getVideoLinkList();
         return allVids.get(random.nextInt(allVids.size()));
     }
+
+    public StockInfo findStockInfoBySymbol(String symbol) {
+        return stockInfoRepository.findFirstBySymbol(symbol);
+    }
 }
