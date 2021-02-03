@@ -23,21 +23,6 @@ public class ExternalApiController {
     @Autowired
     private ExternalApiService apiService;
 
-    @GetMapping("/external/quote/{symbol}")
-    public Quote getStockData(@PathVariable String symbol) {
-        return apiService.getQuoteBySymbol(symbol);
-    }
-
-    @GetMapping("/external/chart/{symbol}")
-    public ChartDataPoint[] getChartData(@PathVariable String symbol) {
-        return apiService.getChartDataBySymbol(symbol);
-    }
-
-    @GetMapping("/external/news/{symbol}")
-    public List<NewsItemAPI> getNewsData(@PathVariable String symbol, HttpServletResponse response) {
-        return apiService.getNewsBySymbol(symbol);
-    }
-
     @GetMapping("/videos/{symbol}")
     public Video getVideoData(@PathVariable String symbol) {
         return apiService.getVideoBySymbol(symbol);
