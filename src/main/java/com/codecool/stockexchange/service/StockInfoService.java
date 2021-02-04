@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.codecool.stockexchange.apimodel.Quote;
-import com.codecool.stockexchange.apimodel.video.Video;
 import com.codecool.stockexchange.entity.stockinfo.StockInfo;
 import com.codecool.stockexchange.entity.stockinfo.StockPrice;
 import com.codecool.stockexchange.entity.stockinfo.VideoLink;

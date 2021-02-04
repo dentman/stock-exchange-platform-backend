@@ -3,7 +3,6 @@ package com.codecool.stockexchange.controller;
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.codecool.stockexchange.apimodel.Quote;
-import com.codecool.stockexchange.apimodel.video.Video;
 import com.codecool.stockexchange.entity.stockinfo.StockInfo;
 import com.codecool.stockexchange.entity.stockinfo.VideoLink;
 import com.codecool.stockexchange.service.StockInfoService;
