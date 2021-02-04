@@ -1,4 +1,4 @@
-package com.codecool.stockexchange.entity.stockinfo;
+package com.codecool.stockexchange.entity.stock;
 
 import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -26,7 +26,6 @@ public class NewsItem {
     private String image;
     private String url;
     private String headline;
-    //@Column( columnDefinition = "TEXT")
     @Type( type = "text")
     private String summary;
     private String source;
@@ -34,7 +33,7 @@ public class NewsItem {
     private String lang;
 
     @ManyToOne
-    private StockInfo stockInfo;
+    private Stock stock;
 
     public NewsItem(NewsItemAPI news){
         this.image = news.getImage();

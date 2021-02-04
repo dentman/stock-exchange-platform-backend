@@ -25,12 +25,4 @@ public class Symbol {
         return stocklist;
     }
 
-    public void setStocklist(Map<String, String> stocklist) {
-        this.stocklist = stocklist;
-    }
-
-    public Stock getStock(String symbol) {
-
-        return new Stock(symbol, stocklist.get(symbol), quotes.get(symbol)[0], quotes.get(symbol)[1]);
-    }
 }

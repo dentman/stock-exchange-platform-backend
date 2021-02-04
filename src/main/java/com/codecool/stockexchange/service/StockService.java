@@ -9,38 +9,38 @@ import java.util.stream.Collectors;
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.codecool.stockexchange.apimodel.Quote;
-import com.codecool.stockexchange.entity.stockinfo.StockInfo;
-import com.codecool.stockexchange.entity.stockinfo.StockPrice;
-import com.codecool.stockexchange.entity.stockinfo.VideoLink;
-import com.codecool.stockexchange.repository.StockInfoRepository;
+import com.codecool.stockexchange.entity.stock.Stock;
+import com.codecool.stockexchange.entity.stock.StockPrice;
+import com.codecool.stockexchange.entity.stock.VideoLink;
+import com.codecool.stockexchange.repository.StockRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StockInfoService {
+public class StockService {
 
     @Autowired
-    StockInfoRepository stockInfoRepository;
+    StockRepository stockRepository;
 
     Random random = new Random();
 
     public Quote findFirstBySymbol(String symbol) {
-        StockInfo stockInfo = stockInfoRepository.findFirstBySymbol(symbol);
-        return Quote.createQuote(stockInfo);
+        Stock stock = stockRepository.findFirstBySymbol(symbol);
+        return Quote.createQuote(stock);
     }
 
     public ChartDataPoint[] getChartDataPoints(String symbol) {
-        StockInfo stockInfo = stockInfoRepository.findFirstBySymbol(symbol);
-        List<StockPrice> stockPrices = stockInfo.getStockPrices().stream()
+        Stock stock = stockRepository.findFirstBySymbol(symbol);
+        List<StockPrice> stockPrices = stock.getStockPrices().stream()
                 .filter(data -> data.getDate().isAfter(LocalDate.now().minusDays(30))).collect(Collectors.toList());
         return stockPrices.stream().map(ChartDataPoint::createChartDataPoint).toArray(ChartDataPoint[]::new);
     }
 
 
     public NewsItemAPI[] findNewsBySymbol(String symbol) {
-        StockInfo stockInfo = stockInfoRepository.findFirstBySymbol(symbol);
-        return stockInfo.getNewsList()
+        Stock stock = stockRepository.findFirstBySymbol(symbol);
+        return stock.getNewsList()
                 .stream()
                 .filter(n -> Instant.now().toEpochMilli() - n.getDatetime() < 3 * 86400000)
                 .map(NewsItemAPI::createNewsItem).toArray(NewsItemAPI[]::new);
@@ -48,15 +48,15 @@ public class StockInfoService {
     }
 
     public List<VideoLink> findVideosBySymbol(String symbol) {
-        return stockInfoRepository.findFirstBySymbol(symbol).getVideoLinkList();
+        return stockRepository.findFirstBySymbol(symbol).getVideoLinkList();
     }
 
     public VideoLink findRandomVideoForSymbol(String symbol) {
-        List<VideoLink> allVids = stockInfoRepository.findFirstBySymbol(symbol).getVideoLinkList();
+        List<VideoLink> allVids = stockRepository.findFirstBySymbol(symbol).getVideoLinkList();
         return allVids.get(random.nextInt(allVids.size()));
     }
 
-    public StockInfo findStockInfoBySymbol(String symbol) {
-        return stockInfoRepository.findFirstBySymbol(symbol);
+    public Stock findStockBySymbol(String symbol) {
+        return stockRepository.findFirstBySymbol(symbol);
     }
 }

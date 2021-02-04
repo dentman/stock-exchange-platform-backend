@@ -1,4 +1,4 @@
-package com.codecool.stockexchange.entity.stockinfo;
+package com.codecool.stockexchange.entity.stock;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,10 +33,11 @@ public class StockPrice {
     private String symbol;
     private LocalDate date;
     private BigDecimal price;
+    private boolean isClosing = true;
 
     @ManyToOne
     @EqualsAndHashCode.Exclude
-    private StockInfo stockInfo;
+    private Stock stock;
 
     public StockPrice(ChartDataPoint dataPoint) {
         this.symbol = dataPoint.getSymbol();

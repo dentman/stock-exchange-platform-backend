@@ -1,4 +1,4 @@
-package com.codecool.stockexchange.entity.stockinfo;
+package com.codecool.stockexchange.entity.stock;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class StockInfo {
+public class Stock {
 
     @Id
     @GeneratedValue
@@ -46,16 +46,16 @@ public class StockInfo {
     private LocalDateTime lastTradeTime;
     private BigDecimal latestPrice;
 
-    @OneToMany(mappedBy = "stockInfo", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    @OneToMany(mappedBy = "stock", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private List<StockPrice> stockPrices = new ArrayList<>();
 
-    @OneToMany(mappedBy = "stockInfo", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    @OneToMany(mappedBy = "stock", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private List<NewsItem> newsList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "stockInfo", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "stock", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<VideoLink> videoLinkList = new ArrayList<>();
 
-    public StockInfo(Quote quote) {
+    public Stock(Quote quote) {
         setAllQuoteInfo(quote);
     }
 
@@ -81,7 +81,6 @@ public class StockInfo {
         stockPrices.add(stockPrice);
     }
 
-    // TODO: extended handling of random generation
     public BigDecimal getCurrentPrice() {
         Optional<StockPrice> currentPriceOptional = getLastPrice();
 
@@ -102,13 +101,14 @@ public class StockInfo {
         LocalDate currentDate = LocalDate.now();
         if (lastPriceOptional.isPresent()) {
             StockPrice lastPrice = lastPriceOptional.get();
+            lastPrice.setClosing(false);
             if (lastPrice.getDate().isEqual(LocalDate.of(currentDate.getYear(), currentDate.getMonth(), currentDate.getDayOfMonth()))) {
                 lastPrice.setPrice(nextPrice);
             }
             else {
                 StockPrice newPrice = new StockPrice();
                 newPrice.setSymbol(lastPrice.getSymbol());
-                newPrice.setStockInfo(this);
+                newPrice.setStock(this);
                 newPrice.setDate(LocalDate.of(currentDate.getYear(), currentDate.getMonth(), currentDate.getDayOfMonth()));
                 newPrice.setPrice(nextPrice);
                 addStockPrice(newPrice);

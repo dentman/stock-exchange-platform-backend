@@ -1,7 +1,7 @@
 package com.codecool.stockexchange.service.update;
 
-import com.codecool.stockexchange.entity.stockinfo.StockInfo;
-import com.codecool.stockexchange.repository.StockInfoRepository;
+import com.codecool.stockexchange.entity.stock.Stock;
+import com.codecool.stockexchange.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -14,14 +14,16 @@ import java.util.List;
 public class StockPriceUpdateService {
 
     @Autowired
-    private StockInfoRepository stockInfoRepository;
+    private StockRepository stockRepository;
 
 
     @Scheduled(initialDelay = 5000, fixedRate = 5000)
     @Transactional
     public void simulateStockPrices() {
-        List<StockInfo> stockData = stockInfoRepository.findAll();
-        stockData.stream().forEach(stock -> stock.setNextPrice());
+        List<Stock> stockData = stockRepository.findAll();
+        stockData.stream().forEach(stock -> {
+            stock.setNextPrice();
+        });
     }
 
 }

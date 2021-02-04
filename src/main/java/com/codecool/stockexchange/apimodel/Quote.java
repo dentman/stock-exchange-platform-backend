@@ -1,6 +1,6 @@
 package com.codecool.stockexchange.apimodel;
 
-import com.codecool.stockexchange.entity.stockinfo.StockInfo;
+import com.codecool.stockexchange.entity.stock.Stock;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Quote {
@@ -170,19 +170,19 @@ public class Quote {
 	@JsonProperty("iexBidSize")
 	private Object iexBidSize;
 
-	public static Quote createQuote(StockInfo stockInfo) {
+	public static Quote createQuote(Stock stock) {
 		Quote quote = new Quote();
-		quote.setSymbol(stockInfo.getSymbol());
-		quote.setCompanyName(stockInfo.getCompanyName());
-		quote.setMarketCap(stockInfo.getMarketCap());
-		quote.setWeek52Low(stockInfo.getWeek52Low().doubleValue());
-		quote.setWeek52High(stockInfo.getWeek52High().doubleValue());
-		quote.setAvgTotalVolume(stockInfo.getAvgTotalVolume());
-		quote.setPeRatio(stockInfo.getPeRatio());
-		quote.setYtdChange(stockInfo.getYtdChange());
+		quote.setSymbol(stock.getSymbol());
+		quote.setCompanyName(stock.getCompanyName());
+		quote.setMarketCap(stock.getMarketCap());
+		quote.setWeek52Low(stock.getWeek52Low().doubleValue());
+		quote.setWeek52High(stock.getWeek52High().doubleValue());
+		quote.setAvgTotalVolume(stock.getAvgTotalVolume());
+		quote.setPeRatio(stock.getPeRatio());
+		quote.setYtdChange(stock.getYtdChange());
 
-		double previousPrice = stockInfo.getPreviousClose().doubleValue();
-		double currentPrice = stockInfo.getCurrentPrice().doubleValue();
+		double previousPrice = stock.getPreviousClose().doubleValue();
+		double currentPrice = stock.getCurrentPrice().doubleValue();
 		quote.setPreviousClose(previousPrice);
 		quote.setLatestPrice(currentPrice);
 		quote.setChange(currentPrice - previousPrice);

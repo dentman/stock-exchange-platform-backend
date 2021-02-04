@@ -8,7 +8,7 @@ import com.codecool.stockexchange.entity.user.Account;
 import com.codecool.stockexchange.entity.user.User;
 import com.codecool.stockexchange.repository.UserRepository;
 
-import com.codecool.stockexchange.service.update.StockInfoUpdateService;
+import com.codecool.stockexchange.service.update.StockUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,34 +19,34 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class StockexchangeApplication {
+public class StockExchangeApplication {
 
     @Autowired
     UserRepository userRepository;
 
     @Autowired
-    StockInfoUpdateService updateService;
+    StockUpdateService updateService;
 
     @Autowired
     Symbol symbol;
 
     public static void main(String[] args) {
-        SpringApplication.run(StockexchangeApplication.class, args);
+        SpringApplication.run(StockExchangeApplication.class, args);
     }
 
     @Bean
     @Profile("production")
     public CommandLineRunner init() {
         return args -> {
-            // updateApiStockInfos();
-            // createSampleUser();
+            updateApiStocks();
+            createSampleUser();
         };
     }
 
     /***
      * This method will only fetch data if db is not up to date for given symbol
      */
-    public void updateApiStockInfos(){
+    public void updateApiStocks(){
         Set<String> stocks = symbol.getStocklist().keySet();
         for (String stock : stocks){
             updateService.saveOrUpdate(stock);

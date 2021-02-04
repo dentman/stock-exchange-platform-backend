@@ -4,7 +4,7 @@ import com.codecool.stockexchange.entity.trade.Order;
 import com.codecool.stockexchange.entity.trade.OrderStatus;
 import com.codecool.stockexchange.entity.trade.StockTransaction;
 import com.codecool.stockexchange.entity.user.User;
-import com.codecool.stockexchange.repository.StockInfoRepository;
+import com.codecool.stockexchange.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,15 +15,12 @@ import java.math.BigDecimal;
 public class TradingService {
 
     @Autowired
-    private StockInfoRepository stockInfoRepository;
+    private StockRepository stockRepository;
 
     @Transactional
     public OrderStatus handleOrder(Order order) {
-        // TODO: validate: whatever it means
-        // TODO: check if status is pending
-        // TODO: handle more exceptions
 
-        BigDecimal stockPrice = stockInfoRepository.findFirstBySymbol(order.getSymbol()).getCurrentPrice();
+        BigDecimal stockPrice = stockRepository.findFirstBySymbol(order.getSymbol()).getCurrentPrice();
         User user = order.getUser();
         user.getOrders().add(order);
 

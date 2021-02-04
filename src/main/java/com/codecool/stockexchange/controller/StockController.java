@@ -3,9 +3,9 @@ package com.codecool.stockexchange.controller;
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.codecool.stockexchange.apimodel.Quote;
-import com.codecool.stockexchange.entity.stockinfo.StockInfo;
-import com.codecool.stockexchange.entity.stockinfo.VideoLink;
-import com.codecool.stockexchange.service.StockInfoService;
+import com.codecool.stockexchange.entity.stock.Stock;
+import com.codecool.stockexchange.entity.stock.VideoLink;
+import com.codecool.stockexchange.service.StockService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,34 +18,34 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-public class StockInfoController {
+public class StockController {
 
     @Autowired
-    StockInfoService stockInfoService;
+    StockService stockService;
 
     @GetMapping("/stock/{symbol}")
-    public StockInfo getStockInfo(@PathVariable String symbol){
-        return stockInfoService.findStockInfoBySymbol(symbol);
+    public Stock getStock(@PathVariable String symbol){
+        return stockService.findStockBySymbol(symbol);
     }
 
     @GetMapping("/quote/{symbol}")
     public Quote getStockData(@PathVariable String symbol) {
-        return stockInfoService.findFirstBySymbol(symbol);
+        return stockService.findFirstBySymbol(symbol);
     }
 
     @GetMapping("/chart/{symbol}")
     public ChartDataPoint[] getChartData(@PathVariable String symbol) {
-        return stockInfoService.getChartDataPoints(symbol);
+        return stockService.getChartDataPoints(symbol);
     }
 
     @GetMapping("/news/{symbol}")
     public NewsItemAPI[] getNewsData(@PathVariable String symbol){
-        return stockInfoService.findNewsBySymbol(symbol);
+        return stockService.findNewsBySymbol(symbol);
     }
 
     @GetMapping("/videos/{symbol}")
-    public List<VideoLink> getVideoData(@PathVariable String symbol){ return stockInfoService.findVideosBySymbol(symbol);}
+    public List<VideoLink> getVideoData(@PathVariable String symbol){ return stockService.findVideosBySymbol(symbol);}
 
     @GetMapping("/videos/{symbol}/random")
-    public VideoLink getRandomVideo(@PathVariable String symbol){ return stockInfoService.findRandomVideoForSymbol(symbol);}
+    public VideoLink getRandomVideo(@PathVariable String symbol){ return stockService.findRandomVideoForSymbol(symbol);}
 }

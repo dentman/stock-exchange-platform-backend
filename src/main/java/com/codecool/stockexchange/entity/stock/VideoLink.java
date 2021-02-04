@@ -1,4 +1,4 @@
-package com.codecool.stockexchange.entity.stockinfo;
+package com.codecool.stockexchange.entity.stock;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -28,7 +27,7 @@ public class VideoLink {
     private String videoId;
 
     @ManyToOne
-    private StockInfo stockInfo;
+    private Stock stock;
 
     private LocalDate date;
 

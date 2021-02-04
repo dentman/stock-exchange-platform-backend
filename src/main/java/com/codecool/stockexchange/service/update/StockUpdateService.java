@@ -3,11 +3,11 @@ package com.codecool.stockexchange.service.update;
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.codecool.stockexchange.apimodel.video.VideoItems;
-import com.codecool.stockexchange.entity.stockinfo.NewsItem;
-import com.codecool.stockexchange.entity.stockinfo.StockInfo;
-import com.codecool.stockexchange.entity.stockinfo.StockPrice;
-import com.codecool.stockexchange.entity.stockinfo.VideoLink;
-import com.codecool.stockexchange.repository.StockInfoRepository;
+import com.codecool.stockexchange.entity.stock.NewsItem;
+import com.codecool.stockexchange.entity.stock.Stock;
+import com.codecool.stockexchange.entity.stock.StockPrice;
+import com.codecool.stockexchange.entity.stock.VideoLink;
+import com.codecool.stockexchange.repository.StockRepository;
 import com.codecool.stockexchange.service.external.ExternalApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,10 +21,10 @@ import java.util.List;
 
 @Service
 @Transactional
-public class StockInfoUpdateService {
+public class StockUpdateService {
 
     @Autowired
-    StockInfoRepository stockInfoRepository;
+    StockRepository stockRepository;
 
     @Autowired
     ExternalApiService apiService;
@@ -37,58 +37,58 @@ public class StockInfoUpdateService {
      */
     //TODO: this does not take into account trading days!
     public void saveOrUpdate(String symbol) {
-        StockInfo stockInfo = stockInfoRepository.findFirstBySymbol(symbol);
+        Stock stock = stockRepository.findFirstBySymbol(symbol);
         long daysToFetch = 30; // !!!! 30
-        if (stockInfo == null) {
-            stockInfo = new StockInfo(apiService.getQuoteBySymbol(symbol));
-            setVideoLinkList(stockInfo, symbol);
+        if (stock == null) {
+            stock = new Stock(apiService.getQuoteBySymbol(symbol));
+            setVideoLinkList(stock, symbol);
         } else {
-            StockPrice latest = stockInfo.getStockPrices().stream().max(Comparator.comparing(StockPrice::getDate)).orElse(null);
+            StockPrice latest = stock.getStockPrices().stream().max(Comparator.comparing(StockPrice::getDate)).orElse(null);
             daysToFetch = ChronoUnit.DAYS.between(latest.getDate(), LocalDate.now()); // 1 means latest price is yesterday (chart up-to-date)
             daysToFetch = daysToFetch > 30 ? 30 : daysToFetch;  //should never fetch more than a month
         }
         if (daysToFetch == 1){
             // chart data is up to date, check if quote is
-            long daysPassed = ChronoUnit.DAYS.between(stockInfo.getLastTradeTime(), LocalDate.now());
+            long daysPassed = ChronoUnit.DAYS.between(stock.getLastTradeTime(), LocalDate.now());
             if (daysPassed > 0) {
-                stockInfo.updateByQuote(apiService.getQuoteBySymbol(symbol));
-                setVideoLinkList(stockInfo, symbol);
+                stock.updateByQuote(apiService.getQuoteBySymbol(symbol));
+                setVideoLinkList(stock, symbol);
             }
         } else if (daysToFetch > 1){
-            stockInfo.updateByQuote(apiService.getQuoteBySymbol(symbol));
-            setVideoLinkList(stockInfo, symbol);
+            stock.updateByQuote(apiService.getQuoteBySymbol(symbol));
+            setVideoLinkList(stock, symbol);
             // fetch missing historical data points (add to previously stored data)
             ChartDataPoint[] stockPrices = apiService.getChartDataBySymbolForDays(symbol, daysToFetch - 1);
             for (ChartDataPoint chartDataPoint : stockPrices) {
                 StockPrice stockPrice = new StockPrice(chartDataPoint);
-                stockPrice.setStockInfo(stockInfo);
-                stockInfo.addStockPrice(stockPrice);
+                stockPrice.setStock(stock);
+                stock.addStockPrice(stockPrice);
             }
             // re-write news list
             List<NewsItemAPI> newsItemAPIList = apiService.getNewsBySymbol(symbol);
             List<NewsItem> newsItemList = new ArrayList<>();
             for (NewsItemAPI newsItemAPI : newsItemAPIList){
                 NewsItem newsItem = new NewsItem(newsItemAPI);
-                newsItem.setStockInfo(stockInfo);
+                newsItem.setStock(stock);
                 newsItemList.add(newsItem);
             }
-            stockInfo.setNewsList(newsItemList);
+            stock.setNewsList(newsItemList);
         }
-        stockInfoRepository.save(stockInfo);
+        stockRepository.save(stock);
 
 
     }
 
-    private void setVideoLinkList(StockInfo stockInfo, String symbol){
+    private void setVideoLinkList(Stock stock, String symbol){
         List<VideoLink> videoLinks = new ArrayList<>();
         List<VideoItems> videoFromApi = apiService.getVideoBySymbol(symbol).getItems();
         for (VideoItems item : videoFromApi){
             VideoLink link = new VideoLink();
             link.setDate(LocalDate.now());
-            link.setStockInfo(stockInfo);
+            link.setStock(stock);
             link.setVideoId(item.getId().getVideoId());
             videoLinks.add(link);
         }
-        stockInfo.setVideoLinkList(videoLinks);
+        stock.setVideoLinkList(videoLinks);
     }
 }
