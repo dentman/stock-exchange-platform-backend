@@ -101,8 +101,8 @@ public class Stock {
         LocalDate currentDate = LocalDate.now();
         if (lastPriceOptional.isPresent()) {
             StockPrice lastPrice = lastPriceOptional.get();
-            lastPrice.setClosing(false);
             if (lastPrice.getDate().isEqual(LocalDate.of(currentDate.getYear(), currentDate.getMonth(), currentDate.getDayOfMonth()))) {
+                lastPrice.setClosing(false);
                 lastPrice.setPrice(nextPrice);
             }
             else {
@@ -110,6 +110,7 @@ public class Stock {
                 newPrice.setSymbol(lastPrice.getSymbol());
                 newPrice.setStock(this);
                 newPrice.setDate(LocalDate.of(currentDate.getYear(), currentDate.getMonth(), currentDate.getDayOfMonth()));
+                newPrice.setClosing(false);
                 newPrice.setPrice(nextPrice);
                 addStockPrice(newPrice);
             }
@@ -119,8 +120,8 @@ public class Stock {
     public void setNextPrice() {
         Random random = new Random();
         int trend = getYtdChange() > 0 ? 1 : -1;
-        int direction = random.nextInt(100) < 80 ? trend : -trend;
-        double change = (double) random.nextInt(3) / 100 * direction;
+        int direction = random.nextInt(100) < 70 ? trend : -trend;
+        double change = (double) random.nextInt(10) / 1000 * direction;
         BigDecimal nextPrice = getCurrentPrice().multiply(BigDecimal.valueOf(1 + change));
         setSimulatedStockPrice(nextPrice);
     }

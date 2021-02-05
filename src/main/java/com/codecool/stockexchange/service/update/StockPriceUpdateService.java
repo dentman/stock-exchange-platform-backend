@@ -21,9 +21,7 @@ public class StockPriceUpdateService {
     @Transactional
     public void simulateStockPrices() {
         List<Stock> stockData = stockRepository.findAll();
-        stockData.stream().forEach(stock -> {
-            stock.setNextPrice();
-        });
+        stockData.stream().forEach(stock -> stock.setNextPrice());
     }
 
 }
