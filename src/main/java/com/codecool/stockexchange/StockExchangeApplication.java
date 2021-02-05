@@ -38,8 +38,8 @@ public class StockExchangeApplication {
     @Profile("production")
     public CommandLineRunner init() {
         return args -> {
-            updateApiStocks();
-            createSampleUser();
+           // updateApiStocks();
+           // createSampleUser();
         };
     }
 

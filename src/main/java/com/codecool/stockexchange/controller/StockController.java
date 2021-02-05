@@ -33,19 +33,4 @@ public class StockController {
         return stockService.findFirstBySymbol(symbol);
     }
 
-    @GetMapping("/chart/{symbol}")
-    public ChartDataPoint[] getChartData(@PathVariable String symbol) {
-        return stockService.getChartDataPoints(symbol);
-    }
-
-    @GetMapping("/news/{symbol}")
-    public NewsItemAPI[] getNewsData(@PathVariable String symbol){
-        return stockService.findNewsBySymbol(symbol);
-    }
-
-    @GetMapping("/videos/{symbol}")
-    public List<VideoLink> getVideoData(@PathVariable String symbol){ return stockService.findVideosBySymbol(symbol);}
-
-    @GetMapping("/videos/{symbol}/random")
-    public VideoLink getRandomVideo(@PathVariable String symbol){ return stockService.findRandomVideoForSymbol(symbol);}
 }

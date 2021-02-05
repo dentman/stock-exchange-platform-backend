@@ -12,6 +12,7 @@ import com.codecool.stockexchange.repository.UserRepository;
 import com.codecool.stockexchange.service.TradingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,7 +53,7 @@ public class TradingController {
                 throw new InvalidOrderStatusException();
             }
             else if (order.getCount() <= 0 || order.getLimitPrice().compareTo(BigDecimal.ZERO) <= 0) {
-                throw new NumberFormatException("Order count and price can must be positive numbers!");
+                throw new NumberFormatException("Order count and price must be positive numbers!");
             }
             else {
                 order.setUser(userOptional.get());
@@ -95,4 +96,9 @@ public class TradingController {
         return exception.getMessage();
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleMessageNotReadable(HttpMessageNotReadableException exception) {
+        return "Invalid data provided for the order. Please check the selected paramaters!";
+    }
 }
