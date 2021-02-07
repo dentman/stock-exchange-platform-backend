@@ -70,7 +70,7 @@ public class ExternalApiService {
 
         RestTemplate template = new RestTemplate();
         ResponseEntity<Video> videoResponseEntity = template.exchange(String.format(
-                "https://youtube.googleapis.com/youtube/v3/search?maxResults=25&q=%s,stock&key=%s",
+                "https://youtube.googleapis.com/youtube/v3/search?maxResults=5&q=%s,stock&key=%s",
                 symbol, googleKey), HttpMethod.GET, null, Video.class);
         return videoResponseEntity.getBody();
     }
