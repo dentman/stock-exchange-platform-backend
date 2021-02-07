@@ -76,4 +76,18 @@ public class User {
         }
     }
 
+    public void createUserHistory(StockTransaction transaction){
+        UserHistory userHistory = UserHistory.builder()
+                .balanceAfter(account.getBalance())
+                .stockChange(transaction.getStockChange())
+                .transactionTime(transaction.getTransactionTime())
+                .stockPrice(transaction.getStockPrice())
+                .user(this)
+                .symbol(transaction.getSymbol())
+                .stockCountAfter(getPortfolioItem(transaction.getSymbol()).map(PortfolioItem::getAmount).orElse(0))
+                .balanceAfter(getAccount().getBalance())
+                .build();
+        userHistoryList.add(userHistory);
+    }
+
 }

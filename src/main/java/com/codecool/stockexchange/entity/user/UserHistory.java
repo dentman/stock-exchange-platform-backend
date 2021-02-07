@@ -1,6 +1,7 @@
 package com.codecool.stockexchange.entity.user;
 
 import com.codecool.stockexchange.entity.trade.OrderDirection;
+import com.codecool.stockexchange.entity.trade.StockTransaction;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
@@ -26,18 +27,15 @@ public class UserHistory {
     @Id
     @GeneratedValue
     private Long id;
-    private Long transactionId;
 
     private LocalDateTime transactionTime;
     private BigDecimal balanceAfter;
     private int stockCountAfter;
     private String symbol;
-    private int count;
-    private OrderDirection direction;
+    private int stockChange;
     private BigDecimal stockPrice;
 
     @ManyToOne
     private User user;
-
 
 }
