@@ -5,6 +5,7 @@ import com.codecool.stockexchange.entity.trade.OrderStatus;
 import com.codecool.stockexchange.entity.trade.StockTransaction;
 import com.codecool.stockexchange.entity.user.User;
 import com.codecool.stockexchange.repository.StockRepository;
+import com.codecool.stockexchange.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +42,7 @@ public class TradingService {
         User user = order.getUser();
         user.changePortfolio(transaction);
         user.getAccount().transferOrderFunding(transaction);
+        user.createUserHistory(transaction);
         order.setStatus(OrderStatus.COMPLETED);
     }
 
