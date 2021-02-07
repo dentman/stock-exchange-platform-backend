@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(value = "http://localhost:3000")
 public class TradingController {
 
     @Autowired

@@ -1,10 +1,7 @@
 package com.codecool.stockexchange.controller;
 
-import com.codecool.stockexchange.apimodel.ChartDataPoint;
-import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.codecool.stockexchange.apimodel.Quote;
 import com.codecool.stockexchange.entity.stock.Stock;
-import com.codecool.stockexchange.entity.stock.VideoLink;
 import com.codecool.stockexchange.service.StockService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 
 @RestController
-@CrossOrigin
+@CrossOrigin(value = "http://localhost:3000")
 public class StockController {
 
     @Autowired
