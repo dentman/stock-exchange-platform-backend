@@ -1,10 +1,8 @@
 package com.codecool.stockexchange.controller;
 
-import com.codecool.stockexchange.apimodel.ChartDataPoint;
-import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.codecool.stockexchange.apimodel.Quote;
+import com.codecool.stockexchange.entity.StockBaseData;
 import com.codecool.stockexchange.entity.stock.Stock;
-import com.codecool.stockexchange.entity.stock.VideoLink;
 import com.codecool.stockexchange.service.StockService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +31,8 @@ public class StockController {
         return stockService.findFirstBySymbol(symbol);
     }
 
+    @GetMapping("/stock-base-data/list")
+    public List<StockBaseData> getStockBaseData(){
+        return stockService.getStockBaseData();
+    }
 }
