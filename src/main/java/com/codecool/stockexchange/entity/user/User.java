@@ -27,6 +27,8 @@ public class User {
     @GeneratedValue
     @Column(name = "id")
     private Long id;
+    String firstName;
+    String lastName;
 
     @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
     private Account account;
@@ -37,8 +39,9 @@ public class User {
     @OneToMany( mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
     List<Order> orders = new ArrayList<>();
 
-    String firstName;
-    String lastName;
+    @OneToMany( mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    List<UserHistory> userHistoryList = new ArrayList<>();
+
 
     public Optional<PortfolioItem> getPortfolioItem(String symbol) {
         return getPortfolio()
