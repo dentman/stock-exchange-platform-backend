@@ -8,3 +8,4 @@ spring.jpa.properties.hibernate.format_sql=true
 spring.profiles.active=production
 iexcloud.token=
 google.token=
+stocklist.csv.path=src/main/resources/stockList.csv
