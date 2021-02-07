@@ -21,33 +21,14 @@ public class TradingService {
     public OrderStatus handleOrder(Order order) {
 
         BigDecimal stockPrice = stockRepository.findFirstBySymbol(order.getSymbol()).getCurrentPrice();
-        User user = order.getUser();
-        user.getOrders().add(order);
+        order.getUser().getOrders().add(order);
 
         switch (order.getDirection()) {
             case BUY:
-                if (order.getLimitPrice().compareTo(stockPrice) >= 0) {
-                    if (user.getAccount().checkAvailableFunds(order, stockPrice)) {
-                        handleTransaction(order, stockPrice);
-                    } else {
-                        order.setStatus(OrderStatus.INSUFFICIENT_FUND);
-                    }
-                }
-                else {
-                    order.setStatus(OrderStatus.LIMIT_PRICE_MISMATCH);
-                }
+                buyStock(order, stockPrice);
                 break;
             case SELL:
-                if (order.getLimitPrice().compareTo(stockPrice) <= 0) {
-                    if (user.checkAvailableStocks(order)) {
-                        handleTransaction(order, stockPrice);
-                    } else {
-                        order.setStatus(OrderStatus.INSUFFICIENT_STOCK);
-                    }
-                }
-                else {
-                    order.setStatus(OrderStatus.LIMIT_PRICE_MISMATCH);
-                }
+                sellStock(order, stockPrice);
                 break;
             default:
                 throw new IllegalArgumentException();
@@ -63,4 +44,29 @@ public class TradingService {
         order.setStatus(OrderStatus.COMPLETED);
     }
 
+    private void buyStock(Order order, BigDecimal stockPrice) {
+        if (order.getLimitPrice().compareTo(stockPrice) >= 0) {
+            if (order.getUser().getAccount().checkAvailableFunds(order, stockPrice)) {
+                handleTransaction(order, stockPrice);
+            } else {
+                order.setStatus(OrderStatus.INSUFFICIENT_FUND);
+            }
+        }
+        else {
+            order.setStatus(OrderStatus.LIMIT_PRICE_MISMATCH);
+        }
+    }
+
+    private void sellStock(Order order, BigDecimal stockPrice) {
+        if (order.getLimitPrice().compareTo(stockPrice) <= 0) {
+            if (order.getUser().checkAvailableStocks(order)) {
+                handleTransaction(order, stockPrice);
+            } else {
+                order.setStatus(OrderStatus.INSUFFICIENT_STOCK);
+            }
+        }
+        else {
+            order.setStatus(OrderStatus.LIMIT_PRICE_MISMATCH);
+        }
+    }
 }

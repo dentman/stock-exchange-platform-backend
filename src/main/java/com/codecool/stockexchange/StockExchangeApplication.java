@@ -56,7 +56,7 @@ public class StockExchangeApplication {
 
     public void createSampleUser() {
         Account account1 = Account.builder().balance(BigDecimal.valueOf(10000)).currency("USD").build();
-        User user1 = User.builder().firstName("vm").lastName("ember").account(account1).build();
+        User user1 = User.builder().firstName("test").lastName("person").account(account1).build();
         account1.setUser(user1);
         userRepository.save(user1);
     }
