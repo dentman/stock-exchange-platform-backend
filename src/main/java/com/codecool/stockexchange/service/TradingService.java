@@ -6,6 +6,7 @@ import com.codecool.stockexchange.entity.trade.StockTransaction;
 import com.codecool.stockexchange.entity.user.User;
 import com.codecool.stockexchange.exception.user.InvalidUserException;
 import com.codecool.stockexchange.repository.StockRepository;
+import com.codecool.stockexchange.repository.StockTransactionRepository;
 import com.codecool.stockexchange.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ public class TradingService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private StockTransactionRepository stockTransactionRepository;
 
     @Transactional
     public OrderStatus handleOrder(Order order, Long user_id) {
@@ -45,7 +49,7 @@ public class TradingService {
     }
 
     private void handleTransaction(Order order, BigDecimal stockPrice) {
-        StockTransaction transaction = order.createTransaction(stockPrice);
+        StockTransaction transaction = stockTransactionRepository.saveAndFlush(order.createTransaction(stockPrice));
         User user = order.getUser();
         user.changePortfolio(transaction);
         user.getAccount().transferOrderFunding(transaction);
