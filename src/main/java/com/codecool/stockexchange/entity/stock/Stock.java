@@ -17,10 +17,7 @@ import com.codecool.stockexchange.apimodel.Quote;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -47,11 +44,14 @@ public class Stock {
     private BigDecimal latestPrice;
 
     @OneToMany(mappedBy = "stock", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    @ToString.Exclude
     private List<StockPrice> stockPrices = new ArrayList<>();
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "stock", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private List<NewsItem> newsList = new ArrayList<>();
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "stock", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<VideoLink> videoLinkList = new ArrayList<>();
 
