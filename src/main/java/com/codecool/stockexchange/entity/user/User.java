@@ -80,6 +80,7 @@ public class User {
         UserHistory userHistory = UserHistory.builder()
                 .balanceAfter(account.getBalance())
                 .stockChange(transaction.getStockChange())
+                .transactionId(transaction.getId())
                 .transactionTime(transaction.getTransactionTime())
                 .stockPrice(transaction.getStockPrice())
                 .user(this)
