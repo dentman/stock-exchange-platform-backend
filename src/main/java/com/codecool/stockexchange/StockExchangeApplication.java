@@ -49,9 +49,9 @@ public class StockExchangeApplication {
     @Profile("production")
     public CommandLineRunner init() {
         return args -> {
-            //setStockFromCsvToDatabase();
-            //updateApiStocks();
-            //createSampleUser();
+//            setStockFromCsvToDatabase();
+//            updateApiStocks();
+//            createSampleUser();
         };
     }
 
@@ -59,9 +59,9 @@ public class StockExchangeApplication {
      * This method will only fetch data if db is not up to date for given symbol
      */
     public void updateApiStocks(){
-        Set<String> stocks = symbol.getStocklist().keySet();
-        for (String stock : stocks){
-            updateService.saveOrUpdate(stock);
+        List<StockBaseData> stocks = stockBaseDataRepository.findAll();
+        for (StockBaseData stock : stocks){
+            updateService.saveOrUpdate(stock.getSymbol());
         }
     }
 
