@@ -4,6 +4,7 @@ import com.codecool.stockexchange.entity.trade.Order;
 import com.codecool.stockexchange.entity.trade.OrderStatus;
 import com.codecool.stockexchange.entity.trade.StockTransaction;
 import com.codecool.stockexchange.entity.user.User;
+import com.codecool.stockexchange.exception.user.InvalidUserException;
 import com.codecool.stockexchange.repository.StockRepository;
 import com.codecool.stockexchange.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Service
 public class TradingService {
@@ -18,11 +20,16 @@ public class TradingService {
     @Autowired
     private StockRepository stockRepository;
 
-    @Transactional
-    public OrderStatus handleOrder(Order order) {
+    @Autowired
+    private UserRepository userRepository;
 
+    @Transactional
+    public OrderStatus handleOrder(Order order, Long user_id) {
+        Optional<User> userOptional = userRepository.findById(user_id);
+        User user = userOptional.orElseThrow(() -> new InvalidUserException());
+        order.setUser(user);
         BigDecimal stockPrice = stockRepository.findFirstBySymbol(order.getSymbol()).getCurrentPrice();
-        order.getUser().getOrders().add(order);
+        user.getOrders().add(order);
 
         switch (order.getDirection()) {
             case BUY:
