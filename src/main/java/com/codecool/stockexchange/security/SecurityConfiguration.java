@@ -1,4 +1,4 @@
-package com.codecool.stockexchange;
+package com.codecool.stockexchange.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -30,15 +30,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
             .cors()
             .and()
-                .csrf().disable().authorizeRequests()
-                    .antMatchers("/quote/*").permitAll()
-                    .antMatchers("/stock/*").permitAll()
-            .and()
+                .csrf().disable()
             .authorizeRequests()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .httpBasic();
+                .antMatchers("/trade/*").authenticated()
+                .antMatchers("/user/*").authenticated()
+                .antMatchers("/quote/*").permitAll()
+                .antMatchers("/stock/*").permitAll();
     }
 
 }
