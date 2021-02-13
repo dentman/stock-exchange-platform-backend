@@ -6,6 +6,7 @@ import com.codecool.stockexchange.entity.trade.Order;
 import com.codecool.stockexchange.entity.trade.StockTransaction;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,8 +28,18 @@ public class User {
     @GeneratedValue
     @Column(name = "id")
     private Long id;
-    String firstName;
-    String lastName;
+    private String firstName;
+    private String lastName;
+    @NotNull
+    private String email;
+    @NotNull
+    private String password;
+
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private List<Role> roles;
+
 
     @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
     private Account account;
