@@ -31,7 +31,7 @@ public class User {
     private String firstName;
     private String lastName;
     @NotNull
-    private String email;
+    private String username;
     @NotNull
     private String password;
 
