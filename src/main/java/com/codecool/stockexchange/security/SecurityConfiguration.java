@@ -3,30 +3,16 @@ package com.codecool.stockexchange.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder authManager) throws Exception {
-        PasswordEncoder encoder =
-            PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        authManager
-            .inMemoryAuthentication()
-            .withUser("user")
-            .password(encoder.encode("password"))
-            .roles("USER")
-            .and()
-            .withUser("admin")
-            .password(encoder.encode("admin"))
-            .roles("USER", "ADMIN");
-    }
+    private final JwtTokenUtil jwtTokenUtil;
+
+    public SecurityConfiguration(JwtTokenUtil jwtTokenUtil){ this.jwtTokenUtil = jwtTokenUtil; }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -38,7 +24,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/trade/*").authenticated()
                 .antMatchers("/user/*").authenticated()
                 .antMatchers("/quote/*").permitAll()
-                .antMatchers("/stock/*").permitAll();
+                .antMatchers("/stock/*").permitAll()
+            .and()
+                .addFilterBefore(new JwtRequestFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);
     }
 
 
