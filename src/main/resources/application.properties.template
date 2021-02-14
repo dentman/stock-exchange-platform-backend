@@ -11,3 +11,4 @@ google.token=
 
 spring.jwt.signingKey=secret
 spring.jwt.token.validity=3600000
+stocklist.csv.path=src/main/resources/stockList.csv

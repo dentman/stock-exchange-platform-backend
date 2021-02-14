@@ -2,16 +2,19 @@ package com.codecool.stockexchange;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
 
+import com.codecool.stockexchange.entity.StockBaseData;
 import com.codecool.stockexchange.entity.user.Account;
 import com.codecool.stockexchange.entity.user.Role;
 import com.codecool.stockexchange.entity.user.User;
+import com.codecool.stockexchange.repository.StockBaseDataRepository;
 import com.codecool.stockexchange.repository.UserRepository;
 
 import com.codecool.stockexchange.service.update.StockUpdateService;
+import com.codecool.stockexchange.util.TextReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -36,6 +39,11 @@ public class StockExchangeApplication {
 
     PasswordEncoder pwe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
+    @Autowired
+    StockBaseDataRepository stockBaseDataRepository;
+
+    @Value("${stocklist.csv.path}")
+    String path;
 
     public static void main(String[] args) {
         SpringApplication.run(StockExchangeApplication.class, args);
@@ -45,7 +53,8 @@ public class StockExchangeApplication {
     @Profile("production")
     public CommandLineRunner init() {
         return args -> {
-           // updateApiStocks();
+//            setStockFromCsvToDatabase();
+//            updateApiStocks();
 //            createSampleUser();
         };
     }
@@ -54,10 +63,16 @@ public class StockExchangeApplication {
      * This method will only fetch data if db is not up to date for given symbol
      */
     public void updateApiStocks(){
-        Set<String> stocks = symbol.getStocklist().keySet();
-        for (String stock : stocks){
-            updateService.saveOrUpdate(stock);
+        List<StockBaseData> stocks = stockBaseDataRepository.findAll();
+        for (StockBaseData stock : stocks){
+            updateService.saveOrUpdate(stock.getSymbol());
         }
+    }
+
+    private void setStockFromCsvToDatabase(){
+        TextReader reader = new TextReader(path);
+        List<StockBaseData> data = reader.readLines();
+        data.forEach(d -> stockBaseDataRepository.save(d));
     }
 
 

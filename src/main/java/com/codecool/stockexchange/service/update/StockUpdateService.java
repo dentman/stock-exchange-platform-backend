@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -49,7 +50,7 @@ public class StockUpdateService {
         }
         if (daysToFetch == 1){
             // chart data is up to date, check if quote is
-            long daysPassed = ChronoUnit.DAYS.between(stock.getLastTradeTime(), LocalDate.now());
+            long daysPassed = ChronoUnit.DAYS.between(stock.getLastTradeTime(), LocalDateTime.now());
             if (daysPassed > 0) {
                 stock.updateByQuote(apiService.getQuoteBySymbol(symbol));
                 setVideoLinkList(stock, symbol);

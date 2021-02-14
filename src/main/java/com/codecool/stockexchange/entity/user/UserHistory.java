@@ -27,7 +27,7 @@ public class UserHistory {
     @Id
     @GeneratedValue
     private Long id;
-
+    private Long transactionId;
     private LocalDateTime transactionTime;
     private BigDecimal balanceAfter;
     private int stockCountAfter;

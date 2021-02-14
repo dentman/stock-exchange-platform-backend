@@ -1,6 +1,7 @@
 package com.codecool.stockexchange.controller;
 
 import com.codecool.stockexchange.apimodel.Quote;
+import com.codecool.stockexchange.entity.StockBaseData;
 import com.codecool.stockexchange.entity.stock.Stock;
 import com.codecool.stockexchange.service.StockService;
 
@@ -28,4 +29,8 @@ public class StockController {
         return stockService.findFirstBySymbol(symbol);
     }
 
+    @GetMapping("/stock-base-data/list")
+    public List<StockBaseData> getStockBaseData(){
+        return stockService.getStockBaseData();
+    }
 }
