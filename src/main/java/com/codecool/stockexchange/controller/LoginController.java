@@ -1,5 +1,6 @@
 package com.codecool.stockexchange.controller;
 
+import com.codecool.stockexchange.entity.user.Credentials;
 import com.codecool.stockexchange.security.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -30,17 +32,17 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity logUserIn(){
+    public ResponseEntity logUserIn(@RequestBody Credentials credentials){
         try{
             Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken("test@email.hu", "safe"));
+                    new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword()));
             List<String> roles =  auth.getAuthorities()
                     .stream()
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
-            String token = jwtTokenUtil.createJsonWebToken("test@email.hu", roles);
+            String token = jwtTokenUtil.createJsonWebToken(credentials.getUsername(), roles);
             Map<Object, Object> model = new HashMap<>();
-            model.put("username", "test@email.hu");
+            model.put("username", credentials.getUsername());
             model.put("roles", roles);
             model.put("token", token);
 
