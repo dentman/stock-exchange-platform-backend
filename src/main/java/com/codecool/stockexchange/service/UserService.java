@@ -2,6 +2,7 @@ package com.codecool.stockexchange.service;
 
 import com.codecool.stockexchange.entity.Message;
 import com.codecool.stockexchange.entity.user.Account;
+import com.codecool.stockexchange.entity.user.Role;
 import com.codecool.stockexchange.entity.user.User;
 import com.codecool.stockexchange.exception.user.UserExistsException;
 import com.codecool.stockexchange.repository.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,6 +40,7 @@ public class UserService {
             account.setUser(user);
             user.setPassword(pwe.encode(user.getPassword()));
             user.setAccount(account);
+            user.setRoles(List.of(Role.ROLE_USER));
             userRepository.save(user);
             return user;
         }
