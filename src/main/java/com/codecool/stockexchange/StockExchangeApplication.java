@@ -2,7 +2,6 @@ package com.codecool.stockexchange;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
 
 import com.codecool.stockexchange.entity.StockBaseData;
@@ -31,9 +30,6 @@ public class StockExchangeApplication {
 
     @Autowired
     StockUpdateService updateService;
-
-    @Autowired
-    Symbol symbol;
 
     @Autowired
     StockBaseDataRepository stockBaseDataRepository;

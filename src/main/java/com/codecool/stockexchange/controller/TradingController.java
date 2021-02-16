@@ -1,6 +1,5 @@
 package com.codecool.stockexchange.controller;
 
-import com.codecool.stockexchange.Symbol;
 import com.codecool.stockexchange.exception.trade.InvalidOrderStatusException;
 import com.codecool.stockexchange.exception.trade.InvalidSymbolFormatException;
 import com.codecool.stockexchange.exception.user.InvalidUserException;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Set;
 
 @RestController
 @CrossOrigin
@@ -29,13 +27,8 @@ public class TradingController {
     @PostMapping("/trade/{user_id}")
     public OrderStatus postOrder(@PathVariable Long user_id, @RequestBody @Validated Order order){
         String symbol = order.getSymbol();
-        Symbol symbols = new Symbol();
-        Set<String> stocks = symbols.getStocklist().keySet();
         if (symbol == null || symbol.equals("") || symbol.chars().anyMatch(c -> !Character.isUpperCase((char) c))) {
             throw new InvalidSymbolFormatException();
-        }
-        else if (!stocks.contains(order.getSymbol())) {
-            throw new SymbolNotFoundException(order.getSymbol());
         }
         else if (!order.getStatus().equals(OrderStatus.PENDING)) {
             throw new InvalidOrderStatusException();
