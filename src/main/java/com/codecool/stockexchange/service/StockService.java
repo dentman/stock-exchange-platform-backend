@@ -3,6 +3,7 @@ package com.codecool.stockexchange.service;
 import com.codecool.stockexchange.apimodel.Quote;
 import com.codecool.stockexchange.entity.StockBaseData;
 import com.codecool.stockexchange.entity.stock.Stock;
+import com.codecool.stockexchange.entity.stock.StockChange;
 import com.codecool.stockexchange.repository.StockBaseDataRepository;
 import com.codecool.stockexchange.repository.StockRepository;
 
@@ -20,14 +21,14 @@ public class StockService {
     @Autowired
     StockBaseDataRepository baseDataRepository;
 
-    public Quote findFirstBySymbol(String symbol) {
-        Stock stock = stockRepository.findFirstBySymbol(symbol);
-        return Quote.createQuote(stock);
-    }
-
     public Stock findStockBySymbol(String symbol) {
         return stockRepository.findFirstBySymbol(symbol);
     }
 
     public List<StockBaseData> getStockBaseData(){ return baseDataRepository.findAll(); }
+
+    public StockChange getStockChangeData(String symbol) {
+        Stock stock = stockRepository.findFirstBySymbol(symbol);
+        return StockChange.createStockChange(stock);
+    }
 }

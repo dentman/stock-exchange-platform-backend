@@ -3,6 +3,7 @@ package com.codecool.stockexchange.controller;
 import com.codecool.stockexchange.apimodel.Quote;
 import com.codecool.stockexchange.entity.StockBaseData;
 import com.codecool.stockexchange.entity.stock.Stock;
+import com.codecool.stockexchange.entity.stock.StockChange;
 import com.codecool.stockexchange.service.StockService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,12 @@ public class StockController {
         return stockService.findStockBySymbol(symbol);
     }
 
-    @GetMapping("/quote/{symbol}")
-    public Quote getStockData(@PathVariable String symbol) {
-        return stockService.findFirstBySymbol(symbol);
-    }
-
     @GetMapping("/stock-base-data/list")
     public List<StockBaseData> getStockBaseData(){
         return stockService.getStockBaseData();
     }
+
+    @GetMapping("/stock-change/{symbol}")
+    public StockChange getStockChangeData(@PathVariable String symbol) {
+        return stockService.getStockChangeData(symbol); }
 }
