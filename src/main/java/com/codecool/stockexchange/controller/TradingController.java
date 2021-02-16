@@ -1,5 +1,6 @@
 package com.codecool.stockexchange.controller;
 
+import com.codecool.stockexchange.exception.ErrorMessage;
 import com.codecool.stockexchange.exception.trade.InvalidOrderStatusException;
 import com.codecool.stockexchange.exception.trade.InvalidSymbolFormatException;
 import com.codecool.stockexchange.exception.user.InvalidUserException;
@@ -49,37 +50,33 @@ public class TradingController {
 
     @ExceptionHandler(InvalidSymbolFormatException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleInvalidSymbolFormat(InvalidSymbolFormatException exception) {
-        return exception.getMessage();
-    }
+    public ErrorMessage handleInvalidSymbolFormat(InvalidSymbolFormatException e) { return new ErrorMessage(e); }
 
     @ExceptionHandler(SymbolNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleSymbolNotFound(SymbolNotFoundException exception) {
-        return exception.getMessage();
+    public ErrorMessage handleSymbolNotFound(SymbolNotFoundException e) {
+        return new ErrorMessage(e);
     }
 
     @ExceptionHandler(InvalidUserException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleInvalidUser(InvalidUserException exception) {
-        return exception.getMessage();
+    public ErrorMessage handleInvalidUser(InvalidUserException e) {
+        return new ErrorMessage(e);
     }
 
     @ExceptionHandler(InvalidOrderStatusException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleInvalidOrderStatus(InvalidOrderStatusException exception) {
-        return exception.getMessage();
-    }
+    public ErrorMessage handleInvalidOrderStatus(InvalidOrderStatusException e) { return new ErrorMessage(e); }
 
     @ExceptionHandler(NumberFormatException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleInvalidNumberFormat(NumberFormatException exception) {
-        return exception.getMessage();
-    }
+    public ErrorMessage handleInvalidNumberFormat(NumberFormatException e) { return new ErrorMessage(e); }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleMessageNotReadable(HttpMessageNotReadableException exception) {
-        return "Invalid data provided for the order. Please check the selected paramaters!";
+    public ErrorMessage handleMessageNotReadable(HttpMessageNotReadableException e) {
+        return new ErrorMessage(
+                "Invalid data provided for the order. Please check the selected paramaters!",
+                e.getClass().getSimpleName());
     }
 }
