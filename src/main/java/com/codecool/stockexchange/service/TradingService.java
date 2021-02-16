@@ -1,9 +1,11 @@
 package com.codecool.stockexchange.service;
 
+import com.codecool.stockexchange.entity.stock.Stock;
 import com.codecool.stockexchange.entity.trade.Order;
 import com.codecool.stockexchange.entity.trade.OrderStatus;
 import com.codecool.stockexchange.entity.trade.StockTransaction;
 import com.codecool.stockexchange.entity.user.User;
+import com.codecool.stockexchange.exception.trade.SymbolNotFoundException;
 import com.codecool.stockexchange.exception.user.InvalidUserException;
 import com.codecool.stockexchange.repository.StockRepository;
 import com.codecool.stockexchange.repository.StockTransactionRepository;
@@ -13,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @Service
 public class TradingService {
@@ -29,10 +30,12 @@ public class TradingService {
 
     @Transactional
     public OrderStatus handleOrder(Order order, Long user_id) {
-        Optional<User> userOptional = userRepository.findById(user_id);
-        User user = userOptional.orElseThrow(() -> new InvalidUserException());
+        User user = userRepository.findById(user_id).orElseThrow(InvalidUserException::new);
+        BigDecimal stockPrice = stockRepository.findBySymbol(order.getSymbol())
+                .map(Stock::getCurrentPrice)
+                .orElseThrow(() -> new SymbolNotFoundException(order.getSymbol()));
+
         order.setUser(user);
-        BigDecimal stockPrice = stockRepository.findFirstBySymbol(order.getSymbol()).getCurrentPrice();
         user.getOrders().add(order);
 
         switch (order.getDirection()) {
