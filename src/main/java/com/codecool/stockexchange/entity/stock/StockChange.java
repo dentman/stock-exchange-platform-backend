@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class StockChange {
     private String symbol;
+    private String companyName;
     private BigDecimal latestPrice;
     private double change;
     private double changePercent;
@@ -17,6 +18,7 @@ public class StockChange {
     public static StockChange createStockChange(Stock stock) {
         StockChange stockChange = new StockChange();
         stockChange.setSymbol(stock.getSymbol());
+        stockChange.setCompanyName(stock.getCompanyName());
         stockChange.setLatestPrice(stock.getPreviousClose());
         double previousPrice = stock.getPreviousClose().doubleValue();
         double currentPrice = stock.getCurrentPrice().doubleValue();
