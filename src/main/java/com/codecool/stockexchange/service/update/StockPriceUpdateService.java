@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 
-//@Service
+@Service
 public class StockPriceUpdateService {
 
     private final int REFRESH_INTERVAL = 5000;

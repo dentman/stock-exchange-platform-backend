@@ -19,11 +19,11 @@ public class StockChange {
         StockChange stockChange = new StockChange();
         stockChange.setSymbol(stock.getSymbol());
         stockChange.setCompanyName(stock.getCompanyName());
-        stockChange.setLatestPrice(stock.getPreviousClose());
         double previousPrice = stock.getPreviousClose().doubleValue();
-        double currentPrice = stock.getCurrentPrice().doubleValue();
-        stockChange.setChange(currentPrice - previousPrice);
-        stockChange.setChangePercent(currentPrice / previousPrice - 1);
+        BigDecimal currentPrice = stock.getCurrentPrice();
+        stockChange.setLatestPrice(currentPrice);
+        stockChange.setChange(currentPrice.doubleValue() - previousPrice);
+        stockChange.setChangePercent(currentPrice.doubleValue() / previousPrice - 1);
         return stockChange;
     }
 }
