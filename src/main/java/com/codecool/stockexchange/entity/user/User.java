@@ -31,7 +31,7 @@ public class User {
     @NonNull
     private String password;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @NonNull
     private List<Role> roles;

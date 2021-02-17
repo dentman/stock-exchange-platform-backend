@@ -7,10 +7,12 @@ import com.codecool.stockexchange.exception.user.InvalidUserException;
 import com.codecool.stockexchange.exception.trade.SymbolNotFoundException;
 import com.codecool.stockexchange.entity.trade.Order;
 import com.codecool.stockexchange.entity.trade.OrderStatus;
+import com.codecool.stockexchange.security.CustomUser;
 import com.codecool.stockexchange.service.TradingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +45,8 @@ public class TradingController {
         }
         else {
             order.setDate(LocalDateTime.now());
-            return tradingService.handleOrder(order, user_id);
+            CustomUser user = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return tradingService.handleOrder(order, user.getUserId());
         }
     }
 
