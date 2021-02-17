@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 import java.util.stream.Collectors;
 
 @Component
-public class TradeUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public TradeUserDetailsService(UserRepository userRepository){
+    public CustomUserDetailsService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
 

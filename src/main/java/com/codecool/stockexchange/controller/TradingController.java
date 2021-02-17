@@ -27,8 +27,8 @@ public class TradingController {
     @Autowired
     TradingService tradingService;
 
-    @PostMapping("/trade/{user_id}")
-    public OrderStatus postOrder(@PathVariable Long user_id, @RequestBody @Validated Order order){
+    @PostMapping("/trade")
+    public OrderStatus postOrder(@RequestBody @Validated Order order){
         String symbol = order.getSymbol();
         if (symbol == null || symbol.equals("") || symbol.chars().anyMatch(c -> !Character.isUpperCase((char) c))) {
             throw new InvalidSymbolFormatException();

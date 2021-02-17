@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
 public class JwtRequestFilter extends GenericFilterBean {
 
     private JwtTokenUtil jwtTokenUtil;
-    private TradeUserDetailsService tradeUserDetailsService;
+    private CustomUserDetailsService customUserDetailsService;
 
-    public JwtRequestFilter(JwtTokenUtil jwtTokenUtil, TradeUserDetailsService tradeUserDetailsService){
+    public JwtRequestFilter(JwtTokenUtil jwtTokenUtil, CustomUserDetailsService customUserDetailsService){
         this.jwtTokenUtil = jwtTokenUtil;
-        this.tradeUserDetailsService = tradeUserDetailsService;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class JwtRequestFilter extends GenericFilterBean {
                     .stream()
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
-            CustomUser user = tradeUserDetailsService.loadUserByUsername(claims.getSubject());
+            CustomUser user = customUserDetailsService.loadUserByUsername(claims.getSubject());
             Authentication auth = new UsernamePasswordAuthenticationToken(user, "", authorities);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }

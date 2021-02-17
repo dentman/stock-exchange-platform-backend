@@ -12,11 +12,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenUtil jwtTokenUtil;
-    private TradeUserDetailsService tradeUserDetailsService;
+    private CustomUserDetailsService customUserDetailsService;
 
-    public SecurityConfiguration(JwtTokenUtil jwtTokenUtil, TradeUserDetailsService tradeUserDetailsService) {
+    public SecurityConfiguration(JwtTokenUtil jwtTokenUtil, CustomUserDetailsService customUserDetailsService) {
         this.jwtTokenUtil = jwtTokenUtil;
-        this.tradeUserDetailsService = tradeUserDetailsService;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/quote/*").permitAll()
                 .antMatchers("/stock/*").permitAll()
             .and()
-                .addFilterBefore(new JwtRequestFilter(jwtTokenUtil, tradeUserDetailsService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtRequestFilter(jwtTokenUtil, customUserDetailsService), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
