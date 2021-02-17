@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Set;
 
 @RestController
-@CrossOrigin(value = "http://localhost:3000")
+@CrossOrigin(value = "${cors.allowed.path}")
 public class TradingController {
 
     @Autowired

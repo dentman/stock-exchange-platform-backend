@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin(value = "http://localhost:3000")
+@CrossOrigin(value = "${cors.allowed.path}")
 public class StockController {
 
     @Autowired

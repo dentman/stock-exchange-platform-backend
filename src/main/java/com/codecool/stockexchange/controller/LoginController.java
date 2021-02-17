@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
-@CrossOrigin(value = "http://localhost:3000")
+@CrossOrigin(value = "${cors.allowed.path}")
 public class LoginController {
 
     private final JwtTokenUtil jwtTokenUtil;
