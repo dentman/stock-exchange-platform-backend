@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(value = "${cors.allowed.path}")
 public class TradingController {
 
     @Autowired
