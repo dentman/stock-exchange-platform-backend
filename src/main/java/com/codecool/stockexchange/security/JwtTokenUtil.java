@@ -3,9 +3,6 @@ package com.codecool.stockexchange.security;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -13,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -61,13 +57,8 @@ public class JwtTokenUtil {
         return false;
     }
 
-    public Authentication extractUserFromToken(String token){
-        Claims claims = getTokenBody(token);
-        List<SimpleGrantedAuthority> authorities = ((List<String>) claims.get("roles"))
-                .stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-        return new UsernamePasswordAuthenticationToken(claims.getSubject(), "", authorities);
+    public Claims extractClaimsFromToken(String token) {
+        return getTokenBody(token);
     }
 
     private Claims getTokenBody(String token){
