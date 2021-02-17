@@ -3,7 +3,6 @@ package com.codecool.stockexchange.security;
 import com.codecool.stockexchange.repository.UserRepository;
 import com.codecool.stockexchange.entity.user.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -20,16 +19,17 @@ public class TradeUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public CustomUser loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("This email does not exist"));
 
-        return new org.springframework.security.core.userdetails.User(
+        return new CustomUser(
                 user.getUsername(),
                 user.getPassword(),
                 user.getRoles()
                         .stream()
                         .map(r -> new SimpleGrantedAuthority(r.toString()))
-                        .collect(Collectors.toList())
+                        .collect(Collectors.toList()),
+                user.getId()
         );
     }
 }
