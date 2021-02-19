@@ -24,11 +24,14 @@ import java.util.List;
 @Transactional
 public class StockUpdateService {
 
-    @Autowired
-    StockRepository stockRepository;
+    private final StockRepository stockRepository;
+    private final ExternalApiService apiService;
 
     @Autowired
-    ExternalApiService apiService;
+    public StockUpdateService(StockRepository stockRepository, ExternalApiService apiService) {
+        this.stockRepository = stockRepository;
+        this.apiService = apiService;
+    }
 
     /***
      * if I ask for 2 days on Saturday, api gives Thursday & Friday

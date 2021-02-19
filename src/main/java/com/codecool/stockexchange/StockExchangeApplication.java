@@ -28,19 +28,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableScheduling
 public class StockExchangeApplication {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final StockUpdateService updateService;
+    private final StockBaseDataRepository stockBaseDataRepository;
+    private final PasswordEncoder pwe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     @Autowired
-    StockUpdateService updateService;
-
-    PasswordEncoder pwe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
-    @Autowired
-    StockBaseDataRepository stockBaseDataRepository;
+    public StockExchangeApplication(UserRepository userRepository,
+                                    StockUpdateService updateService,
+                                    StockBaseDataRepository stockBaseDataRepository) {
+        this.userRepository = userRepository;
+        this.updateService = updateService;
+        this.stockBaseDataRepository = stockBaseDataRepository;
+    }
 
     @Value("${stocklist.csv.path}")
-    String path;
+    private String path;
 
     public static void main(String[] args) {
         SpringApplication.run(StockExchangeApplication.class, args);

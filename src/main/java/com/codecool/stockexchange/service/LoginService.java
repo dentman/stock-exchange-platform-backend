@@ -3,6 +3,7 @@ package com.codecool.stockexchange.service;
 import com.codecool.stockexchange.entity.user.Credentials;
 import com.codecool.stockexchange.security.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,6 +25,7 @@ public class LoginService {
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
 
+    @Autowired
     public LoginService(JwtTokenUtil jwtTokenUtil, AuthenticationManager authenticationManager){
         this.jwtTokenUtil = jwtTokenUtil;
         this.authenticationManager = authenticationManager;
