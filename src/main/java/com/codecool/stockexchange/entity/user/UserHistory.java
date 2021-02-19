@@ -1,7 +1,5 @@
 package com.codecool.stockexchange.entity.user;
 
-import com.codecool.stockexchange.entity.trade.OrderDirection;
-import com.codecool.stockexchange.entity.trade.StockTransaction;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;

@@ -15,8 +15,12 @@ import java.time.LocalDateTime;
 @CrossOrigin(value = "${cors.allowed.path}")
 public class TradingController {
 
-    @Autowired
     TradingService tradingService;
+
+    @Autowired
+    public TradingController (TradingService tradingService){
+        this.tradingService = tradingService;
+    }
 
     @PostMapping("/trade")
     public OrderStatus postOrder(@RequestBody @Validated Order order){

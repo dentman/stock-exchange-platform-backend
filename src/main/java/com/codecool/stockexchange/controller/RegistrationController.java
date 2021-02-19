@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(value = "${cors.allowed.path}")
 public class RegistrationController {
 
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public RegistrationController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/register")
     public Message registerUser(@RequestBody User user){

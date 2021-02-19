@@ -89,7 +89,7 @@ public class TradingService {
         }
     }
 
-    public static void checkOrder(Order order) {
+    public void checkOrder(Order order) {
         String symbol = order.getSymbol();
 
         if (symbol == null || symbol.equals("") || symbol.chars().anyMatch(c -> !Character.isUpperCase((char) c))) {

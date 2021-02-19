@@ -13,13 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
 @RestController
 @CrossOrigin(value = "${cors.allowed.path}")
 public class StockController {
 
-    @Autowired
     StockService stockService;
+
+    @Autowired
+    public StockController (StockService stockService) {
+        this.stockService = stockService;
+    }
 
     @GetMapping("/stock/{symbol}")
     public Stock getStock(@PathVariable String symbol){

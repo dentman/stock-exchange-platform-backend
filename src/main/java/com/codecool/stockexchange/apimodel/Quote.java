@@ -170,26 +170,6 @@ public class Quote {
 	@JsonProperty("iexBidSize")
 	private Object iexBidSize;
 
-	public static Quote createQuote(Stock stock) {
-		Quote quote = new Quote();
-		quote.setSymbol(stock.getSymbol());
-		quote.setCompanyName(stock.getCompanyName());
-		quote.setMarketCap(stock.getMarketCap());
-		quote.setWeek52Low(stock.getWeek52Low().doubleValue());
-		quote.setWeek52High(stock.getWeek52High().doubleValue());
-		quote.setAvgTotalVolume(stock.getAvgTotalVolume());
-		quote.setPeRatio(stock.getPeRatio());
-		quote.setYtdChange(stock.getYtdChange());
-
-		double previousPrice = stock.getPreviousClose().doubleValue();
-		double currentPrice = stock.getCurrentPrice().doubleValue();
-		quote.setPreviousClose(previousPrice);
-		quote.setLatestPrice(currentPrice);
-		quote.setChange(currentPrice - previousPrice);
-		quote.setChangePercent(currentPrice / previousPrice - 1);
-		return quote;
-	}
-
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}

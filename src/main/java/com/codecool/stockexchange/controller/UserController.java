@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(value = "${cors.allowed.path}")
 public class UserController {
 
-    @Autowired
     UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/user")
     public User getUserById(){
