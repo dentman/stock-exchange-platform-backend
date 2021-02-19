@@ -32,6 +32,9 @@ public class StockExchangeApplication {
     private final StockUpdateService updateService;
     private final StockBaseDataRepository stockBaseDataRepository;
     private final PasswordEncoder pwe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    private final boolean createDb = false;
+    private final boolean updateDbFromApi = false;
+
 
     @Autowired
     public StockExchangeApplication(UserRepository userRepository,
@@ -53,9 +56,13 @@ public class StockExchangeApplication {
     @Profile("production")
     public CommandLineRunner init() {
         return args -> {
-//            setStockFromCsvToDatabase();
-//            updateApiStocks();
-//            createSampleUser();
+            if (createDb) {
+                setStockFromCsvToDatabase();
+                createSampleUser();
+            }
+            if (updateDbFromApi) {
+                updateApiStocks();
+            }
         };
     }
 
