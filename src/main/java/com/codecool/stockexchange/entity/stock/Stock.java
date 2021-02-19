@@ -125,5 +125,4 @@ public class Stock {
         BigDecimal nextPrice = getCurrentPrice().multiply(BigDecimal.valueOf(1 + change));
         setSimulatedStockPrice(nextPrice);
     }
-    public void addNewsItem(NewsItem item) { newsList.add(item); }
 }

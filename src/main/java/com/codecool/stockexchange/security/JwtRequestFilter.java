@@ -1,10 +1,12 @@
 package com.codecool.stockexchange.security;
 
 import io.jsonwebtoken.Claims;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -16,12 +18,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Component
 public class JwtRequestFilter extends GenericFilterBean {
 
-    private JwtTokenUtil jwtTokenUtil;
-    private CustomUserDetailsService customUserDetailsService;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final CustomUserDetailsService customUserDetailsService;
 
+    @Autowired
     public JwtRequestFilter(JwtTokenUtil jwtTokenUtil, CustomUserDetailsService customUserDetailsService){
         this.jwtTokenUtil = jwtTokenUtil;
         this.customUserDetailsService = customUserDetailsService;

@@ -1,6 +1,5 @@
 package com.codecool.stockexchange.controller;
 
-import com.codecool.stockexchange.apimodel.Quote;
 import com.codecool.stockexchange.entity.StockBaseData;
 import com.codecool.stockexchange.entity.stock.Stock;
 import com.codecool.stockexchange.entity.stock.StockChange;
@@ -14,13 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
 @RestController
 @CrossOrigin(value = "${cors.allowed.path}")
 public class StockController {
 
+    private final StockService stockService;
+
     @Autowired
-    StockService stockService;
+    public StockController (StockService stockService) {
+        this.stockService = stockService;
+    }
 
     @GetMapping("/stock/{symbol}")
     public Stock getStock(@PathVariable String symbol){

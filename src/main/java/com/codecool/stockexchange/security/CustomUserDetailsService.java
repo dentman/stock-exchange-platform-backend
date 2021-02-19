@@ -2,6 +2,7 @@ package com.codecool.stockexchange.security;
 
 import com.codecool.stockexchange.repository.UserRepository;
 import com.codecool.stockexchange.entity.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,6 +15,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    @Autowired
     public CustomUserDetailsService(UserRepository userRepository){
         this.userRepository = userRepository;
     }

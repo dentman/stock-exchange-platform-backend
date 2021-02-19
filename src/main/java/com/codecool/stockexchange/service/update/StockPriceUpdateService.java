@@ -9,15 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
 @Service
 public class StockPriceUpdateService {
 
     private final int REFRESH_INTERVAL = 5000;
+    private final StockRepository stockRepository;
 
     @Autowired
-    private StockRepository stockRepository;
-
+    public StockPriceUpdateService(StockRepository stockRepository) {
+        this.stockRepository = stockRepository;
+    }
 
     @Scheduled(initialDelay = REFRESH_INTERVAL, fixedRate = REFRESH_INTERVAL)
     @Transactional
