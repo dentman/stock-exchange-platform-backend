@@ -24,7 +24,15 @@ public class TradingController {
 
     @PostMapping("/trade")
     public OrderStatus postOrder(@RequestBody @Validated Order order){
+        checkOrder(order);
+        order.setDate(LocalDateTime.now());
+        CustomUser user = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return tradingService.handleOrder(order, user.getUserId());
+    }
+
+    private void checkOrder(Order order) {
         String symbol = order.getSymbol();
+        
         if (symbol == null || symbol.equals("") || symbol.chars().anyMatch(c -> !Character.isUpperCase((char) c))) {
             throw new InvalidSymbolFormatException();
         }
@@ -39,10 +47,7 @@ public class TradingController {
             throw new NumberFormatException("Order count and price must be positive numbers!");
         }
         else {
-            order.setDate(LocalDateTime.now());
-            CustomUser user = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            return tradingService.handleOrder(order, user.getUserId());
+            return;
         }
     }
-
 }
