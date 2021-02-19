@@ -1,15 +1,15 @@
 package com.codecool.stockexchange.util;
 
 import com.codecool.stockexchange.entity.StockBaseData;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.StringJoiner;
 
-//@Component
+
 public class TextReader {
 
     File file;
@@ -30,5 +30,13 @@ public class TextReader {
             stocks.add(new StockBaseData(sc.nextLine().split(",")));
         }
         return stocks;
+    }
+
+    public String readMarkdown() {
+        StringJoiner stringJoiner = new StringJoiner("\n\n");
+        while (sc.hasNextLine()){
+            stringJoiner.add(sc.nextLine());
+        }
+        return stringJoiner.toString();
     }
 }
