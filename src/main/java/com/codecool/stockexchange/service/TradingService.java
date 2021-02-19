@@ -5,6 +5,8 @@ import com.codecool.stockexchange.entity.trade.Order;
 import com.codecool.stockexchange.entity.trade.OrderStatus;
 import com.codecool.stockexchange.entity.trade.StockTransaction;
 import com.codecool.stockexchange.entity.user.User;
+import com.codecool.stockexchange.exception.trade.InvalidOrderStatusException;
+import com.codecool.stockexchange.exception.trade.InvalidSymbolFormatException;
 import com.codecool.stockexchange.exception.trade.SymbolNotFoundException;
 import com.codecool.stockexchange.exception.user.InvalidUserException;
 import com.codecool.stockexchange.repository.StockRepository;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 @Service
 public class TradingService {
@@ -83,6 +86,23 @@ public class TradingService {
         }
         else {
             order.setStatus(OrderStatus.LIMIT_PRICE_MISMATCH);
+        }
+    }
+
+    public static void checkOrder(Order order) {
+        String symbol = order.getSymbol();
+
+        if (symbol == null || symbol.equals("") || symbol.chars().anyMatch(c -> !Character.isUpperCase((char) c))) {
+            throw new InvalidSymbolFormatException();
+        } else if (!order.getStatus().equals(OrderStatus.PENDING)) {
+            throw new InvalidOrderStatusException();
+        } else if (Arrays.stream(OrderStatus.values())
+                .noneMatch(orderStatus -> orderStatus.equals(order.getStatus()))) {
+            throw new InvalidOrderStatusException();
+        } else if (order.getCount() <= 0 || order.getLimitPrice().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new NumberFormatException("Order count and price must be positive numbers!");
+        } else {
+            return;
         }
     }
 }
