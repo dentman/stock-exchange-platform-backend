@@ -24,8 +24,4 @@ public class RegistrationController {
         userService.saveNewUser(user);
         return new Message(true, "User " + user.getUsername() + " registered");
     }
-
-    @ExceptionHandler(UserExistsException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public Message handleUserExistsException(UserExistsException e){return new Message(false, e.getMessage());}
 }

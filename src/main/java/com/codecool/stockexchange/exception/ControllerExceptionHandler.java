@@ -1,9 +1,11 @@
 package com.codecool.stockexchange.exception;
 
+import com.codecool.stockexchange.entity.Message;
 import com.codecool.stockexchange.exception.trade.InvalidOrderStatusException;
 import com.codecool.stockexchange.exception.trade.InvalidSymbolFormatException;
 import com.codecool.stockexchange.exception.trade.SymbolNotFoundException;
 import com.codecool.stockexchange.exception.user.InvalidUserException;
+import com.codecool.stockexchange.exception.user.UserExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -46,4 +48,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
                 "Invalid data provided for the order. Please check the selected paramaters!",
                 e.getClass().getSimpleName());
     }
+
+    @ExceptionHandler(UserExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Message handleUserExistsException(UserExistsException e){return new Message(false, e.getMessage());}
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorMessage handleResourceNotFound(ResourceNotFoundException e){ return new ErrorMessage(e); }
 }
