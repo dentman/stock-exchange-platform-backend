@@ -1,17 +1,12 @@
 package com.codecool.stockexchange.controller;
 
-import com.codecool.stockexchange.exception.ErrorMessage;
 import com.codecool.stockexchange.exception.trade.InvalidOrderStatusException;
 import com.codecool.stockexchange.exception.trade.InvalidSymbolFormatException;
-import com.codecool.stockexchange.exception.user.InvalidUserException;
-import com.codecool.stockexchange.exception.trade.SymbolNotFoundException;
 import com.codecool.stockexchange.entity.trade.Order;
 import com.codecool.stockexchange.entity.trade.OrderStatus;
 import com.codecool.stockexchange.security.CustomUser;
 import com.codecool.stockexchange.service.TradingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -50,36 +45,4 @@ public class TradingController {
         }
     }
 
-
-    @ExceptionHandler(InvalidSymbolFormatException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage handleInvalidSymbolFormat(InvalidSymbolFormatException e) { return new ErrorMessage(e); }
-
-    @ExceptionHandler(SymbolNotFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage handleSymbolNotFound(SymbolNotFoundException e) {
-        return new ErrorMessage(e);
-    }
-
-    @ExceptionHandler(InvalidUserException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage handleInvalidUser(InvalidUserException e) {
-        return new ErrorMessage(e);
-    }
-
-    @ExceptionHandler(InvalidOrderStatusException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage handleInvalidOrderStatus(InvalidOrderStatusException e) { return new ErrorMessage(e); }
-
-    @ExceptionHandler(NumberFormatException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage handleInvalidNumberFormat(NumberFormatException e) { return new ErrorMessage(e); }
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage handleMessageNotReadable(HttpMessageNotReadableException e) {
-        return new ErrorMessage(
-                "Invalid data provided for the order. Please check the selected paramaters!",
-                e.getClass().getSimpleName());
-    }
 }

@@ -1,6 +1,5 @@
 package com.codecool.stockexchange.controller;
 
-import com.codecool.stockexchange.apimodel.Quote;
 import com.codecool.stockexchange.entity.StockBaseData;
 import com.codecool.stockexchange.entity.stock.Stock;
 import com.codecool.stockexchange.entity.stock.StockChange;
