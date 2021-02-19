@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @CrossOrigin(value = "${cors.allowed.path}")
 public class TradingController {
 
-    TradingService tradingService;
+    private final TradingService tradingService;
 
     @Autowired
     public TradingController (TradingService tradingService){

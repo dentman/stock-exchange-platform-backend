@@ -17,7 +17,7 @@ import java.util.List;
 @CrossOrigin(value = "${cors.allowed.path}")
 public class StockController {
 
-    StockService stockService;
+    private final StockService stockService;
 
     @Autowired
     public StockController (StockService stockService) {
