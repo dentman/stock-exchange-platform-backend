@@ -1,7 +1,7 @@
 package com.codecool.stockexchange.util;
 
 import com.codecool.stockexchange.entity.StockBaseData;
-import com.codecool.stockexchange.exception.ResourceNotFoundException;
+import com.codecool.stockexchange.exception.resource.ResourceNotFoundException;
 
 import java.io.File;
 import java.io.FileNotFoundException;

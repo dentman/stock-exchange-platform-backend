@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(value = "${cors.allowed.path}")
 public class AboutPageController {
 
-    @Autowired
     AboutPageService aboutPageService;
+
+    @Autowired
+    public AboutPageController(AboutPageService aboutPageService){ this.aboutPageService = aboutPageService; }
 
     @GetMapping("/about/{lang}")
     public Message getAboutPageInfo(@PathVariable String lang){

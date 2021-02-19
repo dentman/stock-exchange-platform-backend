@@ -1,4 +1,4 @@
-package com.codecool.stockexchange.exception;
+package com.codecool.stockexchange.exception.resource;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException() {
