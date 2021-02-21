@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class StockPriceUpdateService {
 
-    private final int REFRESH_INTERVAL = 5000;
+    private final int REFRESH_INTERVAL = 1000;
     private final StockRepository stockRepository;
 
     @Autowired
