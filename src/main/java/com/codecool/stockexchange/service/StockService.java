@@ -8,8 +8,10 @@ import com.codecool.stockexchange.repository.StockRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StockService {
@@ -32,5 +34,13 @@ public class StockService {
     public StockChange getStockChangeData(String symbol) {
         Stock stock = stockRepository.findFirstBySymbol(symbol);
         return StockChange.createStockChange(stock);
+    }
+
+    @Transactional
+    public List<StockChange> getStockChangeList() {
+        List<Stock> stockList = stockRepository.findAll();
+        return stockList.stream()
+                        .map(StockChange::createStockChange)
+                        .collect(Collectors.toList());
     }
 }
