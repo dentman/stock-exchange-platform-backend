@@ -10,10 +10,9 @@ import java.math.BigDecimal;
 public class StockChange {
     private String symbol;
     private String companyName;
-    private BigDecimal latestPrice;
+    private double latestPrice;
     private double change;
     private double changePercent;
-
 
     public static StockChange createStockChange(Stock stock) {
         StockChange stockChange = new StockChange();
@@ -21,9 +20,14 @@ public class StockChange {
         stockChange.setCompanyName(stock.getCompanyName());
         double previousPrice = stock.getPreviousClose().doubleValue();
         BigDecimal currentPrice = stock.getCurrentPrice();
-        stockChange.setLatestPrice(currentPrice);
-        stockChange.setChange(currentPrice.doubleValue() - previousPrice);
-        stockChange.setChangePercent(currentPrice.doubleValue() / previousPrice - 1);
+        stockChange.setLatestPrice(round(currentPrice.doubleValue(), 2));
+        stockChange.setChange(round(currentPrice.doubleValue() - previousPrice, 1));
+        stockChange.setChangePercent(round(currentPrice.doubleValue() / previousPrice - 1, 4));
         return stockChange;
+    }
+
+    private static double round(double number, int decimal) {
+        double scale = Math.pow(10, decimal);
+        return (double) Math.round(number * scale) / scale;
     }
 }

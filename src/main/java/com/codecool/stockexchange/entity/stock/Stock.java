@@ -120,8 +120,8 @@ public class Stock {
     public void setNextPrice() {
         Random random = new Random();
         int trend = getYtdChange() > 0 ? 1 : -1;
-        int direction = random.nextInt(100) < 60 ? trend : -trend;
-        double change = (double) random.nextInt(10) / 1000 * direction;
+        int direction = random.nextInt(100) < 52 ? trend : -trend;
+        double change = (double) random.nextInt(5) / 1000 * direction;
         BigDecimal nextPrice = getCurrentPrice().multiply(BigDecimal.valueOf(1 + change));
         setSimulatedStockPrice(nextPrice);
     }

@@ -20,9 +20,11 @@ public class StockService {
     private final StockBaseDataRepository baseDataRepository;
 
     @Autowired
-    public StockService(StockRepository stockRepository, StockBaseDataRepository baseDataRepository) {
+    public StockService(StockRepository stockRepository,
+                        StockBaseDataRepository baseDataRepository) {
         this.stockRepository = stockRepository;
         this.baseDataRepository = baseDataRepository;
+
     }
 
     public Stock findStockBySymbol(String symbol) {
