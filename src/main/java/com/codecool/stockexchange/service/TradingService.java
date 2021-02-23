@@ -5,7 +5,6 @@ import com.codecool.stockexchange.entity.trade.Order;
 import com.codecool.stockexchange.entity.trade.OrderStatus;
 import com.codecool.stockexchange.entity.trade.StockTransaction;
 import com.codecool.stockexchange.entity.user.Account;
-import com.codecool.stockexchange.entity.user.PortfolioItem;
 import com.codecool.stockexchange.entity.user.User;
 import com.codecool.stockexchange.exception.trade.InvalidOrderStatusException;
 import com.codecool.stockexchange.exception.trade.InvalidSymbolFormatException;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Optional;
 
 @Service
 public class TradingService {
@@ -44,17 +42,19 @@ public class TradingService {
         order.setUser(user);
         user.getOrders().add(order);
 
-        switch (order.getDirection()) {
-            case BUY:
-                buyStock(order, stockPrice);
-                break;
-            case SELL:
-                sellStock(order, stockPrice);
-                break;
-            default:
-                throw new IllegalArgumentException();
+        try {
+            switch (order.getDirection()) {
+                case BUY:
+                    buyStock(order, stockPrice);
+                    break;
+                case SELL:
+                    sellStock(order, stockPrice);
+                    break;
+            }
+            return order.getStatus();
+        } catch (Exception e){
+            return OrderStatus.DATABASE_PROBLEM;
         }
-        return order.getStatus();
     }
 
     private void handleTransaction(Order order, BigDecimal stockPrice) {
