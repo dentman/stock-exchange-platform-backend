@@ -43,7 +43,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public Message handleUserExistsException(UserExistsException e){return new Message(false, e.getMessage());}
+    public ErrorMessage handleUserExistsException(UserExistsException e){return new ErrorMessage(e);}
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
