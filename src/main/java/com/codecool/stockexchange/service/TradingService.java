@@ -4,6 +4,7 @@ import com.codecool.stockexchange.entity.stock.Stock;
 import com.codecool.stockexchange.entity.trade.Order;
 import com.codecool.stockexchange.entity.trade.OrderStatus;
 import com.codecool.stockexchange.entity.trade.StockTransaction;
+import com.codecool.stockexchange.entity.user.Account;
 import com.codecool.stockexchange.entity.user.PortfolioItem;
 import com.codecool.stockexchange.entity.user.User;
 import com.codecool.stockexchange.exception.trade.InvalidOrderStatusException;
@@ -67,7 +68,9 @@ public class TradingService {
 
     private void buyStock(Order order, BigDecimal stockPrice) {
         if (order.getLimitPrice().compareTo(stockPrice) >= 0) {
-            if (order.getUser().getAccount().checkAvailableFunds(order, stockPrice)) {
+            Account account = order.getUser().getAccount();
+            BigDecimal requiredBalance = stockPrice.multiply(BigDecimal.valueOf(order.getCount()));
+            if (account.getBalance().compareTo(requiredBalance) >= 0) {
                 handleTransaction(order, stockPrice);
             } else {
                 order.setStatus(OrderStatus.INSUFFICIENT_FUND);
@@ -103,8 +106,6 @@ public class TradingService {
             throw new InvalidOrderStatusException();
         } else if (order.getCount() <= 0 || order.getLimitPrice().compareTo(BigDecimal.ZERO) <= 0) {
             throw new NumberFormatException("Order count and price must be positive numbers!");
-        } else {
-            return;
         }
     }
 }

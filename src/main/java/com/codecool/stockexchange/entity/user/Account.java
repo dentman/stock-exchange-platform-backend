@@ -35,10 +35,6 @@ public class Account {
     private BigDecimal balance;
     private String currency;
 
-    public boolean checkAvailableFunds(Order order, BigDecimal stockPrice) {
-        BigDecimal requiredBalance = stockPrice.multiply(BigDecimal.valueOf(order.getCount()));
-        return getBalance().compareTo(requiredBalance) >= 0;
-    }
 
     public void transferOrderFunding(StockTransaction transaction) {
         setBalance(balance.add(transaction.getAccountBalanceChange()));
