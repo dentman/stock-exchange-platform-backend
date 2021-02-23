@@ -57,14 +57,6 @@ public class User {
                 .findFirst();
     }
 
-    public boolean checkAvailableStocks(Order order) {
-        Optional<PortfolioItem> portfolioItemOptional = getPortfolioItem(order.getSymbol());
-        if (portfolioItemOptional.isPresent()) {
-            return order.getCount() <= portfolioItemOptional.get().getAmount();
-        } else {
-            return false;
-        }
-    }
 
     public void changePortfolio(StockTransaction transaction) {
         PortfolioItem tradedStock;

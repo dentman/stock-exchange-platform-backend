@@ -4,6 +4,7 @@ import com.codecool.stockexchange.entity.stock.Stock;
 import com.codecool.stockexchange.entity.trade.Order;
 import com.codecool.stockexchange.entity.trade.OrderStatus;
 import com.codecool.stockexchange.entity.trade.StockTransaction;
+import com.codecool.stockexchange.entity.user.PortfolioItem;
 import com.codecool.stockexchange.entity.user.User;
 import com.codecool.stockexchange.exception.trade.InvalidOrderStatusException;
 import com.codecool.stockexchange.exception.trade.InvalidSymbolFormatException;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Optional;
 
 @Service
 public class TradingService {
@@ -78,11 +80,11 @@ public class TradingService {
 
     private void sellStock(Order order, BigDecimal stockPrice) {
         if (order.getLimitPrice().compareTo(stockPrice) <= 0) {
-            if (order.getUser().checkAvailableStocks(order)) {
-                handleTransaction(order, stockPrice);
-            } else {
-                order.setStatus(OrderStatus.INSUFFICIENT_STOCK);
-            }
+            order.getUser().getPortfolioItem(order.getSymbol())
+                    .ifPresentOrElse((p) -> {
+                        if (order.getCount() <= p.getAmount()) handleTransaction(order, stockPrice);
+                        else order.setStatus(OrderStatus.INSUFFICIENT_STOCK);
+                    }, () -> order.setStatus(OrderStatus.INSUFFICIENT_STOCK));
         }
         else {
             order.setStatus(OrderStatus.LIMIT_PRICE_MISMATCH);
