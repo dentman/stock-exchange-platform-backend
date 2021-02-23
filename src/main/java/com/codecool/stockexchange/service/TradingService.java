@@ -23,14 +23,16 @@ import java.util.Arrays;
 @Service
 public class TradingService {
 
-    @Autowired
-    private StockRepository stockRepository;
+    private final StockRepository stockRepository;
+    private final UserRepository userRepository;
+    private final StockTransactionRepository stockTransactionRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private StockTransactionRepository stockTransactionRepository;
+    public TradingService(StockRepository stockRepository, UserRepository userRepository, StockTransactionRepository stockTransactionRepository) {
+        this.stockRepository = stockRepository;
+        this.userRepository = userRepository;
+        this.stockTransactionRepository = stockTransactionRepository;
+    }
 
     @Transactional
     public OrderStatus handleOrder(Order order, Long user_id) {
@@ -38,7 +40,6 @@ public class TradingService {
         BigDecimal stockPrice = stockRepository.findBySymbol(order.getSymbol())
                 .map(Stock::getCurrentPrice)
                 .orElseThrow(() -> new SymbolNotFoundException(order.getSymbol()));
-
         order.setUser(user);
         user.getOrders().add(order);
 
