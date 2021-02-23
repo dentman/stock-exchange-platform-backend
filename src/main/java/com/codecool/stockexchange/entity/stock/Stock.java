@@ -7,11 +7,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import com.codecool.stockexchange.apimodel.Quote;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -43,7 +39,7 @@ public class Stock {
     private LocalDateTime lastTradeTime;
     private BigDecimal latestPrice;
 
-    @OneToMany(mappedBy = "stock", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "stock", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     @ToString.Exclude
     private List<StockPrice> stockPrices = new ArrayList<>();
 

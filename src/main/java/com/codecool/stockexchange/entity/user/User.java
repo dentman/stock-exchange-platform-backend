@@ -8,9 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -40,11 +38,11 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
     private Account account;
 
-    @OneToMany( mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
-    List<PortfolioItem> portfolio = new ArrayList<>();
+    @OneToMany( fetch = FetchType.EAGER, mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
+    Set<PortfolioItem> portfolio = new HashSet<>();
 
-    @OneToMany( mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
-    List<Order> orders = new ArrayList<>();
+    @OneToMany( fetch = FetchType.EAGER, mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
+    Set<Order> orders = new HashSet<>();
 
     @OneToMany( mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     List<UserHistory> userHistoryList = new ArrayList<>();
