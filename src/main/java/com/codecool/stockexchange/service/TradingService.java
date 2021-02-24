@@ -11,13 +11,13 @@ import com.codecool.stockexchange.exception.trade.InvalidSymbolFormatException;
 import com.codecool.stockexchange.exception.trade.SymbolNotFoundException;
 import com.codecool.stockexchange.exception.user.InvalidUserException;
 import com.codecool.stockexchange.repository.StockRepository;
-import com.codecool.stockexchange.repository.StockTransactionRepository;
 import com.codecool.stockexchange.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @Service
@@ -25,13 +25,11 @@ public class TradingService {
 
     private final StockRepository stockRepository;
     private final UserRepository userRepository;
-    private final StockTransactionRepository stockTransactionRepository;
 
     @Autowired
-    public TradingService(StockRepository stockRepository, UserRepository userRepository, StockTransactionRepository stockTransactionRepository) {
+    public TradingService(StockRepository stockRepository, UserRepository userRepository) {
         this.stockRepository = stockRepository;
         this.userRepository = userRepository;
-        this.stockTransactionRepository = stockTransactionRepository;
     }
 
     @Transactional
@@ -59,7 +57,8 @@ public class TradingService {
     }
 
     private void handleTransaction(Order order, BigDecimal stockPrice) {
-        StockTransaction transaction = stockTransactionRepository.saveAndFlush(order.createTransaction(stockPrice));
+        StockTransaction transaction = createTransaction(order, stockPrice);
+        order.setStockTransaction(transaction);
         User user = order.getUser();
         user.changePortfolio(transaction);
         user.getAccount().transferOrderFunding(transaction);
@@ -108,5 +107,26 @@ public class TradingService {
         } else if (order.getCount() <= 0 || order.getLimitPrice().compareTo(BigDecimal.ZERO) <= 0) {
             throw new NumberFormatException("Order count and price must be positive numbers!");
         }
+    }
+
+    private StockTransaction createTransaction(Order order, BigDecimal stockPrice) {
+        StockTransaction transaction = StockTransaction.builder()
+                .order(order)
+                .symbol(order.getSymbol())
+                .transactionTime(LocalDateTime.now())
+                .stockPrice(stockPrice)
+                .build();
+
+        switch (order.getDirection()) {
+            case BUY:
+                transaction.setAccountBalanceChange(stockPrice.multiply(BigDecimal.valueOf(-1 * order.getCount())));
+                transaction.setStockChange(order.getCount());
+                break;
+            case SELL:
+                transaction.setAccountBalanceChange(stockPrice.multiply(BigDecimal.valueOf(order.getCount())));
+                transaction.setStockChange(-1 * order.getCount());
+                break;
+        }
+        return transaction;
     }
 }

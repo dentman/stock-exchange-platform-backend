@@ -10,7 +10,8 @@ import lombok.*;
 
 import java.util.*;
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -34,7 +35,6 @@ public class User {
     @NonNull
     private List<Role> roles;
 
-
     @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
     private Account account;
 
@@ -44,8 +44,8 @@ public class User {
     @OneToMany( fetch = FetchType.EAGER, mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE} )
     Set<Order> orders = new HashSet<>();
 
-    @OneToMany( mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    List<UserHistory> userHistoryList = new ArrayList<>();
+    @OneToMany( fetch = FetchType.EAGER, mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    Set<UserHistory> userHistoryList = new HashSet<>();
 
 
     public Optional<PortfolioItem> getPortfolioItem(String symbol) {

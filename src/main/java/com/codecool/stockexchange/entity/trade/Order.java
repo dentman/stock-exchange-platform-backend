@@ -42,25 +42,4 @@ public class Order {
     @OneToOne( mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private StockTransaction stockTransaction;
 
-
-    public StockTransaction createTransaction(BigDecimal stockPrice) {
-        StockTransaction transaction = new StockTransaction();
-        transaction.setOrder(this);
-        setStockTransaction(transaction);
-        transaction.setSymbol(getSymbol());
-        transaction.setTransactionTime(LocalDateTime.now());
-        transaction.setStockPrice(stockPrice);
-        switch (getDirection()) {
-            case BUY:
-                transaction.setAccountBalanceChange(stockPrice.multiply(BigDecimal.valueOf(-1 * getCount())));
-                transaction.setStockChange(getCount());
-                break;
-            case SELL:
-                transaction.setAccountBalanceChange(stockPrice.multiply(BigDecimal.valueOf(getCount())));
-                transaction.setStockChange(-1 * getCount());
-                break;
-        }
-        return transaction;
-    }
-
 }
