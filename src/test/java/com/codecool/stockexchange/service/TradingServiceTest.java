@@ -9,6 +9,7 @@ import com.codecool.stockexchange.entity.user.Account;
 import com.codecool.stockexchange.entity.user.PortfolioItem;
 import com.codecool.stockexchange.entity.user.User;
 import com.codecool.stockexchange.exception.resource.ResourceNotFoundException;
+import com.codecool.stockexchange.exception.trade.InvalidOrderStatusException;
 import com.codecool.stockexchange.exception.user.InvalidUserException;
 import com.codecool.stockexchange.repository.StockRepository;
 import com.codecool.stockexchange.repository.UserRepository;
@@ -216,5 +217,18 @@ public class TradingServiceTest {
                 .build();
         assertThrows(InvalidUserException.class,
                 () -> tradingService.handleOrder(order, Long.valueOf(2)));
+    }
+
+    @Test
+    public void handleOrderThrowsInvalidStatusException() {
+        Order order = Order.builder()
+                .direction(OrderDirection.BUY)
+                .symbol(ownedName)
+                .count(1)
+                .status(OrderStatus.COMPLETED)
+                .limitPrice(ownedPrice)
+                .build();
+        assertThrows(InvalidOrderStatusException.class,
+                () -> tradingService.checkOrder(order));
     }
 }
