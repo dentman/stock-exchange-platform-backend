@@ -63,7 +63,7 @@ public class TradingServiceTest {
 
     @BeforeEach
     public void mockMethods(){
-        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
         when(stockRepository.findBySymbol(ownedName)).thenReturn(Optional.of(ownedStock));
         when(stockRepository.findBySymbol(notOwnedName)).thenReturn(Optional.of(notOwnedStock));
     }
@@ -136,7 +136,6 @@ public class TradingServiceTest {
                 .limitPrice(notOwnedPrice)
                 .build();
         OrderStatus st = tradingService.handleOrder(order, user.getId());
-        System.out.println(st);
         assertTrue(st.equals(OrderStatus.COMPLETED));
     }
 
@@ -163,5 +162,44 @@ public class TradingServiceTest {
                 .limitPrice(notOwnedPrice)
                 .build();
         assertThrows(NumberFormatException.class, () -> tradingService.checkOrder(order));
+    }
+
+    @Test
+    public void handleOrderSetsLimitPriceMismatchStatusWhenSelling() {
+        Order order = Order.builder()
+                .direction(OrderDirection.SELL)
+                .symbol(ownedName)
+                .count(1)
+                .status(OrderStatus.PENDING)
+                .limitPrice(ownedPrice.add(BigDecimal.ONE))
+                .build();
+        OrderStatus st = tradingService.handleOrder(order, user.getId());
+        assertTrue(st.equals(OrderStatus.LIMIT_PRICE_MISMATCH));
+    }
+
+    @Test
+    public void handleOrderSetsLimitPriceMismatchStatusWhenBuying() {
+        Order order = Order.builder()
+                .direction(OrderDirection.BUY)
+                .symbol(ownedName)
+                .count(1)
+                .status(OrderStatus.PENDING)
+                .limitPrice(ownedPrice.subtract(BigDecimal.ONE))
+                .build();
+        OrderStatus st = tradingService.handleOrder(order, user.getId());
+        assertTrue(st.equals(OrderStatus.LIMIT_PRICE_MISMATCH));
+    }
+
+    @Test
+    public void handleOrderSetsInsufficientFundStatusWhenBuying() {
+        Order order = Order.builder()
+                .direction(OrderDirection.BUY)
+                .symbol(ownedName)
+                .count(20)
+                .status(OrderStatus.PENDING)
+                .limitPrice(ownedPrice)
+                .build();
+        OrderStatus st = tradingService.handleOrder(order, user.getId());
+        assertTrue(st.equals(OrderStatus.INSUFFICIENT_FUND));
     }
 }
