@@ -10,6 +10,7 @@ import com.codecool.stockexchange.entity.user.PortfolioItem;
 import com.codecool.stockexchange.entity.user.User;
 import com.codecool.stockexchange.exception.resource.ResourceNotFoundException;
 import com.codecool.stockexchange.exception.trade.InvalidOrderStatusException;
+import com.codecool.stockexchange.exception.trade.InvalidSymbolFormatException;
 import com.codecool.stockexchange.exception.trade.SymbolNotFoundException;
 import com.codecool.stockexchange.exception.user.InvalidUserException;
 import com.codecool.stockexchange.repository.StockRepository;
@@ -55,6 +56,7 @@ public class TradingServiceTest {
     private Stock ownedStock;
     private final String notOwnedName = "SYMBOL";
     private final String nonExistingSymbol = "INVALID";
+    private final String invalidSymbol = "Invalid";
     private final Long nonExistingUser = 2L;
     private final BigDecimal notOwnedPrice = BigDecimal.TEN;
     private final String ownedName = "OWNED";
@@ -245,5 +247,18 @@ public class TradingServiceTest {
                 .build();
         assertThrows(SymbolNotFoundException.class,
                 () -> tradingService.handleOrder(order, user.getId()));
+    }
+
+    @Test
+    public void handleOrderThrowsInvalidSymbolFormatException() {
+        Order order = Order.builder()
+                .direction(OrderDirection.BUY)
+                .symbol(invalidSymbol)
+                .count(1)
+                .status(OrderStatus.PENDING)
+                .limitPrice(ownedPrice)
+                .build();
+        assertThrows(InvalidSymbolFormatException.class,
+                () -> tradingService.checkOrder(order));
     }
 }
