@@ -8,6 +8,8 @@ import com.codecool.stockexchange.entity.trade.OrderStatus;
 import com.codecool.stockexchange.entity.user.Account;
 import com.codecool.stockexchange.entity.user.PortfolioItem;
 import com.codecool.stockexchange.entity.user.User;
+import com.codecool.stockexchange.exception.resource.ResourceNotFoundException;
+import com.codecool.stockexchange.exception.user.InvalidUserException;
 import com.codecool.stockexchange.repository.StockRepository;
 import com.codecool.stockexchange.repository.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
@@ -201,5 +203,18 @@ public class TradingServiceTest {
                 .build();
         OrderStatus st = tradingService.handleOrder(order, user.getId());
         assertTrue(st.equals(OrderStatus.INSUFFICIENT_FUND));
+    }
+
+    @Test
+    public void handleOrderThrowsInvalidUserException() {
+        Order order = Order.builder()
+                .direction(OrderDirection.BUY)
+                .symbol(ownedName)
+                .count(20)
+                .status(OrderStatus.PENDING)
+                .limitPrice(ownedPrice)
+                .build();
+        assertThrows(InvalidUserException.class,
+                () -> tradingService.handleOrder(order, Long.valueOf(2)));
     }
 }

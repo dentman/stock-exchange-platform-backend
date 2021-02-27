@@ -1,6 +1,5 @@
 package com.codecool.stockexchange.exception;
 
-import com.codecool.stockexchange.entity.Message;
 import com.codecool.stockexchange.exception.resource.ResourceNotFoundException;
 import com.codecool.stockexchange.exception.trade.InvalidOrderStatusException;
 import com.codecool.stockexchange.exception.trade.InvalidSymbolFormatException;
