@@ -1,6 +1,5 @@
 package com.codecool.stockexchange.service;
 
-import com.codecool.stockexchange.StockExchangeApplication;
 import com.codecool.stockexchange.entity.stock.Stock;
 import com.codecool.stockexchange.entity.stock.StockPrice;
 import com.codecool.stockexchange.entity.trade.Order;
@@ -12,63 +11,80 @@ import com.codecool.stockexchange.entity.user.User;
 import com.codecool.stockexchange.repository.StockRepository;
 import com.codecool.stockexchange.repository.UserRepository;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
-@AutoConfigureTestDatabase
-@SpringBootTest(classes = StockExchangeApplication.class)
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class TradingServiceTest {
+public class TradingServiceTest {
+
+
+    @MockBean
+    UserRepository userRepository;
+
+    @MockBean
+    StockRepository stockRepository;
 
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private StockRepository stockRepository;
+    TradingService tradingService;
 
-    private TradingService tradingService;
     private User user;
     private Stock notOwnedStock;
     private Stock ownedStock;
-
     private final String notOwnedName = "SYMBOL";
+
     private final BigDecimal notOwnedPrice = BigDecimal.TEN;
     private final String ownedName = "OWNED";
     private final BigDecimal ownedPrice = BigDecimal.TEN;
-
 
     @BeforeAll
     public void init(){
         createUser();
         createStock();
-        tradingService = new TradingService(stockRepository, userRepository);
+    }
+
+    @BeforeEach
+    public void mockMethods(){
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+        when(stockRepository.findBySymbol(ownedName)).thenReturn(Optional.of(ownedStock));
+        when(stockRepository.findBySymbol(notOwnedName)).thenReturn(Optional.of(notOwnedStock));
     }
 
     private void createUser(){
-        Account account = Account.builder().balance(BigDecimal.valueOf(10000)).currency("USD").build();
+        Account account = Account.builder().balance(BigDecimal.valueOf(100)).currency("USD").build();
         PortfolioItem portfolioItem = PortfolioItem.builder().amount(1).symbol(ownedName).build();
+        Set<PortfolioItem> portfolio = new HashSet();
+        portfolio.add(portfolioItem);
         user = User.builder()
+                .id(Long.valueOf(1))
                 .username("test@user.hu")
                 .password("plainTextPassword")
                 .account(account)
-                .portfolio(Set.of(portfolioItem))
+                .portfolio(portfolio)
                 .roles(List.of())
                 .build();
+        user.setOrders(new HashSet<>());
+        user.setUserHistoryList(new HashSet<>());
         account.setUser(user);
         portfolioItem.setUser(user);
-        userRepository.save(user);
     }
 
     private void createStock() {
@@ -94,9 +110,6 @@ class TradingServiceTest {
                 .build();
         notOwnedPrice.setStock(notOwnedStock);
         ownedPrice.setStock(ownedStock);
-        stockRepository.save(notOwnedStock);
-        stockRepository.save(ownedStock);
-
     }
 
     @Test
@@ -104,11 +117,12 @@ class TradingServiceTest {
         Order order = Order.builder()
                 .direction(OrderDirection.SELL)
                 .symbol(notOwnedName)
-                .count(1)
+                .count(10)
                 .status(OrderStatus.PENDING)
                 .limitPrice(notOwnedPrice)
                 .build();
         OrderStatus st = tradingService.handleOrder(order, user.getId());
+        System.out.println(st);
         assertTrue(st.equals(OrderStatus.INSUFFICIENT_STOCK));
     }
 
@@ -122,6 +136,7 @@ class TradingServiceTest {
                 .limitPrice(notOwnedPrice)
                 .build();
         OrderStatus st = tradingService.handleOrder(order, user.getId());
+        System.out.println(st);
         assertTrue(st.equals(OrderStatus.COMPLETED));
     }
 
@@ -135,7 +150,6 @@ class TradingServiceTest {
                 .limitPrice(ownedPrice.subtract(BigDecimal.ONE))
                 .build();
         OrderStatus st = tradingService.handleOrder(order, user.getId());
-        System.out.println(st);
         assertTrue(st.equals(OrderStatus.COMPLETED));
     }
 
@@ -150,5 +164,4 @@ class TradingServiceTest {
                 .build();
         assertThrows(NumberFormatException.class, () -> tradingService.checkOrder(order));
     }
-
 }
