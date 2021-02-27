@@ -10,6 +10,7 @@ import com.codecool.stockexchange.entity.user.PortfolioItem;
 import com.codecool.stockexchange.entity.user.User;
 import com.codecool.stockexchange.exception.resource.ResourceNotFoundException;
 import com.codecool.stockexchange.exception.trade.InvalidOrderStatusException;
+import com.codecool.stockexchange.exception.trade.SymbolNotFoundException;
 import com.codecool.stockexchange.exception.user.InvalidUserException;
 import com.codecool.stockexchange.repository.StockRepository;
 import com.codecool.stockexchange.repository.UserRepository;
@@ -53,7 +54,8 @@ public class TradingServiceTest {
     private Stock notOwnedStock;
     private Stock ownedStock;
     private final String notOwnedName = "SYMBOL";
-
+    private final String nonExistingSymbol = "INVALID";
+    private final Long nonExistingUser = 2L;
     private final BigDecimal notOwnedPrice = BigDecimal.TEN;
     private final String ownedName = "OWNED";
     private final BigDecimal ownedPrice = BigDecimal.TEN;
@@ -216,7 +218,7 @@ public class TradingServiceTest {
                 .limitPrice(ownedPrice)
                 .build();
         assertThrows(InvalidUserException.class,
-                () -> tradingService.handleOrder(order, Long.valueOf(2)));
+                () -> tradingService.handleOrder(order, nonExistingUser));
     }
 
     @Test
@@ -230,5 +232,18 @@ public class TradingServiceTest {
                 .build();
         assertThrows(InvalidOrderStatusException.class,
                 () -> tradingService.checkOrder(order));
+    }
+
+    @Test
+    public void handleOrderThrowsSymbolNotFoundException() {
+        Order order = Order.builder()
+                .direction(OrderDirection.BUY)
+                .symbol(nonExistingSymbol)
+                .count(1)
+                .status(OrderStatus.PENDING)
+                .limitPrice(ownedPrice)
+                .build();
+        assertThrows(SymbolNotFoundException.class,
+                () -> tradingService.handleOrder(order, user.getId()));
     }
 }
