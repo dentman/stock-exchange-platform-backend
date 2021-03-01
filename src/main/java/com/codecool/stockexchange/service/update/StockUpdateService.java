@@ -4,14 +4,12 @@ import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.codecool.stockexchange.apimodel.video.VideoItems;
 import com.codecool.stockexchange.entity.StockBaseData;
-import com.codecool.stockexchange.entity.stock.NewsItem;
-import com.codecool.stockexchange.entity.stock.Stock;
-import com.codecool.stockexchange.entity.stock.StockPrice;
-import com.codecool.stockexchange.entity.stock.VideoLink;
+import com.codecool.stockexchange.entity.stock.*;
 import com.codecool.stockexchange.repository.StockBaseDataRepository;
 import com.codecool.stockexchange.repository.StockRepository;
 import com.codecool.stockexchange.service.external.ExternalApiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,14 +28,17 @@ public class StockUpdateService {
     private final StockBaseDataRepository stockBaseDataRepository;
     private final StockRepository stockRepository;
     private final ExternalApiService apiService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
     public StockUpdateService(StockRepository stockRepository,
                               ExternalApiService apiService,
-                              StockBaseDataRepository stockBaseDataRepository) {
+                              StockBaseDataRepository stockBaseDataRepository,
+                              ApplicationEventPublisher applicationEventPublisher) {
         this.stockRepository = stockRepository;
         this.apiService = apiService;
         this.stockBaseDataRepository = stockBaseDataRepository;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Scheduled(cron = "0 0 23 * * MON-FRI")
@@ -59,6 +60,8 @@ public class StockUpdateService {
             long daysToFetch = getNumberOfDaysToFetch(stock);
             updateStock(stock, daysToFetch);
         }
+        StockChangeEvent stockChangeEvent = new StockChangeEvent(StockChange.createStockChange(stock));
+        applicationEventPublisher.publishEvent(stockChangeEvent);
     }
 
     private void createAndPersistNewStock(String symbol) {
