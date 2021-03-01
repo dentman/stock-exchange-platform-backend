@@ -3,13 +3,16 @@ package com.codecool.stockexchange.service.update;
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.codecool.stockexchange.apimodel.video.VideoItems;
+import com.codecool.stockexchange.entity.StockBaseData;
 import com.codecool.stockexchange.entity.stock.NewsItem;
 import com.codecool.stockexchange.entity.stock.Stock;
 import com.codecool.stockexchange.entity.stock.StockPrice;
 import com.codecool.stockexchange.entity.stock.VideoLink;
+import com.codecool.stockexchange.repository.StockBaseDataRepository;
 import com.codecool.stockexchange.repository.StockRepository;
 import com.codecool.stockexchange.service.external.ExternalApiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,21 +25,32 @@ import java.util.Iterator;
 import java.util.List;
 
 @Service
-@Transactional
 public class StockUpdateService {
 
+    private final StockBaseDataRepository stockBaseDataRepository;
     private final StockRepository stockRepository;
     private final ExternalApiService apiService;
 
     @Autowired
-    public StockUpdateService(StockRepository stockRepository, ExternalApiService apiService) {
+    public StockUpdateService(StockRepository stockRepository,
+                              ExternalApiService apiService,
+                              StockBaseDataRepository stockBaseDataRepository) {
         this.stockRepository = stockRepository;
         this.apiService = apiService;
+        this.stockBaseDataRepository = stockBaseDataRepository;
+    }
+
+    @Scheduled(cron = "0 0 23 * * MON-FRI")
+    public void saveOrUpdate() {
+        List<StockBaseData> stocks = stockBaseDataRepository.findAll();
+        for (StockBaseData stock : stocks) {
+            handleStockUpdate(stock.getSymbol());
+        }
     }
 
     //TODO: redundancy in API calls: logic does not take into account trading days!
     @Transactional
-    public void saveOrUpdate(String symbol) {
+    public void handleStockUpdate(String symbol){
         Stock stock = stockRepository.findFirstBySymbol(symbol);
         if (stock == null) {
             createAndPersistNewStock(symbol);

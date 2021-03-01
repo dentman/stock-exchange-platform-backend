@@ -33,7 +33,7 @@ public class StockExchangeApplication {
     private final StockBaseDataRepository stockBaseDataRepository;
     private final PasswordEncoder pwe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     private final boolean createDb = false;
-    private final boolean updateDbFromApi = false;
+    private final boolean updateDbFromApi = true;
 
 
     @Autowired
@@ -61,20 +61,11 @@ public class StockExchangeApplication {
                 createSampleUser();
             }
             if (updateDbFromApi) {
-                updateApiStocks();
+                updateService.saveOrUpdate();
             }
         };
     }
 
-    /***
-     * This method will only fetch data if db is not up to date for given symbol
-     */
-    public void updateApiStocks(){
-        List<StockBaseData> stocks = stockBaseDataRepository.findAll();
-        for (StockBaseData stock : stocks){
-            updateService.saveOrUpdate(stock.getSymbol());
-        }
-    }
 
     private void setStockFromCsvToDatabase(){
         TextReader reader = new TextReader(path);
