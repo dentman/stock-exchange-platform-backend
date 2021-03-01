@@ -33,7 +33,7 @@ public class StockExchangeApplication {
     private final StockBaseDataRepository stockBaseDataRepository;
     private final PasswordEncoder pwe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     private final boolean createDb = false;
-    private final boolean updateDbFromApi = true;
+    private final boolean updateDbFromApi = false;
 
 
     @Autowired

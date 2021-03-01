@@ -41,7 +41,7 @@ public class StockUpdateService {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    @Scheduled(cron = "0 0 23 * * MON-FRI")
+    @Scheduled(cron = "${schedule.cron}")
     public void saveOrUpdate() {
         List<StockBaseData> stocks = stockBaseDataRepository.findAll();
         for (StockBaseData stock : stocks) {
@@ -54,7 +54,7 @@ public class StockUpdateService {
     public void handleStockUpdate(String symbol){
         Stock stock = stockRepository.findFirstBySymbol(symbol);
         if (stock == null) {
-            createAndPersistNewStock(symbol);
+            stock = createAndPersistNewStock(symbol);
         } else {
             removeSimulatedAndOutdatedStockPrices(stock);
             long daysToFetch = getNumberOfDaysToFetch(stock);
@@ -64,12 +64,13 @@ public class StockUpdateService {
         applicationEventPublisher.publishEvent(stockChangeEvent);
     }
 
-    private void createAndPersistNewStock(String symbol) {
+    private Stock createAndPersistNewStock(String symbol) {
         Stock stock = new Stock(apiService.getQuoteBySymbol(symbol));
         setCharDataPointsOnStock(stock,30);
         setVideoLinkListOnStock(stock);
         setNewsListOnStock(stock);
         stockRepository.save(stock);
+        return stock;
     }
 
     private void removeSimulatedAndOutdatedStockPrices(Stock stock) {

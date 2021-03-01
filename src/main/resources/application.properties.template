@@ -14,6 +14,7 @@ spring.jwt.signingKey=secret
 spring.jwt.token.validity=3600000
 stocklist.csv.path=src/main/resources/stockList.csv
 about.txt.path=src/main/resources/about/about_
+schedule.cron=0 0 23 * * MON-FRI
 
 logging.level.org.springframework.web=INFO
 logging.level.com.example=DEBUG
