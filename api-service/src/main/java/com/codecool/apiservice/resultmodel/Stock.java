@@ -32,8 +32,14 @@ public class Stock {
     private LocalDateTime lastTradeTime;
     private BigDecimal latestPrice;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<StockPrice> stockPrices = new ArrayList<>();
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<NewsItem> newsList = new ArrayList<>();
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<VideoLink> videoLinkList = new ArrayList<>();
 
     public Stock(Quote quote) {
