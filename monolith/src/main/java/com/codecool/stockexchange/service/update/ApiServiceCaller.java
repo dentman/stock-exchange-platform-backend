@@ -50,7 +50,6 @@ public class ApiServiceCaller {
                     .data(stock)
                     .retrieveMono(Stock.class)
                     .block();
-            System.out.println(stock.toString());
         }
     }
 }
