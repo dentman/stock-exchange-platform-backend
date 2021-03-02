@@ -11,7 +11,7 @@ import com.codecool.stockexchange.entity.user.User;
 import com.codecool.stockexchange.repository.StockBaseDataRepository;
 import com.codecool.stockexchange.repository.UserRepository;
 
-import com.codecool.stockexchange.service.update.StockUpdateService;
+import com.codecool.stockexchange.service.update.DailyUpdateScheduler;
 import com.codecool.stockexchange.util.TextReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,20 +29,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class StockExchangeApplication {
 
     private final UserRepository userRepository;
-    private final StockUpdateService updateService;
     private final StockBaseDataRepository stockBaseDataRepository;
+    private final DailyUpdateScheduler dailyUpdateScheduler;
     private final PasswordEncoder pwe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    private final boolean createDb = false;
-    private final boolean updateDbFromApi = false;
+    private final boolean createDb = true;
+    private final boolean updateDbFromApi = true;
 
 
     @Autowired
     public StockExchangeApplication(UserRepository userRepository,
-                                    StockUpdateService updateService,
-                                    StockBaseDataRepository stockBaseDataRepository) {
+                                    StockBaseDataRepository stockBaseDataRepository,
+                                    DailyUpdateScheduler dailyUpdateScheduler) {
         this.userRepository = userRepository;
-        this.updateService = updateService;
         this.stockBaseDataRepository = stockBaseDataRepository;
+        this.dailyUpdateScheduler = dailyUpdateScheduler;
     }
 
     @Value("${stocklist.csv.path}")
@@ -61,7 +61,7 @@ public class StockExchangeApplication {
                 createSampleUser();
             }
             if (updateDbFromApi) {
-                updateService.saveOrUpdate();
+                dailyUpdateScheduler.saveOrUpdate();
             }
         };
     }

@@ -3,14 +3,11 @@ package com.codecool.stockexchange.service.update;
 import com.codecool.stockexchange.apimodel.ChartDataPoint;
 import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.codecool.stockexchange.apimodel.video.VideoItems;
-import com.codecool.stockexchange.entity.StockBaseData;
 import com.codecool.stockexchange.entity.stock.*;
-import com.codecool.stockexchange.repository.StockBaseDataRepository;
 import com.codecool.stockexchange.repository.StockRepository;
 import com.codecool.stockexchange.service.external.ExternalApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +22,6 @@ import java.util.List;
 @Service
 public class StockUpdateService {
 
-    private final StockBaseDataRepository stockBaseDataRepository;
     private final StockRepository stockRepository;
     private final ExternalApiService apiService;
     private final ApplicationEventPublisher applicationEventPublisher;
@@ -33,20 +29,10 @@ public class StockUpdateService {
     @Autowired
     public StockUpdateService(StockRepository stockRepository,
                               ExternalApiService apiService,
-                              StockBaseDataRepository stockBaseDataRepository,
                               ApplicationEventPublisher applicationEventPublisher) {
         this.stockRepository = stockRepository;
         this.apiService = apiService;
-        this.stockBaseDataRepository = stockBaseDataRepository;
         this.applicationEventPublisher = applicationEventPublisher;
-    }
-
-    @Scheduled(cron = "${schedule.cron}")
-    public void saveOrUpdate() {
-        List<StockBaseData> stocks = stockBaseDataRepository.findAll();
-        for (StockBaseData stock : stocks) {
-            handleStockUpdate(stock.getSymbol());
-        }
     }
 
     //TODO: redundancy in API calls: logic does not take into account trading days!
@@ -54,22 +40,22 @@ public class StockUpdateService {
     public void handleStockUpdate(String symbol){
         Stock stock = stockRepository.findFirstBySymbol(symbol);
         if (stock == null) {
-            stock = createAndPersistNewStock(symbol);
+            stock = createNewStock(symbol);
         } else {
             removeSimulatedAndOutdatedStockPrices(stock);
             long daysToFetch = getNumberOfDaysToFetch(stock);
             updateStock(stock, daysToFetch);
         }
+        stockRepository.saveAndFlush(stock);
         StockChangeEvent stockChangeEvent = new StockChangeEvent(StockChange.createStockChange(stock));
         applicationEventPublisher.publishEvent(stockChangeEvent);
     }
 
-    private Stock createAndPersistNewStock(String symbol) {
+    private Stock createNewStock(String symbol) {
         Stock stock = new Stock(apiService.getQuoteBySymbol(symbol));
         setCharDataPointsOnStock(stock,30);
         setVideoLinkListOnStock(stock);
         setNewsListOnStock(stock);
-        stockRepository.save(stock);
         return stock;
     }
 
