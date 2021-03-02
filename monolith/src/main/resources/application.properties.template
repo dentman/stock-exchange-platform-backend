@@ -17,8 +17,8 @@ google.token=
 cors.allowed.path=http://localhost:3000
 spring.jwt.signingKey=secret
 spring.jwt.token.validity=3600000
-stocklist.csv.path=src/main/resources/stockList.csv
-about.txt.path=src/main/resources/about/about_
+stocklist.csv.path=monolith/src/main/resources/stockList.csv
+about.txt.path=monolith/src/main/resources/about/about_%s.txt
 schedule.cron=0 0 23 * * MON-FRI
 
 logging.level.org.springframework.web=INFO
