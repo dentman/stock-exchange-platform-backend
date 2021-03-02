@@ -1,6 +1,5 @@
 package com.codecool.stockexchange.entity.stock;
 
-import com.codecool.stockexchange.apimodel.NewsItemAPI;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
@@ -34,15 +33,5 @@ public class NewsItem {
 
     @ManyToOne
     private Stock stock;
-
-    public NewsItem(NewsItemAPI news){
-        this.image = news.getImage();
-        this.url = news.getUrl();
-        this.headline = news.getHeadline();
-        this.summary = news.getSummary();
-        this.source = news.getSource();
-        this.datetime = news.getDatetime();
-        this.lang = news.getLang();
-    }
 
 }

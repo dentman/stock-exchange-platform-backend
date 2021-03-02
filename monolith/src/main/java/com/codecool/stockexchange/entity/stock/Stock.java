@@ -1,15 +1,12 @@
 package com.codecool.stockexchange.entity.stock;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
 import javax.persistence.*;
 
-import com.codecool.stockexchange.apimodel.Quote;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -50,28 +47,6 @@ public class Stock {
     @ToString.Exclude
     @OneToMany(mappedBy = "stock", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<VideoLink> videoLinkList = new ArrayList<>();
-
-    public Stock(Quote quote) {
-        setAllQuoteInfo(quote);
-    }
-
-    public void updateByQuote(Quote quote){
-        setAllQuoteInfo(quote);
-    }
-
-    private void setAllQuoteInfo(Quote quote) {
-        this.symbol = quote.getSymbol();
-        this.companyName = quote.getCompanyName();
-        this.marketCap = quote.getMarketCap();
-        this.previousClose = BigDecimal.valueOf(quote.getPreviousClose());
-        this.week52Low = BigDecimal.valueOf(quote.getWeek52Low());
-        this.week52High = BigDecimal.valueOf(quote.getWeek52High());
-        this.avgTotalVolume = quote.getAvgTotalVolume();
-        this.peRatio = quote.getPeRatio();
-        this.ytdChange = quote.getYtdChange();
-        this.lastTradeTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(quote.getLastTradeTime()/1000), ZoneId.systemDefault());
-        this.latestPrice = BigDecimal.valueOf(quote.getLatestPrice());
-    }
 
     public void addStockPrice(StockPrice stockPrice) {
         stockPrices.add(stockPrice);

@@ -16,12 +16,18 @@ public class UpdateController {
 
     @GetMapping("/create/{symbol}")
     public Stock createNewStock(@PathVariable String symbol) {
-        return stockUpdateService.createNewStock(symbol);
+
+        Stock stock = stockUpdateService.createNewStock(symbol);
+        System.out.println(stock);
+        return stock;
     }
 
     @GetMapping("/update")
     public Stock updateStock(@RequestBody Stock stock) {
-        return stockUpdateService.updateStock(stock);
+
+        System.out.println(stock);
+        Stock out = stockUpdateService.updateStock(stock);
+        return out;
     }
 
 

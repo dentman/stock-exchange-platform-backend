@@ -12,19 +12,19 @@ import java.util.List;
 public class DailyUpdateScheduler {
 
     private final StockBaseDataRepository stockBaseDataRepository;
-    private final StockUpdateService stockUpdateService;
+    private final ApiServiceCaller apiServiceCaller;
 
     @Autowired
-    public DailyUpdateScheduler(StockBaseDataRepository stockBaseDataRepository, StockUpdateService stockUpdateService) {
+    public DailyUpdateScheduler(StockBaseDataRepository stockBaseDataRepository, ApiServiceCaller apiServiceCaller) {
         this.stockBaseDataRepository = stockBaseDataRepository;
-        this.stockUpdateService = stockUpdateService;
+        this.apiServiceCaller = apiServiceCaller;
     }
 
     @Scheduled(cron = "${schedule.cron}")
     public void saveOrUpdate() {
         List<StockBaseData> stocks = stockBaseDataRepository.findAll();
         for (StockBaseData stock : stocks) {
-            stockUpdateService.handleStockUpdate(stock.getSymbol());
+            apiServiceCaller.callService(stock.getSymbol());
         }
     }
 }
