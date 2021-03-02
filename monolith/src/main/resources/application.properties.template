@@ -1,3 +1,8 @@
+spring.application.name=monolith
+server.port=8090
+eureka.client.register-with-eureka=true
+eureka.client.service-url.default-zone=http://localhost:8761/eureka
+
 spring.datasource.url=jdbc:postgresql://localhost:5432/stock_exchange
 spring.datasource.username=
 spring.datasource.password=
