@@ -34,7 +34,7 @@ public class StockExchangeApplication {
     private final StockBaseDataRepository stockBaseDataRepository;
     private final DailyUpdateScheduler dailyUpdateScheduler;
     private final PasswordEncoder pwe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    private final boolean createDb = false;
+    private final boolean createDb = true;
     private final boolean updateDbFromApi = true;
 
 
