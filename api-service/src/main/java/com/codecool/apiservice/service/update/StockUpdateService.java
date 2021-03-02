@@ -114,7 +114,7 @@ public class StockUpdateService {
         for (VideoItems item : videoFromApi){
             VideoLink link = new VideoLink();
             link.setDate(LocalDate.now());
-            link.setStock(stock);
+    //        link.setStock(stock);
             link.setVideoId(item.getId().getVideoId());
             videoLinks.add(link);
         }
@@ -126,7 +126,7 @@ public class StockUpdateService {
         List<NewsItem> newsItemList = new ArrayList<>();
         for (NewsItemAPI newsItemAPI : newsItemAPIList){
             NewsItem newsItem = new NewsItem(newsItemAPI);
-            newsItem.setStockId(stock.getId());
+        //    newsItem.setStockId(stock.getId());
             newsItemList.add(newsItem);
         }
         stock.setNewsList(newsItemList);
