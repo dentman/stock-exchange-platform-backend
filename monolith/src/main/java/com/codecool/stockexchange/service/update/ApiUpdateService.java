@@ -5,6 +5,7 @@ import com.codecool.stockexchange.entity.stock.StockPrice;
 import com.codecool.stockexchange.repository.StockPriceRepository;
 import com.codecool.stockexchange.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.rsocket.RSocketRequester;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,9 @@ public class ApiUpdateService {
 
 
     @Autowired
-    public ApiUpdateService(StockRepository stockRepository, StockPriceRepository stockPriceRepository, RSocketRequester client) {
+    public ApiUpdateService(StockRepository stockRepository,
+                            StockPriceRepository stockPriceRepository,
+                            @Qualifier("apirequester") RSocketRequester client) {
         this.stockRepository = stockRepository;
         this.stockPriceRepository = stockPriceRepository;
         this.client = client;

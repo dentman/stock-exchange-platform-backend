@@ -19,14 +19,14 @@ public class BeanConfiguration {
         this.eurekaClient = eurekaClient;
     }
 
-    @Bean
+    @Bean("apirequester")
     RSocketRequester apiServiceRequester(RSocketRequester.Builder builder) {
         InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("apiservice", false);
         String url = "http://" + instanceInfo.getIPAddr() + ":" + instanceInfo.getPort() + "/rsocket";
         return builder.websocket(URI.create(url));
     }
 
-    @Bean
+    @Bean("pricerequester")
     RSocketRequester priceChangeRequester(RSocketRequester.Builder builder) {
         InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("pricechangeservice", false);
         String url = "http://" + instanceInfo.getIPAddr() + ":" + instanceInfo.getPort() + "/rsocket";
