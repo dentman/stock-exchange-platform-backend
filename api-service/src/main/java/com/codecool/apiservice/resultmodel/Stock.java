@@ -65,6 +65,7 @@ public class Stock {
     }
 
     public void addStockPrice(StockPrice stockPrice) {
+        stockPrice.setStockId(id);
         stockPrices.add(stockPrice);
     }
 

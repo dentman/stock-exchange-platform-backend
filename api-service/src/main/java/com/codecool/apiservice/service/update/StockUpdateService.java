@@ -74,11 +74,12 @@ public class StockUpdateService {
     }
 
     private long getNumberOfDaysToFetch(Stock stock) {
-        StockPrice latest = stock.getStockPrices()
+        LocalDate latest = stock.getStockPrices()
                 .stream()
                 .max(Comparator.comparing(StockPrice::getDate))
-                .orElse(null);
-        long daysToFetch = ChronoUnit.DAYS.between(latest.getDate(), LocalDate.now()); // 1 means latest price is yesterday
+                .map(StockPrice::getDate)
+                .orElse(LocalDate.now().minusMonths(1l));
+        long daysToFetch = ChronoUnit.DAYS.between(latest, LocalDate.now()); // 1 means latest price is yesterday
         return daysToFetch > 30 ? 30 : daysToFetch;  //should never fetch more than a month
     }
 
