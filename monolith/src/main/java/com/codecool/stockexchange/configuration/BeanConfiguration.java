@@ -28,7 +28,7 @@ public class BeanConfiguration {
 
     @Bean("pricerequester")
     RSocketRequester priceChangeRequester(RSocketRequester.Builder builder) {
-        InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("pricechangeservice", false);
+        InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("priceupdateservice", false);
         String url = "http://" + instanceInfo.getIPAddr() + ":" + instanceInfo.getPort() + "/rsocket";
         return builder.websocket(URI.create(url));
     }

@@ -1,5 +1,6 @@
 package com.codecool.stockexchange.service.update;
 
+import com.codecool.stockexchange.entity.stock.PriceChange;
 import com.codecool.stockexchange.entity.stock.Stock;
 import com.codecool.stockexchange.entity.stock.StockChange;
 import com.codecool.stockexchange.entity.stock.StockChangeEvent;
@@ -12,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Random;
 
@@ -45,6 +47,14 @@ public class StockPriceUpdateService {
                 applicationEventPublisher.publishEvent(stockChangeEvent);
             }
         });
+    }
+
+    @PostConstruct
+    public void getChanges() {
+        client.route("change")
+                .data("symbol")
+                .retrieveFlux(PriceChange.class)
+                .subscribe(change -> System.out.println("Message recieved: " + change.getSymbol() + " " + change.getChange().toString()));
     }
 
 }
