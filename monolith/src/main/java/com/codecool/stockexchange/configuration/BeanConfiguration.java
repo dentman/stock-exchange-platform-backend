@@ -12,9 +12,9 @@ import java.net.URI;
 @Configuration
 public class BeanConfiguration {
 
-    @Autowired
     private final EurekaClient eurekaClient;
 
+    @Autowired
     public BeanConfiguration(EurekaClient eurekaClient) {
         this.eurekaClient = eurekaClient;
     }

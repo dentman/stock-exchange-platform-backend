@@ -18,11 +18,14 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    private final UserRepository userRepository;
+    private final PasswordEncoder pwe;
+
     @Autowired
-    UserRepository userRepository;
-
-    PasswordEncoder pwe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        this.pwe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
 
     public User findUserById(Long user_id) {
         return userRepository.findUserById(user_id);

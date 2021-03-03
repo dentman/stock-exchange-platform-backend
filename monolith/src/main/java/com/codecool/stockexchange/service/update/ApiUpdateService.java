@@ -9,6 +9,8 @@ import org.springframework.messaging.rsocket.RSocketRequester;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,12 +39,14 @@ public class ApiUpdateService {
                     .block();
             stockRepository.save(stock);
         } else {
+            List<StockPrice> stockPrices = stock.getStockPrices();
+            removeIntradayPrices(stockPrices);
             Stock updatedStock = client.route("update")
                     .data(stock)
                     .retrieveMono(Stock.class)
                     .block();
             if (updatedStock != null && updatedStock.getStockPrices() != null) {
-                updatePrices(stock.getStockPrices(), updatedStock.getStockPrices(), stock);
+                updatePrices(stockPrices, updatedStock.getStockPrices(), stock);
             }
         }
     }
@@ -58,5 +62,15 @@ public class ApiUpdateService {
                     entity.setStock(stock);
                     stockPriceRepository.save(entity);
                 });
+    }
+
+    private void removeIntradayPrices(List<StockPrice> stockPrices) {
+        stockPrices.stream().forEach(stockPrice -> {
+            if (!stockPrice.isClosing()
+                    && stockPrice.getDate().isBefore(ChronoLocalDate.from(LocalDate.now().atStartOfDay()))) {
+                stockPrices.remove(stockPrice);
+                stockPriceRepository.deleteById(stockPrice.getId());
+            }
+        });
     }
 }
