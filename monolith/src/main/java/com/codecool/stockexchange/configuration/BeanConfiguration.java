@@ -1,22 +1,29 @@
 package com.codecool.stockexchange.configuration;
 
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.rsocket.RSocketRequester;
-import org.springframework.web.client.RestTemplate;
 
-@org.springframework.context.annotation.Configuration
+import java.net.URI;
+
+@Configuration
 public class BeanConfiguration {
 
-    @Bean
-    @LoadBalanced
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
+    @Autowired
+    private final EurekaClient eurekaClient;
+
+    public BeanConfiguration(EurekaClient eurekaClient) {
+        this.eurekaClient = eurekaClient;
     }
 
     @Bean
     RSocketRequester requester(RSocketRequester.Builder builder) {
-        return builder.connectTcp("apiservice", 8092).block();
+        InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("apiservice", false);
+        String url = "http://" + instanceInfo.getIPAddr() + ":" + instanceInfo.getPort() + "/rsocket";
+        return builder.websocket(URI.create(url));
     }
 
 }
