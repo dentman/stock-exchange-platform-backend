@@ -8,3 +8,5 @@ iexcloud.stockurl=https://cloud.iexapis.com/stable/stock
 iexcloud.token=pk_376df3da39174f00af08424cb3bcd321
 google.token=AIzaSyB44-zUFP8YLL0pptwkGyDcGmf4u7JqkKk
 schedule.cron=0 0 23 * * MON-FRI
+spring.rsocket.server.mapping-path=/rsocket
+spring.rsocket.server.transport=websocket
