@@ -89,7 +89,7 @@ public class Stock {
     }
 
     public Optional<StockPrice> getLastPrice() {
-        return stockPrices.stream().max(Comparator.comparing(StockPrice::getDate));
+        return stockPrices.stream().filter(p -> p.getStock() != null).max(Comparator.comparing(StockPrice::getDate));
     }
 
     public void setSimulatedStockPrice(BigDecimal nextPrice) {
