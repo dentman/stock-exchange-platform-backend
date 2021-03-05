@@ -53,7 +53,6 @@ public class StockExchangeApplication {
     }
 
     @Bean
-    @Profile("production")
     public CommandLineRunner init() {
         return args -> {
             if (createDb) {
