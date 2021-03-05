@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/static/css/main.cf14a9f7.chunk.css",
-    "main.js": "/static/js/main.f431682b.chunk.js",
-    "main.js.map": "/static/js/main.f431682b.chunk.js.map",
+    "main.js": "/static/js/main.30a8ff82.chunk.js",
+    "main.js.map": "/static/js/main.30a8ff82.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.3f90cfcf.js",
     "runtime-main.js.map": "/static/js/runtime-main.3f90cfcf.js.map",
-    "static/js/2.b8db9a11.chunk.js": "/static/js/2.b8db9a11.chunk.js",
-    "static/js/2.b8db9a11.chunk.js.map": "/static/js/2.b8db9a11.chunk.js.map",
+    "static/js/2.a54c76a3.chunk.js": "/static/js/2.a54c76a3.chunk.js",
+    "static/js/2.a54c76a3.chunk.js.map": "/static/js/2.a54c76a3.chunk.js.map",
     "static/js/3.ad6c252b.chunk.js": "/static/js/3.ad6c252b.chunk.js",
     "static/js/3.ad6c252b.chunk.js.map": "/static/js/3.ad6c252b.chunk.js.map",
     "index.html": "/index.html",
     "static/css/main.cf14a9f7.chunk.css.map": "/static/css/main.cf14a9f7.chunk.css.map",
-    "static/js/2.b8db9a11.chunk.js.LICENSE.txt": "/static/js/2.b8db9a11.chunk.js.LICENSE.txt",
+    "static/js/2.a54c76a3.chunk.js.LICENSE.txt": "/static/js/2.a54c76a3.chunk.js.LICENSE.txt",
     "static/media/modern-business-buildings.4963f08c.jpg": "/static/media/modern-business-buildings.4963f08c.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.3f90cfcf.js",
-    "static/js/2.b8db9a11.chunk.js",
+    "static/js/2.a54c76a3.chunk.js",
     "static/css/main.cf14a9f7.chunk.css",
-    "static/js/main.f431682b.chunk.js"
+    "static/js/main.30a8ff82.chunk.js"
   ]
 }
