@@ -123,7 +123,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
                             <mainClass>
-                                com.codecool.todoapp.BasicTodoList
+                                com.codecool.stockexchange.StockExchangeApplication
                             </mainClass>
                         </manifest>
                     </archive>
