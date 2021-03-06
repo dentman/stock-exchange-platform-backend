@@ -1,4 +1,4 @@
-package com.codecool.stockexchange;
+package com.codecool.stockexchange.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
