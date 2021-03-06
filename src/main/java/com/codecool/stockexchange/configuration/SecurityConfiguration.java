@@ -1,6 +1,6 @@
 package com.codecool.stockexchange.configuration;
 
-import com.codecool.stockexchange.security.JwtRequestFilter;
+import com.codecool.stockexchange.filter.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
