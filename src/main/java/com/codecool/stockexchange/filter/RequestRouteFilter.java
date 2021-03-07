@@ -36,7 +36,6 @@ public class RequestRouteFilter extends GenericFilterBean {
                 "/favicon.ico"
         );
         boolean isAllowed = contentType != null && contentType.startsWith("application/json") ||
-                URI.equals("/") ||
                 notRedirectedList.contains(URI) ||
                 URI.startsWith("/static");
         return isAllowed;
