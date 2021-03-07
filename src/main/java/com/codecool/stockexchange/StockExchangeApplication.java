@@ -32,7 +32,7 @@ public class StockExchangeApplication {
     private final DailyUpdateScheduler dailyUpdateScheduler;
     private final PasswordEncoder pwe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
     private final boolean createDb = false;
-    private final boolean updateDbFromApi = false;
+    private final boolean updateDbFromApi = true;
 
 
     @Autowired
