@@ -7,13 +7,17 @@ Spring Data, Spring Security, Spring MVC and Messaging (websockets) modules are 
 
 # HOW TO RUN
 
-After cloning the repository, create an application.properties file based on the application.properties.template in 'src/main/resources' folder.
+After cloning the repository, create an application.properties file based on the application.properties.template in 'src/main/resources' folder:
  - Set up the required parameters for the database connection.
  - If required, database updates from outer API can be set up. The necessary API access keys can be aquuired from the following sites:
     - Stock static data: https://iexcloud.io/
     - Related stock videos: https://developers.google.com/youtube/v3
- - If the frontend server will not be running on different origin, specify it in the 'cors.allowed.path' accordingly.
+ - If the frontend server will be running on different origin, specify it in the 'cors.allowed.path' accordingly.
 
+To start the development server locally:
+<pre><code>
+mvn spring-boot:run
+</code></pre>
 At default the server will start at: http://localhost:8080
 
 **DEPLOYMENT:**
