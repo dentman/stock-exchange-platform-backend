@@ -25,7 +25,7 @@ public class RequestRouteFilter extends GenericFilterBean {
             chain.doFilter(request, response);
             return;
         }
-        request.getRequestDispatcher("").forward(request, response);
+        request.getRequestDispatcher("/").forward(request, response);
     }
 
     private boolean isAllowedRoute(String URI, String contentType) {
@@ -36,6 +36,7 @@ public class RequestRouteFilter extends GenericFilterBean {
                 "/favicon.ico"
         );
         boolean isAllowed = contentType != null && contentType.startsWith("application/json") ||
+                URI.equals("/") ||
                 notRedirectedList.contains(URI) ||
                 URI.startsWith("/static");
         return isAllowed;
