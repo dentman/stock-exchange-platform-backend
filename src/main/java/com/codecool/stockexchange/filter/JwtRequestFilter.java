@@ -1,5 +1,8 @@
-package com.codecool.stockexchange.security;
+package com.codecool.stockexchange.filter;
 
+import com.codecool.stockexchange.security.CustomUser;
+import com.codecool.stockexchange.security.CustomUserDetailsService;
+import com.codecool.stockexchange.security.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

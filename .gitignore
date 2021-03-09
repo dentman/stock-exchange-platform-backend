@@ -32,4 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
-*.properties
+api-service
+monolith
+service-registry
+application.properties
