@@ -1,9 +1,10 @@
-# OVERVIEW - stock exhange platform
+# OVERVIEW - Stock exhange platform (monolith edition)
+
 This repository contains the APIs, database, and other core infrastructure items needed for the stock exchange web application.
 Front-end repository is available here: https://github.com/FruzsinaElekes/stockExchangePlatform.git
 
 The server is written in Java using the Spring Framework and Spring Boot.
-Spring Data, Spring Security, Spring MVC and Messaging (websockets) modules are used in the server to provide stable and secure backend for the application.
+Spring Data, Spring Security, Spring MVC and Spring Messaging (websockets) modules are used in the server to provide stable and secure backend for the application.
 
 # HOW TO RUN
 
@@ -23,6 +24,30 @@ At default the server will start at: http://localhost:8080
 **DEPLOYMENT:**
 
 If the static files are created from the React app, the files should be moved 'src/main/resources/public' folder and the whole application can be deployed as one.
+
+*Deployment on Heroku:*
+
+Create a Heroku configuration file in root directory of the repository named as 'system.properties'. The file defines the necessary java version to run the application.
+
+<pre><code>
+java.runtime.version=11
+</code></pre>
+
+Heroku 'Procfile' should be created in root directory to define the command necessary for running the application.
+
+<pre><code>
+web: java -jar target/stockexchange-0.0.1-SNAPSHOT.jar --server.port=$PORT --spring.config.location=target/classes/production.properties
+</code></pre>
+
+Create a spring configuration file named as 'production.properties' in the 'src/main/resources' folder based on the 'application.properties.template'.
+The datasurce and jpa configurations should be replaced with the following items.
+
+<pre><code>
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.generate-ddl=true
+</code></pre>
+
+As the last step push the repository to the heroku git remote to deploy the application.
 
 
 # MAIN FEATURES OF THE WEB APPLICATION
@@ -61,4 +86,16 @@ On the Portfolio link you will find information about your account (username, cu
 
 ### Database structure
 
+Spring Data
+Hibernate
+PostgreSQL
+
 ![detailed_view_mobile](database.png)
+
+### Security
+
+JSON web token
+
+### Communcation
+
+STOMP on websocket
