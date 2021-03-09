@@ -21,11 +21,11 @@ mvn spring-boot:run
 </code></pre>
 At default the server will start at: http://localhost:8080
 
-**DEPLOYMENT:**
+**DEPLOYMENT**
 
 If the static files are created from the React app, the files should be moved 'src/main/resources/public' folder and the whole application can be deployed as one.
 
-*Deployment on Heroku:*
+*Deployment on Heroku*
 
 Create a Heroku configuration file in root directory of the repository named as 'system.properties'. The file defines the necessary java version to run the application.
 
@@ -84,18 +84,20 @@ On the Portfolio link you will find information about your account (username, cu
 
 # BACKEND DESIGN
 
+The server is built with proven technologies as the Spring Framework and SQL database.
+
 ### Database structure
 
-Spring Data
-Hibernate
-PostgreSQL
+The server stores the data using object-relational mapping technique. The persistence and domain layer is using Sring Data JPA and Hibernate, the data is stored in a PostgreSQL database.
 
 ![detailed_view_mobile](database.png)
 
 ### Security
 
-JSON web token
+The application is secured using the Spring Security module.
+Authenthication is neccessary to access sensitive data of the logged in users.
+The session management is statless. Token based authentication with JSON web token is implemented to insure the secure communication and authorization of the request from the clients.
 
 ### Communcation
 
-STOMP on websocket
+The server provides real-time pricing data to the frontend application using websockets and STOMP messaging. The message sending is event driven based on price changing events.
