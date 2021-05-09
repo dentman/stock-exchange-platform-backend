@@ -4,13 +4,14 @@ This repository contains the APIs, database, and other core infrastructure items
 Front-end repository is available here: https://github.com/FruzsinaElekes/stockExchangePlatform.git
 
 The server is written in Java using the Spring Framework and Spring Boot.
-Spring Data, Spring Security, Spring MVC and Spring Messaging (websockets) modules are used in the server to provide stable and secure backend for the application.
+Spring Data, Spring Security, Spring MVC and Spring Messaging (websockets) modules are used in the server to provide stable and secure backend for the application.   
 
+Please check out the deployed app [here](https://stock-exchange-platform.herokuapp.com).
 # HOW TO RUN
 
 After cloning the repository, create an application.properties file based on the application.properties.template in 'src/main/resources' folder:
  - Set up the required parameters for the database connection.
- - If required, database updates from outer API can be set up. The necessary API access keys can be aquuired from the following sites:
+ - If required, database updates from outer API can be set up. The necessary API access keys can be aquired from the following sites:
     - Stock static data: https://iexcloud.io/
     - Related stock videos: https://developers.google.com/youtube/v3
  - If the frontend server will be running on different origin, specify it in the 'cors.allowed.path' accordingly.
